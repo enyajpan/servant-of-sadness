@@ -35,7 +35,7 @@ $(window).resize(function () {
   h = $(window).height();
 });
 
-$("#clockContainer").click(function () {
+$("#toggle-layout-btn").click(function () {
   $(".about").toggleClass("about-alt");
   $("#th").toggleClass("th-alt");
   $("#linklist").toggleClass("linklist-alt");
