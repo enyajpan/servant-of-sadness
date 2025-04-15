@@ -236,32 +236,3 @@ i {
   }
 }
 
-
-/* Common */
-#clockContainer {
-  width: 70px;
-  height: 70px;
-  left: 5px;
-  top: 5px;
-  margin-right: 20px;
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-}
-
-#vertical {
-  width: 12px;
-  height: 70px;
-  background-color: rgb(0, 89, 255);
-  position: absolute;
-  left: 29px;
-}
-
-#horizontal{
-  width: 70px;
-  height: 12px;
-  position: absolute;
-  top: 29px;
-  background-color: rgb(0, 89, 255);
-}
-
