@@ -1,151 +1,66 @@
 var w = $(window).width();
 var h = $(window).height();
-var linkBody = "https://tdingsun.github.io/";
+var linkBody = "https://enyajpan.github.io/";
 var links = {
-  "lara": {
-    "number": "22",
-    "name": "and I still welcome you home,,,,",
-    "author": "Lara Kalecik",
-    "bio": "My heart was an artichoke and I had given it to the sun. <a href='https://www.larakalecik.com'>Website</a>",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
+    "bio": "xxx",
     "mobile": false
   },
-  "hannah": {
-    "number": "21",
-    "name": "the distance between anything at all and the center",
-    "author": "Hannah Joyce",
-    "bio": "is the beginning of a story. <a href='http://www.imaginaryhannah.com'>Website</a>",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
+    "bio": "xxx",
     "mobile": false
   },
-  "tiger2": {
-    "number": "20",
-    "name": "I Never Believe it Until it Happens Again",
-    "author": "Tiger Dingsun",
-    "bio": "is my second language. <a href='https://tiger.exposed/'>Website</a>",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
+    "bio": "xxx",
     "mobile": false
   },
-  "zainab": {
-    "number": "19",
-    "name": "Affirmations for My Existence",
-    "author": "Zainab Aliyu",
-    "bio": "(\"Zai\") feels most at home when lost in archives.<a href='https://zai.zone'>Website</a>",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
+    "bio": "xxx",
     "mobile": false
   }, 
-  "paul": {
-    "number": "18",
-    "name": "25x50",
-    "author": "Paul Bouigue",
-    "bio": "<a href='https://pual.cool'>Website</a>",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
+    "bio": "xxx",
     "mobile": false
   }, 
-  "emma": {
-    "number": "17",
-    "name": "GUSHGUSHGUSH",
-    "author": "Emma Kemp",
-    "bio": "is a writer, artist and educator based in LA. <a href='http://emmakemp.com'>Website</a>",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
+    "bio": "xxx",
     "mobile": false
   }, 
-  "wen": {
-    "number": "16",
-    "name": "Portraits and Repetition",
-    "author": "Wen Zhuang",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
     "mobile": true
   }, 
-  "aayushi": {
-    "number": "15",
-    "name": "Dream Dress",
-    "author": "Aayushi Khowala",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
     "mobile": false
   }, 
-  "ali": {
-    "number": "14",
-    "name": "Excerpts from No Man's Land",
-    "author": "Ali Dipp",
-    "mobile": true
-  }, 
-  "neograph": {
-    "number": "13",
-    "name": "Neograph",
-    "author": "Tiger Dingsun",
-    "bio": "is my second language. <a href='https://tiger.exposed/'>Website</a>",
-    "mobile": true
-  }, 
-  "danning": {
-    "number": "12",
-    "name": "Itchy, Fluffy, and Incomplete Things",
-    "author": "Danning Niu",
-    "bio": "is working towards a sound and compassionate grasp of our concrete realities. <a href='https://danningniu.com/'>Website</a>",
-    "mobile": false
-  },
-  "jorge2": {
-    "number": "11",
-    "name": "Glossary of Feelings~~~",
-    "author": "Jorge Palacios",
-    "mobile": false
-  },
-  "justine": {
-    "number": "10",
-    "name": "7 Poems",
-    "author": "Justine Nguyễn-Nguyễn",
-    "bio": "<a href='https://www.jn-n.com/'>Website</a>",
-    "mobile": true
-  },
 
-  "liby2": {
-    "number": "09",
-    "name": "Can't Run Trip Over Your Fucking Swag",
-    "author": "Liby Hays",
-    "bio": "is a writer and streetwear designer from Montclair, NJ. Her first graphic novel, <i>Geniacs!</i> should be out sometime in 2020. <a href='http://libyhays.net/'>Website</a>",
-    "mobile": false
-  },
-  "greta": {
-    "number": "08",
-    "name": "10 Poems",
-    "author": "Greta Huang Skagerlind",
-    "bio": "is a designer and writer. <a href='http://gskagerlind.com/'>Website</a>",
-    "mobile": true
-  },
-  "liby1": {
-    "number": "07",
-    "name": "Pissed Pants Academy",
-    "author": "Liby Hays",
-    "bio": "is a writer and streetwear designer from Montclair, NJ. Her first graphic novel, <i>Geniacs!</i> should be out sometime in 2020. <a href='http://libyhays.net/'>Website</a>",
-    "mobile": true
-  },
-  "jorge1": {
-    "number": "06",
-    "name": "The Meaning Maker",
-    "author": "Jorge Palacios",
-    "mobile": true
-  },
-  "theia": {
-    "number": "05",
-    "name": "#hot sports girl",
-    "author": "Théïa Flynn",
-    "mobile": true
-  },
-  "libby": {
-    "number": "04",
-    "name": "SPIRAL",
-    "author": "Libby Marrs",
-    "mobile": true
-  },
-  "tiger": {
-    "number": "03",
-    "name": "Ballast",
-    "author": "Tiger Dingsun",
-    "bio": "is my second language. <a href='https://tiger.exposed/'>Website</a>",
-    "mobile": true
-  }, 
-  "eliza": {
-    "number": "02",
-    "name": "Third Form: One Month on Testosterone",
-    "author": "Eliza Chen",
-    "mobile": true
-  },
-  "sb": {
-    "number": "01",
-    "name": "Wet Dreams",
-    "author": "S.B.",
+  "xxx": {
+    "number": "00",
+    "name": "xxx",
+    "author": "xxx",
     "mobile": true
   }
 }
