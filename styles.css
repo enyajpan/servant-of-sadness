@@ -268,11 +268,10 @@ i {
 }
 
 .line:hover .column {
-  font-size: 1.5rem;
+  font-size: 3rem;
   transition: font-size 0.2s ease;
 }
 
 #th .column {
-  font-size: 4rem;
-  font-weight: bold;
+  font-size: 2rem;
 }
