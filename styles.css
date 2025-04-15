@@ -1,0 +1,296 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 16px;
+  color: cornsilk;
+  line-height: 1;
+  background-color: cornflowerblue;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#linklist {
+  letter-spacing: -0.01em;
+}
+
+#th {
+  border-top: 1px solid cornsilk;
+  font-size: 2rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.about {
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+#more-info a {
+  border-radius: 20px;
+  border: 1px solid cornsilk;
+  transition: background-color 0.25s;
+}
+
+
+#more-info a:hover {
+  font-style: italic;
+  background-color: cornsilk;
+  color: cornflowerblue;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-bottom: 1px solid cornsilk;
+  padding: 5px 0px 5px 0px;
+  font-size: 1rem;
+}
+
+.line:not(#th):hover{
+  color: cornflowerblue;
+  background-color: cornsilk;
+  font-size: 1rem;
+}
+
+.author {
+  border-color: cornsilk;
+}
+
+.author:hover {
+  border-color: cornflowerblue;
+}
+
+
+#container {
+  width: 100vw;
+  height: auto;
+  padding: 5px;
+}
+
+#spacer {
+  height: 75px;
+  width: 100vw;
+  display: block;
+}
+
+#header {
+  font-size: 4rem;
+  line-height: 1;
+  width: calc(100vw - 50px);
+  min-width: 375px;
+  letter-spacing: -0.2rem;
+  margin-left: -2px;
+  display: inline-block;
+}
+
+#more-info {
+  border-top: 1px solid cornsilk;
+  margin: 5px;
+  max-width: 550px;
+  line-height: 1.2;
+  font-size: 1rem;
+}
+
+.bio {
+  max-width: 250px;
+  font-size: 1rem;
+  border-color: inherit;
+  letter-spacing: 0;
+  font-size: 0em;
+  transition: font-size 0.25s;
+}
+
+.bio-show{
+  font-size: 1rem!important;
+  border-top: 1px solid cornflowerblue;
+  padding-top: 5px;
+}
+
+.bio a {
+  /* text-decoration: underline; */
+  border-radius: 20px;
+  border: 1px solid cornflowerblue;
+  /* background-color: cornflowerblue;
+  color: cornsilk; */
+  transition: background-color 0.25s;
+  font-style: italic;
+}
+
+.bio a:hover {
+  font-style: italic;
+  background-color: cornflowerblue;
+  color: cornsilk;
+}
+
+.bio-alt {
+  display: none;
+}
+
+
+i {
+  padding-left: 5px;
+}
+
+
+/* Alternate */
+
+.line-alt {
+  display: inline;
+  border-bottom: none;
+  font-size: 4rem;
+  transition:0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  letter-spacing: -0.1rem;
+  margin-right: 100px;
+  padding: 0px 10px 0px 8px;
+  line-height: 1;
+}
+
+.line-alt:not(#th):hover{
+  /* color: white;
+  background-color: black; */
+  font-size: 4rem;
+  font-style: italic;
+  background-color: cornsilk;
+  color: cornflowerblue;
+  border-radius: 2px;
+}
+
+
+
+.th-alt {
+  display: none;
+}
+
+.title-alt {
+  word-break: break-all;
+}
+
+.about-alt {
+  width: 200px;
+  line-height: 1.3;
+}
+
+.number-alt {
+  position: relative;
+  top: -30px;
+  font-size: 1rem;
+  letter-spacing: -0.05rem;
+  padding-right: 5px;
+  white-space: nowrap;
+  color: cornflowerblue;
+  background-color: cornsilk;
+  padding: 2px;
+  border-radius: 2px;
+}
+
+.by-alt {
+  font-size: 2rem;
+  letter-spacing: -0.1rem;
+  padding: 7px;
+}
+
+.author-alt {
+  font-size: 2rem;
+  letter-spacing: -0.1rem;
+  margin-right: -72px;
+}
+
+.mobile-alt {
+  position: relative;
+  font-size: 1rem;
+  letter-spacing: -0.05rem;
+  top: -30px;
+  white-space: nowrap;
+}
+
+.mobile-alt::before {
+  content: "Mobile? ";
+}
+
+@media (min-width: 768px) {
+  #header {
+    font-size: 6rem;
+    letter-spacing: -0.3rem;
+  }
+
+  .line:not(#th):hover{
+    color: cornflowerblue;
+    background-color: cornsilk;
+    justify-content: space-around;
+    font-size: 2rem;
+    letter-spacing: -0.05rem;
+  }
+
+  .line-alt:not(#th):hover {
+    letter-spacing: -0.2rem;
+    font-size: 6rem;
+  }
+
+  .line-alt {
+    font-size: 6rem;
+  }
+
+  .mobile-alt {
+    top: -50px;
+  }
+
+  .number-alt {
+    top: -50px;
+  }
+}
+
+
+/* Common */
+#clockContainer {
+  width: 70px;
+  height: 70px;
+  left: 5px;
+  top: 5px;
+  margin-right: 20px;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#vertical {
+  width: 12px;
+  height: 70px;
+  background-color: cornsilk;
+  position: absolute;
+  left: 29px;
+}
+
+#horizontal{
+  width: 70px;
+  height: 12px;
+  position: absolute;
+  top: 29px;
+  background-color: cornsilk;
+}
+
+#mute-btn {
+  color: cornsilk;
+  position: fixed;
+  padding: 25px;
+  right: 0;
+  top: 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+#mute-btn:hover {
+  color: cornflowerblue;
+  background-color: cornsilk;
+}
+
