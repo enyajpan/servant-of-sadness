@@ -7,13 +7,13 @@ var links = {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
-    "bio": "xxx",
+    "message":"xxx"
   },
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
-    "bio": "xxx",
+    "message":"xxx"
   }
   // Add more entries as needed
 };
@@ -60,23 +60,20 @@ function makeLinks() {
     let author = value.author;
     let number = value.number;
     let bio = value.bio;
-    let mobile = value.mobile;
     let timestamp = value.timestamp;
 
-    let newline = $(
-      `<a class='line' href='${linkBody + key}' target='_top'></a>`
-    );
-    newline.append($(`<span class="number">RM–${number}</span>`));
-    newline.append($(`<span class="title"><a ">${title}</a></span>`));
-    newline.append($(`<span class="by">by</span>`));
-    let authorSpan = $(`<span class="author">${author}</span>`);
+    let newline = $(`<a class='line' href='${linkBody + key}' target='_top'></a>`);
+    newline.append($(`<div class="column number">RM–${number}</div>`));
+    newline.append($(`<div class="column title">${title}</div>`));
+    newline.append($(`<div class="column by">by</div>`));
+    let authorDiv = $(`<div class="column author">${author}</div>`);
     if (bio) {
       let bioDiv = $(`<div class="bio">${bio}</div>`);
-      authorSpan.append(bioDiv);
+      authorDiv.append(bioDiv);
     }
-    newline.append(authorSpan);
-    newline.append($(`<span class="mobile">${mobile}</span>`));
-    newline.append($(`<span class="timestamp">${timestamp}</span>`));
+    newline.append(authorDiv);
+    newline.append($(`<div class="column message">undefined</div>`)); // placeholder
+    newline.append($(`<div class="column timestamp">${timestamp}</div>`));
 
     $("#container").append(newline);
   }
