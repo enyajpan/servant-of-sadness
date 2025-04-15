@@ -2,29 +2,61 @@ var w = $(window).width();
 var h = $(window).height();
 var linkBody = "https://enyajpan.github.io/";
 
-var links = {
-  "xxx": {
-    "number": "00",
-    "name": "xxx",
-    "author": "xxx",
-    "bio": "xxx",
-  },
-  "xxx": {
-    "number": "00",
-    "name": "xxx",
-    "author": "xxx",
-    "bio": "xxx",
-  }
-  // Add more entries as needed
+// Firebase setup
+const firebaseConfig = {
+  apiKey: "AIzaSyAidIgPo_dkrLV2FmJGqgGELdEGlV2pXkM",
+  authDomain: "risd-dp.firebaseapp.com",
+  projectId: "risd-dp",
+  storageBucket: "risd-dp.firebasestorage.app",
+  messagingSenderId: "640654886959",
+  appId: "1:640654886959:web:5be3dd3866004a224e1eda",
+  measurementId: "G-JCQFDHPH74"
 };
 
-$(document).ready(function () {
-  makeLinks();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-  // Hide extra UI if embedded in iframe
+var links = {};
+
+function fetchLinksFromFirebase() {
+  db.collection("submissions")
+    .orderBy("timestamp", "desc")
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc, index) => {
+        const data = doc.data();
+        const key = doc.id;
+
+        links[key] = {
+          number: (index + 1).toString().padStart(2, "0"),
+          name: data.title || "Untitled",
+          author: data.author || "Anonymous",
+          bio: data.message || "",
+          timestamp: data.timestamp ? formatTimestamp(data.timestamp.toDate()) : "",
+        };
+      });
+
+      makeLinks(); // Call after loading data
+    })
+    .catch((error) => {
+      console.error("Error loading data from Firebase:", error);
+    });
+}
+
+function formatTimestamp(date) {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
+$(document).ready(function () {
+  fetchLinksFromFirebase();
+
+  // Hide certain elements if embedded in iframe
   if (window.location !== window.parent.location) {
-    $("#mute-btn").hide();
-    $("#clockContainer").hide();
+    $("#toggle-layout-btn").hide();
     $("#more-info").hide();
     $(".bio").hide();
   }
@@ -36,6 +68,7 @@ $(window).resize(function () {
 });
 
 $("#toggle-layout-btn").click(function () {
+  // Toggle alternate styling
   $(".about").toggleClass("about-alt");
   $("#th").toggleClass("th-alt");
   $("#linklist").toggleClass("linklist-alt");
@@ -44,8 +77,15 @@ $("#toggle-layout-btn").click(function () {
   $(".title").toggleClass("title-alt");
   $(".by").toggleClass("by-alt");
   $(".author").toggleClass("author-alt");
-  $(".mobile").toggleClass("mobile-alt");
+  $(".timestamp").toggleClass("timestamp-alt");
   $(".bio").toggleClass("bio-alt");
+
+  // Toggle actual grid layout
+  $("#container").toggleClass("grid-view");
+
+  // Update button text
+  const isGrid = $("#container").hasClass("grid-view");
+  $(this).text(isGrid ? "List View" : "Grid View");
 });
 
 $("#container").on("mouseenter", ".line", function () {
@@ -60,13 +100,13 @@ function makeLinks() {
     let author = value.author;
     let number = value.number;
     let bio = value.bio;
-    let mobile = value.mobile;
+    let timestamp = value.timestamp;
 
     let newline = $(
       `<a class='line' href='${linkBody + key}' target='_top'></a>`
     );
     newline.append($(`<span class="number">RM–${number}</span>`));
-    newline.append($(`<span class="title"><a ">${title}</a></span>`));
+    newline.append($(`<span class="title">${title}</span>`));
     newline.append($(`<span class="by">by</span>`));
     let authorSpan = $(`<span class="author">${author}</span>`);
     if (bio) {
@@ -74,7 +114,7 @@ function makeLinks() {
       authorSpan.append(bioDiv);
     }
     newline.append(authorSpan);
-    newline.append($(`<span class="mobile">${mobile}</span>`));
+    newline.append($(`<span class="timestamp">${timestamp}</span>`));
 
     $("#container").append(newline);
   }
