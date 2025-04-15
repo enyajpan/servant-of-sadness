@@ -1,5 +1,6 @@
 var w = $(window).width();
 var h = $(window).height();
+var linkBody = "https://enyajpan.github.io/";
 
 var links = {
   "xxx": {
