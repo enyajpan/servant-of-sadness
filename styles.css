@@ -72,12 +72,12 @@ a {
 }
 
 .timestamp {
-  font-size: 4rem;
+  font-size: 1rem;
 }
 
 .timestamp-alt {
-  font-size: 4rem;
-  letter-spacing: -0.-0.2rem;
+  font-size: 2rem;
+  letter-spacing: -0.1rem;
 }
 
 #container {
