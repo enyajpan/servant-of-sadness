@@ -60,9 +60,10 @@ function makeLinks() {
     let title = value.name;
     let author = value.author;
     let number = value.number;
+    let bio = value.bio;
     let timestamp = value.timestamp;
 
-    let newline = $(`<div class='line'></div>`);
+    let newline = $(`<a class='line' href='${linkBody + key}' target='_top'></a>`);
     newline.append($(`<div class="column number">RM–${number}</div>`));
     newline.append($(`<div class="column title">${title}</div>`));
     newline.append($(`<div class="column by">by</div>`));
