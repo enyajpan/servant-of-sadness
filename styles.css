@@ -274,5 +274,40 @@ i {
 
 #th .column {
   font-size: 3rem;
-  letter-spacing: -0.2rem
+  letter-spacing: -0.1rem
+}
+
+
+/* message formatting */
+.message {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+  display: block;
+  font-size: 1rem;
+  max-width: 100%;
+}
+
+.message {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;           /* Show max 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transition: all 0.3s ease;
+  max-height: 3.2em;               /* Approx 2 lines */
+}
+
+.line:hover .message {
+  -webkit-line-clamp: unset;       /* Show full message on hover */
+  max-height: 100vh;               /* Allow full expansion */
+}
+
+.message {
+  cursor: pointer;
+}
+
+.line:hover .message {
+  background-color: rgba(0, 89, 255, 0.05); /* Subtle highlight */
 }
