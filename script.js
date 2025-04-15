@@ -60,7 +60,7 @@ function makeLinks() {
     let title = value.name;
     let author = value.author;
     let number = value.number;
-    let message = value.message || "";
+    let bio = value.bio;
     let timestamp = value.timestamp;
 
     let newline = $(`<a class='line' href='${linkBody + key}' target='_top'></a>`);
@@ -73,7 +73,7 @@ function makeLinks() {
       authorDiv.append(bioDiv);
     }
     newline.append(authorDiv);
-    newline.append($(`<div class="column message">${message}</div>`));
+    newline.append($(`<div class="column message">undefined</div>`)); // placeholder
     newline.append($(`<div class="column timestamp">${timestamp}</div>`));
 
     $("#container").append(newline);
