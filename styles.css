@@ -3,9 +3,9 @@ body, html {
   padding: 0;
   font-family: sans-serif;
   font-size: 16px;
-  color: rgb(254, 216, 255);
+  color: rgb(0, 89, 255);
   line-height: 1;
-  background-color: rgb(0, 89, 255);
+  background-color: rgb(255, 236, 247);
 }
 
 * {
@@ -17,7 +17,7 @@ body, html {
 }
 
 #th {
-  border-top: 1px solid rgb(254, 216, 255);
+  border-top: 1px solid rgb(0, 89, 255);
   font-size: 2rem;
 }
 
@@ -37,38 +37,38 @@ a {
 
 #more-info a {
   border-radius: 20px;
-  border: 1px solid rgb(254, 216, 255);
+  border: 1px solid rgb(0, 89, 255);
   transition: background-color 0.25s;
 }
 
 
 #more-info a:hover {
   font-style: italic;
-  background-color: rgb(254, 216, 255);
-  color: rgb(0, 89, 255);
+  background-color: rgb(0, 89, 255);
+  color: rgb(255, 236, 247);
 }
 
 .line {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-bottom: 1px solid rgb(254, 216, 255);
+  border-bottom: 1px solid rgb(0, 89, 255);
   padding: 5px 0px 5px 0px;
   font-size: 1rem;
 }
 
 .line:not(#th):hover{
-  color: rgb(0, 89, 255);
-  background-color: rgb(254, 216, 255);
+  color: rgb(255, 236, 247);
+  background-color: cornflowerblue;
   font-size: 1rem;
 }
 
 .author {
-  border-color: rgb(254, 216, 255);
+  border-color: rgb(0, 89, 255);
 }
 
 .author:hover {
-  border-color: rgb(0, 89, 255);
+  border-color: rgb(254, 216, 255);
 }
 
 
@@ -95,7 +95,7 @@ a {
 }
 
 #more-info {
-  border-top: 1px solid rgb(254, 216, 255);
+  border-top: 1px solid rgb(0, 89, 255);
   margin: 5px;
   max-width: 550px;
   line-height: 1.2;
@@ -121,16 +121,14 @@ a {
   /* text-decoration: underline; */
   border-radius: 20px;
   border: 1px solid rgb(0, 89, 255);
-  /* background-color: cornflowerblue;
-  color: cornsilk; */
   transition: background-color 0.25s;
   font-style: italic;
 }
 
 .bio a:hover {
   font-style: italic;
-  background-color: rgb(0, 89, 255);
-  color: rgb(254, 216, 255);
+  background-color: rgb(255, 236, 247);
+  color: rgb(0, 89, 255);
 }
 
 .bio-alt {
@@ -161,8 +159,8 @@ i {
   background-color: black; */
   font-size: 4rem;
   font-style: italic;
-  background-color: rgb(254, 216, 255);
-  color: rgb(0, 89, 255);
+  background-color: rgb(0, 89, 255);
+  color: rgb(255, 236, 247);
   border-radius: 2px;
 }
 
@@ -188,8 +186,8 @@ i {
   letter-spacing: -0.05rem;
   padding-right: 5px;
   white-space: nowrap;
-  color: rgb(0, 89, 255);
-  background-color: rgb(254, 216, 255);
+  color: rgb(255, 236, 247);
+  background-color: rgb(0, 89, 255);
   padding: 2px;
   border-radius: 2px;
 }
@@ -206,18 +204,6 @@ i {
   margin-right: -72px;
 }
 
-.mobile-alt {
-  position: relative;
-  font-size: 1rem;
-  letter-spacing: -0.05rem;
-  top: -30px;
-  white-space: nowrap;
-}
-
-.mobile-alt::before {
-  content: "Mobile? ";
-}
-
 @media (min-width: 768px) {
   #header {
     font-size: 6rem;
@@ -225,8 +211,8 @@ i {
   }
 
   .line:not(#th):hover{
-    color: rgb(0, 89, 255);
-    background-color: rgb(254, 216, 255);
+    color: rgb(255, 236, 247);
+    background-color: rgb(0, 89, 255);
     justify-content: space-around;
     font-size: 2rem;
     letter-spacing: -0.05rem;
@@ -266,7 +252,7 @@ i {
 #vertical {
   width: 12px;
   height: 70px;
-  background-color: rgb(254, 216, 255);
+  background-color: rgb(0, 89, 255);
   position: absolute;
   left: 29px;
 }
@@ -276,21 +262,6 @@ i {
   height: 12px;
   position: absolute;
   top: 29px;
-  background-color: rgb(254, 216, 255);
-}
-
-#mute-btn {
-  color: rgb(254, 216, 255);
-  position: fixed;
-  padding: 25px;
-  right: 0;
-  top: 0;
-  text-align: center;
-  cursor: pointer;
-}
-
-#mute-btn:hover {
-  color: rgb(0, 89, 255);
-  background-color: rgb(254, 216, 255);
+  background-color: rgb(0, 89, 255);
 }
 
