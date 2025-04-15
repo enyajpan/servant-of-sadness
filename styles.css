@@ -71,6 +71,14 @@ a {
   border-color: rgb(254, 216, 255);
 }
 
+.timestamp {
+  font-size: 1rem;
+}
+
+.timestamp-alt {
+  font-size: 2rem;
+  letter-spacing: -0.1rem;
+}
 
 #container {
   width: 100vw;

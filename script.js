@@ -61,6 +61,7 @@ function makeLinks() {
     let number = value.number;
     let bio = value.bio;
     let mobile = value.mobile;
+    let timestamp = value.timestamp;
 
     let newline = $(
       `<a class='line' href='${linkBody + key}' target='_top'></a>`
@@ -75,6 +76,7 @@ function makeLinks() {
     }
     newline.append(authorSpan);
     newline.append($(`<span class="mobile">${mobile}</span>`));
+    newline.append($(`<span class="timestamp">${timestamp}</span>`));
 
     $("#container").append(newline);
   }
