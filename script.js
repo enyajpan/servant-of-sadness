@@ -7,61 +7,52 @@ var links = {
     "name": "xxx",
     "author": "xxx",
     "bio": "xxx",
-    "mobile": false
   },
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
     "bio": "xxx",
-    "mobile": false
   },
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
     "bio": "xxx",
-    "mobile": false
   },
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
     "bio": "xxx",
-    "mobile": false
   }, 
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
     "bio": "xxx",
-    "mobile": false
   }, 
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
     "bio": "xxx",
-    "mobile": false
   }, 
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
-    "mobile": true
   }, 
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
-    "mobile": false
   }, 
 
   "xxx": {
     "number": "00",
     "name": "xxx",
     "author": "xxx",
-    "mobile": true
   }
 }
 
