@@ -268,10 +268,12 @@ i {
 }
 
 .line:hover .column {
-  font-size: 3rem;
+  font-size: 5rem;
   transition: font-size 0.2s ease;
 }
 
 #th .column {
-  font-size: 2rem;
+  font-size: 4rem;
+  line-height: 1;
+  letter-spacing: -0.1rem;
 }
