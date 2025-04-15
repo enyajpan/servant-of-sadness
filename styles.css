@@ -96,13 +96,10 @@ a {
 
 #more-info {
   border-top: 1px solid rgb(0, 89, 255);
-  padding: 20px;
-  width: 100vw;
-  max-width: none;
-  margin: 0;
-  line-height: 1.5;
+  margin: 5px;
+  max-width: 550px;
+  line-height: 1.2;
   font-size: 1rem;
-  box-sizing: border-box;
 }
 
 .bio {
@@ -136,12 +133,6 @@ a {
 
 .bio-alt {
   display: none;
-}
-
-.timestamp {
-  white-space: nowrap;
-  font-size: 0.9rem;
-  color: rgb(0, 89, 255);
 }
 
 
@@ -236,27 +227,11 @@ i {
     font-size: 6rem;
   }
 
-  .number-alt {
+  .mobile-alt {
     top: -50px;
   }
 
-  .timestamp-alt {
-    font-size: 1.2rem;
-    font-style: italic;
+  .number-alt {
+    top: -50px;
   }
-}
-
-#toggle-layout-btn {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  padding: 10px 15px;
-  border: 1px solid rgb(0, 89, 255); /* Match text color */
-  background-color: rgb(254, 216, 255); /* New background */
-  color: rgb(0, 89, 255); /* New text color */
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 5px;
 }
