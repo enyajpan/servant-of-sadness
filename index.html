@@ -16,18 +16,63 @@
     <title>In case of loss, please return to:</title>
   </head>
   <body>
+    <!-- entries container -->
     <div id="container">
       <div id="header">
         <a href="https://enyajpan.github.io/dp-test/" target="_top">In case of loss, please return to:</a>
       </div>
+      
       <div id="th" class="line">
         <div class="column number">id.</div>
         <div class="column title">Subject line:</div>
         <div class="column author">From:</div>
         <div class="column message">Message</div>
+        <div class="column label">Label</div> 
         <div class="column timestamp">Timestamp</div>
       </div>
     </div>
+
+    <div id="submission-wrapper">
+      <img id="submission-bg" src="assets/submission-form-background.png" alt="submission form background" />
+      <div id="submission-overlay">
+        <form id="submission-form">
+          <!-- Checkboxes -->
+          <div class="label-column">
+            <label class="custom-checkbox">
+              <input type="checkbox" name="label" value="missed-connections" />
+              <span class="checkmark"></span> missed-connections
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="label" value="past-lives" />
+              <span class="checkmark"></span> past-lives
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="label" value="404-error" />
+              <span class="checkmark"></span> 404-error
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="label" value="servant-of-sadness" />
+              <span class="checkmark"></span> servant-of-sadness
+            </label>
+          </div>
+        
+          <!-- Stack subject + author -->
+          <input name="number" type="hidden" />
+          <div class="input-stack">
+            <input name="subject line" placeholder="Subject line" required />
+            <input name="author" placeholder="Your name" required />
+          </div>          
+        
+          <!-- Message on separate row -->
+          <div class="input-bottom-row">
+            <textarea name="message" placeholder="Message" required></textarea>
+          </div>
+        
+          <button type="submit">Submit</button>
+        </form>                             
+      </div>
+    </div>
+    
     <div id="spacer"></div>
     <div id="more-info">
       <p>Loss is our first lesson in mystery. It teaches us that not everything can be saved, stored, or held—that the systems we build—digital, emotional, logical—have limits. And that sometimes, what’s most human is what we cannot explain. In their absence, something remains: love, longing, or just the shape of what once was. In case of loss, please return to: is an exploration of loss not as absence, but as a site of emotional residue—where love remains, even when what it once tethered itself to has faded.
@@ -40,10 +85,14 @@
       </p>
       <p>RISD Graphic Design Degree Project by <a href="https://enyapan.com/" target="_top">Enya Pan</a>.</p>
     </div>
+    <div id="spacer"></div>
 
-
-      
   </body>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
 
   <script src="./script.js"></script>
 

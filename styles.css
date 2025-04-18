@@ -2,7 +2,7 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   color: rgb(0, 89, 255);
   line-height: 1;
   background-color: rgb(255, 236, 247);
@@ -53,13 +53,14 @@ a {
   justify-content: space-between;
   flex-wrap: wrap;
   border-bottom: 1px solid rgb(0, 89, 255);
-  padding: 5px 0px 5px 0px;
+  padding: 2px 0px 2px 0px;
   font-size: 1rem;
+  line-height: 1.1;
 }
 
 .line:not(#th):hover{
   color: rgb(255, 236, 247);
-  background-color: cornflowerblue;
+  background-color: rgb(0, 89, 255);
   font-size: 1rem;
 }
 
@@ -94,7 +95,7 @@ a {
 
 #header {
   font-size: 1rem;
-  line-height: 1;
+  line-height: 0.9;
   width: calc(100vw - 50px);
   min-width: 375px;
   letter-spacing: -0.2rem;
@@ -105,8 +106,8 @@ a {
 #more-info {
   border-top: 1px solid rgb(0, 89, 255);
   margin: 5px;
-  max-width: 550px;
-  line-height: 1.2;
+  max-width: 600px;
+  line-height: 1.15;
   font-size: 1rem;
 }
 
@@ -237,7 +238,7 @@ i {
 }
 
 .column.number {
-  flex: 0.1;
+  flex: 0.08;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
@@ -251,7 +252,7 @@ i {
 }
 
 .column.author {
-  flex: 0.4;
+  flex: 0.3;
   text-align: left;
   align-items: flex-start;
 }
@@ -262,13 +263,24 @@ i {
   align-items: flex-start;
 }
 
-.column.timestamp {
+.column.label {
   flex: 0.2;
+  flex-direction: row;
+  text-align: left;
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px; 
+}
+
+
+.column.timestamp {
+  flex: 0.;
   text-align: right;
   align-items: flex-start;
 }
 
-.line:hover .column {
+.line:not(#th):hover .column {
   font-size: 3rem;
   transition: font-size 0.2s ease;
 }
@@ -397,4 +409,261 @@ i {
 .line:hover .timestamp {
   -webkit-line-clamp: unset;
   max-height: none; /* expands to full height */
+}
+
+/* do not change the size of "id" and "timestamp" */
+.line .column.number,
+.line .column.timestamp {
+  font-size: 1rem !important;
+  transition: none !important;
+}
+
+#th .column.number,
+#th .column.timestamp {
+  font-size: 2rem !important;
+  transition: none !important;
+}
+
+/* submission form css */
+#submission-form input,
+#submission-form textarea {
+  font-size: 1rem;
+  padding: 6px;
+  border: 1px solid rgb(0, 89, 255);
+  border-radius: 4px;
+  flex: 1 1 auto;
+  min-width: 50px;
+  max-width: 600px;
+  height: 2.5rem;
+  resize: both;
+}
+
+#submission-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 250px; 
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+#submission-bg {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+}
+
+#submission-overlay {
+  position: absolute;
+  z-index: 1000;
+  padding: 10px;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#submission-form {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  padding: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  z-index: 1000;
+  max-width: 100%;
+  background: transparent;
+}
+
+#submission-form textarea[name="message"] {
+  font-family: sans-serif;
+  font-size: 1rem;
+  flex: 1 1 800px;
+  width: 500px;
+  height: 6rem;
+  resize: both;
+}
+#submission-form .label-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+#submission-form .input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* labels formatting in submission form */
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.label-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 0 0 auto;
+  margin-top: 6px;
+}
+
+.label-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding-left: 2px;
+}
+
+.checkbox-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Hide default checkbox */
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+/* Label setup */
+.custom-checkbox {
+  position: relative;
+  padding-left: 22px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  color: rgb(0, 89, 255);
+}
+
+/* Custom square box */
+.custom-checkbox .checkmark {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  background-color: white;
+  border: 1px solid rgb(0, 89, 255);
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+/* add checkmark when checked */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 5px;
+  height: 10px;
+  border: solid rgb(255, 70, 178);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.custom-checkbox:hover .checkmark {
+  background-color: rgb(255, 236, 247);
+}
+
+.input-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 300px; /* set max width for both inputs */
+}
+
+.input-stack input {
+  width: 100%;
+  font-size: 1rem;
+  padding: 6px;
+  border: 1px solid rgb(0, 89, 255);
+  border-radius: 4px;
+  font-family: sans-serif;
+}
+
+.input-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+}
+
+.input-top-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input-top-row input[name="subject line"] {
+  flex: 1;
+  min-width: 200px;
+}
+
+.input-top-row input[name="author"] {
+  flex: 0 0 150px;
+}
+
+#submission-form button {
+  /* color: rgb(0, 89, 255);
+  border: 1px solid rgb(0, 89, 255);
+  border-radius: 3px;
+  padding: 4px; 
+  background: none; */
+  cursor: pointer;
+  /* font: inherit;
+  font-size: 1.25rem; */
+}
+
+/* #submission-form button:hover {
+  color: white;
+  background-color: rgb(0, 89, 255);
+}
+
+#submission-form button:active {
+  background-color: rgb(0, 60, 200); 
+  border-color: rgb(0, 60, 200);
+} */
+
+/* label tag */
+.tag-button {
+  display: inline-block;
+  padding: 0.5px 2px;
+  background-color: rgb(255, 236, 247);
+  color: rgb(255, 70, 178);
+  border: 1px;
+  border-color: rgb(255, 70, 178);
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+  margin: 0px;
+}
+
+.tag-button:hover {
+  background-color: rgb(255, 70, 178);
+  color: rgb(255, 236, 247); 
+}
+
 }

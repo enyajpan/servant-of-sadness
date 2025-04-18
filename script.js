@@ -1,69 +1,116 @@
 var w = $(window).width();
 var h = $(window).height();
 
-var links = {
-  "xxx": {
-    "number": "001",
-    "subject line": "We sat next to each other on the D train from 36th street to Grand st (New York)",
-    "author": "Anonymous",
-    "message":"We sat next to each other on the bench at 36th street today around 12:30p. We also sat next to each other on the train, occasionally exchanging glances. You were listening to music and smiling. You're a woman with fair skin, long dark hair parted in the center, and green-blue eyes. I'm a man with curly brown hair, brown eyes, tan skin, and a beard. After you got off at Grand street we locked eyes through the window and both knew it was a missed connection.",
-    "timestamp": "2025-03-31 19:20"
-  }
-  // Add more entries as needed
+/* initialize firebase */
+const firebaseConfig = {
+  apiKey: "AIzaSyAidIgPo_dkrLV2FmJGqgGELdEGlV2pXkM",
+  authDomain: "risd-dp.firebaseapp.com",
+  projectId: "risd-dp",
+  storageBucket: "risd-dp.firebasestorage.app",
+  messagingSenderId: "640654886959",
+  appId: "1:640654886959:web:5be3dd3866004a224e1eda",
+  measurementId: "G-JCQFDHPH74"
 };
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* listen and populate entries */
+function makeLinks() {
+  db.collection("entries")
+    .orderBy("timestamp", "desc")
+    .onSnapshot((snapshot) => {
+      $("#container .line:not(#th)").remove();
+      snapshot.forEach((doc) => {
+        const value = doc.data();
+        const title = value["subject line"] || "";
+        const author = value.author || "";
+        const number = value.number || "";
+        const message = value.message || "";
+        const label = value.label || [];
+        const timestamp = value.timestamp?.toDate?.().toLocaleString() || "";
+
+        const newline = $(`
+          <div class='line'>
+            <div class="column number">${number}</div>
+            <div class="column title">${title}</div>
+            <div class="column author">${author}</div>
+            <div class="column message">${message}</div>
+            <div class="column label">
+              ${
+                Array.isArray(label)
+                  ? label.map(l => `<button class="tag-button" data-label="${l}">${l}</button>`).join('')
+                  : `<button class="tag-button" data-label="${label}">${label}</button>`
+              }
+            </div>
+            <div class="column timestamp">${timestamp}</div>
+          </div>
+        `);
+
+        $("#container").append(newline);
+      });
+
+      scrambleWrap('.column.title');
+      scrambleWrap('.column.author');
+      scrambleWrap('.column.message');
+    });
+}
 
 $(document).ready(function () {
   makeLinks();
 
-  // Hide extra UI if embedded in iframe
-  if (window.location !== window.parent.location) {
-    $("#mute-btn").hide();
-    $("#clockContainer").hide();
-    $("#more-info").hide();
-    $(".bio").hide();
-  }
+  // Letter scramble hover animation
+  $(document).on('mousemove', '.scramble-letter', function () {
+    const randomX = (Math.random() - 0.5) * 20;
+    const randomY = (Math.random() - 0.5) * 20;
+    $(this).css({
+      transform: `translate(${randomX}px, ${randomY}px) rotate(${(Math.random() - 0.5) * 30}deg)`,
+      transition: 'transform 0.3s ease',
+    });
+
+    setTimeout(() => {
+      $(this).css({ transform: 'translate(0, 0) rotate(0deg)' });
+    }, 300);
+  });
+
+  // Tag click interaction (you can customize what happens)
+  $(document).on("click", ".tag-button", function () {
+    const label = $(this).data("label");
+    alert(`You clicked label: ${label}`);
+  });
+
+  // ✅ Form submission
+  $("#submission-form").on("submit", async function (e) {
+    e.preventDefault();
+
+    try {
+      // Get entry count for number field
+      const snapshot = await db.collection("entries").orderBy("timestamp", "desc").get();
+      const newNumber = String(snapshot.size + 1).padStart(3, "0");
+
+      // Gather form data
+      const formData = {};
+      const rawData = new FormData(this);
+
+      for (let [key, value] of rawData.entries()) {
+        if (key !== "label") {
+          formData[key] = value;
+        }
+      }
+
+      // ✅ Correctly get selected checkboxes for labels
+      const labelCheckboxes = document.querySelectorAll('input[name="label"]:checked');
+      formData.label = Array.from(labelCheckboxes).map(cb => cb.value);
+
+      // Add number and timestamp
+      formData.number = newNumber;
+      formData.timestamp = new Date();
+
+      // Submit to Firestore
+      await db.collection("entries").add(formData);
+      this.reset();
+    } catch (err) {
+      console.error("Error submitting:", err);
+    }
+  });
 });
-
-$(window).resize(function () {
-  w = $(window).width();
-  h = $(window).height();
-});
-
-$("#clockContainer").click(function () {
-  $(".about").toggleClass("about-alt");
-  $("#th").toggleClass("th-alt");
-  $("#linklist").toggleClass("linklist-alt");
-  $(".line").toggleClass("line-alt");
-  $(".number").toggleClass("number-alt");
-  $(".title").toggleClass("title-alt");
-  $(".by").toggleClass("by-alt");
-  $(".author").toggleClass("author-alt");
-  $(".mobile").toggleClass("mobile-alt");
-  $(".bio").toggleClass("bio-alt");
-});
-
-$("#container").on("mouseenter", ".line", function () {
-  if (window.location == window.parent.location) {
-    $(this).find(".bio").addClass("bio-show");
-  }
-});
-
-function makeLinks() {
-  for (var [key, value] of Object.entries(links)) {
-    let title = value["subject line"] || "";
-    let author = value.author;
-    let number = value.number;
-    let bio = value.bio;
-    let timestamp = value.timestamp;
-    let message = value.message || "";
-
-    let newline = $(`<div class='line'></div>`);
-    newline.append($(`<div class="column number">${number}</div>`));
-    newline.append($(`<div class="column title">${title}</div>`));
-    newline.append($(`<div class="column author">${author}</div>`));
-    newline.append($(`<div class="column message">${message}</div>`));
-    newline.append($(`<div class="column timestamp">${timestamp}</div>`));
-
-    $("#container").append(newline);
-  }
-}
