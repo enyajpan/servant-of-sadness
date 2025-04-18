@@ -13,9 +13,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.1/Tone.min.js"></script>
 
     <link rel="stylesheet" href="./styles.css">
-    <title>In case of loss, please return to:</title>
   </head>
   <body>
+    <!-- Fixed page title -->
+    <div id="fixed-header">
+      <a href="https://enyajpan.github.io/in-case-of-loss/" target="_top">
+        In case of loss, please return to:
+      </a>
+    </div>
+
+    <!-- Fixed header row -->
+    <div id="fixed-th">
+      <div class="line">
+        <div class="column number">id.</div>
+        <div class="column title">Subject line:</div>
+        <div class="column author">From:</div>
+        <div class="column message">Message</div>
+        <div class="column label">Label</div> 
+        <div class="column timestamp">Timestamp</div>
+      </div>
+    </div>
+
+      <!-- Scrollable area -->
+      <div id="scroll-wrapper">
+        <div id="container-wrapper">
+          <div id="container">
+            <!-- content like #header, entries, etc -->
+          </div>
+        </div>
 
     <div id="container-wrapper">
       <img 
@@ -24,19 +49,6 @@
         alt="view all background" 
         oncontextmenu="return false;"
       />
-      <div id="container">
-        <div id="header">
-          <a href="https://enyajpan.github.io/in-case-of-loss/" target="_top">In case of loss, please return to:</a>
-        </div>
-        
-        <div id="th" class="line">
-          <div class="column number">id.</div>
-          <div class="column title">Subject line:</div>
-          <div class="column author">From:</div>
-          <div class="column message">Message</div>
-          <div class="column label">Label</div> 
-          <div class="column timestamp">Timestamp</div>
-        </div>   
     </div>
 
     <div id="submission-wrapper">
