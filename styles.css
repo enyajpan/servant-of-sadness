@@ -286,14 +286,12 @@ i {
     justify-content: space-around;
     font-size: 2rem;
     letter-spacing: -0.05rem;
-    overflow: visible;
   }
 
   .line:not(#th):hover .column {
     font-size: 2.5rem;
     transition: font-size 0.2s ease;
     line-height: 1;
-    overflow: visible;
   }
 
   .line-alt:not(#th):hover {
@@ -329,7 +327,6 @@ i {
   flex: 0.08;
   text-align: left;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -343,6 +340,7 @@ i {
   flex: 0.15;
   text-align: left;
   align-items: flex-start;
+  overflow: visible;
 }
 
 .column.messsage {
@@ -351,11 +349,13 @@ i {
   line-height: 1.4;
   text-align: left;
   align-items: flex-start;
+  overflow: visible;
 }
 
 .column.message br {
   display: block;
   margin-bottom: 0.5em; /* adds space between paragraphs */
+  overflow: visible;
 }
 
 .column.label {
@@ -367,6 +367,7 @@ i {
   display: flex;
   flex-wrap: wrap;
   gap: 2px; 
+  overflow: visible;
 }
 
 
@@ -375,6 +376,7 @@ i {
   flex: 0.2;
   text-align: right;
   align-items: flex-start;
+  overflow: visible;
 }
 
 .line:hover .column.number,
@@ -465,9 +467,9 @@ i {
   align-items: flex-start;
   width: 100%;
 
-  max-height: 2em; /* Approx 2 lines */
+  max-height: 2.2em; /* Approx 2 lines */
   line-height: 1em;
-  padding: 0.5px 2px; /* top/bottom & sides */
+  padding: 1px 2px; /* top/bottom & sides */
   transition: max-height 0.3s ease;
 }
 
