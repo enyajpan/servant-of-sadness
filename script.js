@@ -59,7 +59,6 @@ function makeLinks() {
 $(document).ready(function () {
   makeLinks();
 
-  // Letter scramble hover animation
   $(document).on('mousemove', '.scramble-letter', function () {
     const randomX = (Math.random() - 0.5) * 20;
     const randomY = (Math.random() - 0.5) * 20;
@@ -67,46 +66,72 @@ $(document).ready(function () {
       transform: `translate(${randomX}px, ${randomY}px) rotate(${(Math.random() - 0.5) * 30}deg)`,
       transition: 'transform 0.3s ease',
     });
-
     setTimeout(() => {
       $(this).css({ transform: 'translate(0, 0) rotate(0deg)' });
     }, 300);
   });
 
-  // Tag click interaction (you can customize what happens)
   $(document).on("click", ".tag-button", function () {
     const label = $(this).data("label");
     alert(`You clicked label: ${label}`);
   });
 
-  // ✅ Form submission
+  // Helper to show custom error
+  function showError(id, message) {
+    $(`#${id}`).text(message).show();
+  }
+
+  // Helper to clear all errors
+  function clearErrors() {
+    $(".error-message").text("").hide();
+  }
+
   $("#submission-form").on("submit", async function (e) {
     e.preventDefault();
+    clearErrors();
+
+    const subject = $('input[name="subject line"]').val().trim();
+    const author = $('input[name="author"]').val().trim();
+    const message = $('textarea[name="message"]').val().trim();
+    const labels = $('input[name="label"]:checked');
+
+    let hasError = false;
+
+    if (!subject) {
+      showError("error-subject", "Please enter a subject.");
+      hasError = true;
+    }
+
+    if (!author) {
+      showError("error-author", "Please enter your name.");
+      hasError = true;
+    }
+
+    if (!message) {
+      showError("error-message", "Please enter a message.");
+      hasError = true;
+    }
+
+    if (labels.length === 0) {
+      showError("error-label", "Please select at least one label.");
+      hasError = true;
+    }
+
+    if (hasError) return;
 
     try {
-      // Get entry count for number field
       const snapshot = await db.collection("entries").orderBy("timestamp", "desc").get();
       const newNumber = String(snapshot.size + 1).padStart(3, "0");
 
-      // Gather form data
-      const formData = {};
-      const rawData = new FormData(this);
+      const formData = {
+        "subject line": subject,
+        author: author,
+        message: message,
+        label: Array.from(labels).map(cb => cb.value),
+        number: newNumber,
+        timestamp: new Date()
+      };
 
-      for (let [key, value] of rawData.entries()) {
-        if (key !== "label") {
-          formData[key] = value;
-        }
-      }
-
-      // ✅ Correctly get selected checkboxes for labels
-      const labelCheckboxes = document.querySelectorAll('input[name="label"]:checked');
-      formData.label = Array.from(labelCheckboxes).map(cb => cb.value);
-
-      // Add number and timestamp
-      formData.number = newNumber;
-      formData.timestamp = new Date();
-
-      // Submit to Firestore
       await db.collection("entries").add(formData);
       this.reset();
     } catch (err) {

@@ -33,42 +33,57 @@
     </div>
 
     <div id="submission-wrapper">
-      <img id="submission-bg" src="assets/submission-form-background.png" alt="submission form background" />
+      <img 
+        id="submission-bg" 
+        src="assets/submission-form-background.png" 
+        alt="submission form background" 
+        oncontextmenu="return false;" 
+      />
       <div id="submission-overlay">
-        <form id="submission-form">
+        <form id="submission-form" novalidate>
           <!-- Checkboxes -->
-          <div class="label-column">
-            <label class="custom-checkbox">
-              <input type="checkbox" name="label" value="missed-connections" />
-              <span class="checkmark"></span> missed-connections
-            </label>
-            <label class="custom-checkbox">
-              <input type="checkbox" name="label" value="past-lives" />
-              <span class="checkmark"></span> past-lives
-            </label>
-            <label class="custom-checkbox">
-              <input type="checkbox" name="label" value="404-error" />
-              <span class="checkmark"></span> 404-error
-            </label>
-            <label class="custom-checkbox">
-              <input type="checkbox" name="label" value="servant-of-sadness" />
-              <span class="checkmark"></span> servant-of-sadness
-            </label>
+          <div class="label-wrapper">
+            <div class="label-title">Select label:</div>
+          
+            <div class="label-column">
+              <label class="custom-checkbox">
+                <input type="checkbox" name="label" value="missed-connections" />
+                <span class="checkmark"></span> missed-connections
+              </label>
+              <label class="custom-checkbox">
+                <input type="checkbox" name="label" value="past-lives" />
+                <span class="checkmark"></span> past-lives
+              </label>
+              <label class="custom-checkbox">
+                <input type="checkbox" name="label" value="404-error" />
+                <span class="checkmark"></span> 404-error
+              </label>
+              <label class="custom-checkbox">
+                <input type="checkbox" name="label" value="servant-of-sadness" />
+                <span class="checkmark"></span> servant-of-sadness
+              </label>
+            </div>
+          
+            <span class="error-message" id="error-label"></span>
           </div>
+          
         
           <!-- Stack subject + author -->
           <input name="number" type="hidden" />
           <div class="input-stack">
             <input name="subject line" placeholder="Subject line" required />
+            <span class="error-message" id="error-subject"></span>
             <input name="author" placeholder="Your name" required />
+            <span class="error-message" id="error-author"></span>
           </div>          
         
           <!-- Message on separate row -->
           <div class="input-bottom-row">
             <textarea name="message" placeholder="Message" required></textarea>
+            <span class="error-message" id="error-message"></span>
           </div>
         
-          <button type="submit">Submit</button>
+          <button type="post">Post</button>
         </form>                             
       </div>
     </div>
