@@ -551,11 +551,13 @@ i {
 #submission-form input[name="subject line"],
 #submission-form input[name="author"] {
   color: rgb(229, 140, 192); 
+  padding: 6px;
 }
 
 #submission-form input[name="subject line"]::placeholder,
 #submission-form input[name="author"]::placeholder {
   color:rgb(154, 178, 223);
+  font-size: 1rem;
 }
 #submission-form textarea[name="message"]::placeholder {
   color: rgb(154, 178, 223);
@@ -571,7 +573,7 @@ i {
   font-family: sans-serif;
   font-size: 1rem;
   flex: 1 1 800px;
-  width: 580px;
+  width: 600px;
   height: 7rem;
   padding: 6px;
   color: rgb(229, 140, 192);
@@ -592,6 +594,18 @@ i {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+}
+
+.input-stack {
+  width: 100%;
+  max-width: 250px; 
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.input-stack input {
+  width: 100%; /* makes both inputs expand to fill stack width */
 }
 
 /* submission form error message formatting */
