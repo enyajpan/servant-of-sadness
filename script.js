@@ -126,9 +126,9 @@ $(document).ready(function () {
     const el = this;
     const originalText = el.textContent;
     const chars = Array.from(new Set(originalText.replace(/\s/g, '').split(''))).join('');
-    const duration = 600;
+    const duration = 300;
     const steps = 10;
-    let frame = 0;
+    let frame = 10;
   
     const scrambleInterval = setInterval(() => {
       let output = "";
