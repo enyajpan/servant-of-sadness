@@ -632,6 +632,7 @@ i {
 }
 
 .label-title {
+  font-family: 'Gaisyr Book Italic', serif;
   font-size: 1.1rem;
   letter-spacing: -0.02em;
   color: rgb(87, 124, 193);
