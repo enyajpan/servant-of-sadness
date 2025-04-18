@@ -35,7 +35,7 @@ function makeLinks() {
             <div class="column number">${number}</div>
             <div class="column title">${title}</div>
             <div class="column author">${author}</div>
-            <div class="column message">${message}</div>
+            <div class="column message">${message.replace(/\n/g, "<br>")}</div>
             <div class="column label">
               ${
                 Array.isArray(label)
@@ -58,6 +58,45 @@ function makeLinks() {
 
 $(document).ready(function () {
   makeLinks();
+
+  // subject line - live error handling
+  const subjectField = document.querySelector('input[name="subject line"]');
+  const subjectError = document.getElementById("error-subject");
+  subjectField.addEventListener("input", () => {
+    if (subjectField.value.trim()) {
+      subjectError.textContent = "";
+    }
+  });
+
+  // author - live error handling
+  const authorField = document.querySelector('input[name="author"]');
+  const authorError = document.getElementById("error-author");
+  authorField.addEventListener("input", () => {
+    if (authorField.value.trim()) {
+      authorError.textContent = "";
+    }
+  });
+
+  // message - live error handling
+  const messageField = document.querySelector('textarea[name="message"]');
+  const messageError = document.getElementById("error-message");
+  messageField.addEventListener("input", () => {
+    if (messageField.value.trim()) {
+      messageError.textContent = "";
+    }
+  });
+
+  // labels (checkbox group) - live error handling
+  const labelCheckboxes = document.querySelectorAll('input[name="label"]');
+  const labelError = document.getElementById("error-label");
+  labelCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      const anyChecked = Array.from(labelCheckboxes).some(cb => cb.checked);
+      if (anyChecked) {
+        labelError.textContent = "";
+      }
+    });
+  });
 
   $(document).on('mousemove', '.scramble-letter', function () {
     const randomX = (Math.random() - 0.5) * 20;
@@ -98,17 +137,17 @@ $(document).ready(function () {
     let hasError = false;
 
     if (!subject) {
-      showError("error-subject", "Please enter a subject.");
+      showError("error-subject", "Please enter a subject line.");
       hasError = true;
     }
 
     if (!author) {
-      showError("error-author", "Please enter your name.");
+      showError("error-author", "What's your name? :D");
       hasError = true;
     }
 
     if (!message) {
-      showError("error-message", "Please enter a message.");
+      showError("error-message", "You must include message to post.");
       hasError = true;
     }
 

@@ -16,9 +16,12 @@ body, html {
   letter-spacing: -0.01em;
 }
 
-#th {
-  border-top: 1px solid rgb(118, 166, 255);
+#th .column {
+  display: flex;
   font-size: 2rem;
+  letter-spacing: -0.1rem;
+  line-height: 1.1;
+  margin-top: 70px;
 }
 
 a {
@@ -67,9 +70,21 @@ a {
   letter-spacing: -0.1rem;
 }
 
-#container {
+/* Wraps the background image behind container */
+#container-wrapper {
   width: 100vw;
-  height: auto;
+  background-image: url('assets/view-all-background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-attachment: fixed;
+  padding-top: 0px;
+}
+
+/* Makes the actual content 80% wide and centered */
+#container {
+  width: 98%;
+  margin-left: 0;
   padding: 10px;
 }
 
@@ -79,7 +94,15 @@ a {
   display: block;
 }
 
+#header,
+#th,
+.line {
+  position: relative;
+  z-index: 2;
+}
+
 #header {
+  position: fixed;
   font-size: 1rem;
   line-height: 0.9;
   width: calc(100vw - 50px);
@@ -236,20 +259,27 @@ i {
 }
 
 .column.author {
-  flex: 0.3;
+  flex: 0.2;
   text-align: left;
   align-items: flex-start;
 }
 
 .column.messsage {
-  flex: 5;
+  flex: 9;
+  white-space: normal;
+  line-height: 1.4;
   text-align: left;
   align-items: flex-start;
 }
 
+.column.message br {
+  display: block;
+  margin-bottom: 0.5em; /* adds space between paragraphs */
+}
+
 .column.label {
   flex: 0.2;
-  flex-direction: row;
+  flex-direction: column;
   text-align: left;
   align-items: flex-start;
   display: flex;
@@ -264,19 +294,9 @@ i {
   align-items: flex-start;
 }
 
-.line:not(#th):hover .column {
-  font-size: 3rem;
-  transition: font-size 0.2s ease;
-}
-
 .line:hover .column.number,
 .line:hover .column.timestamp {
   font-size: 1rem !important; /* to not grow font size of number and timestamp */
-}
-
-#th .column {
-  font-size: 2rem;
-  letter-spacing: -0.1rem
 }
 
 
@@ -506,9 +526,10 @@ i {
 /* submission form error message formatting */
 .error-message {
   color: rgb(229, 140, 192);
-  font-size: 0.3rem;
+  font-size: 0.8rem;
   margin-top: 2px;
-  display: none;
+  padding-left: 0px;
+  display: block;
 }
 
 /* labels formatting in submission form */
@@ -530,12 +551,6 @@ i {
   letter-spacing: -0.02em;
   color: rgb(0, 89, 255);
   margin-top: -12px;
-}
-
-.error-message {
-  color: rgb(229, 140, 192);
-  font-size: 0.9rem;
-  display: none;
 }
 
 .label-column {
@@ -611,7 +626,7 @@ i {
 .input-stack {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
   width: 100%;
   max-width: 300px; /* set max width for both inputs */
 }
