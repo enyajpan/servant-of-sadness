@@ -50,9 +50,8 @@ function makeLinks() {
         $("#container").append(newline);
       });
 
-      scrambleWrap('.column.title');
-      scrambleWrap('.column.author');
-      scrambleWrap('.column.message');
+      $(".column.title, .column.author, .column.message").addClass("scramble");
+
     });
 }
 
@@ -96,19 +95,63 @@ $(document).ready(function () {
         labelError.textContent = "";
       }
     });
+
+    $(document).on('mouseenter', '.scramble', function () {
+      const el = this;
+      const originalText = el.textContent;
+      const letters = originalText.split('');
+      const shuffled = [...letters].sort(() => Math.random() - 0.5);
+      let frame = 0;
+      const totalFrames = 10;
+      const delay = 30;
+
+      const interval = setInterval(() => {
+        if (frame === totalFrames) {
+          el.textContent = originalText;
+          clearInterval(interval);
+        } else if (frame < totalFrames / 2) {
+          // Scramble
+          el.textContent = shuffled.join('');
+        } else {
+          // Unscramble
+          el.textContent = originalText;
+        }
+        frame++;
+      }, delay);
+    });
+    
   });
 
-  $(document).on('mousemove', '.scramble-letter', function () {
-    const randomX = (Math.random() - 0.5) * 20;
-    const randomY = (Math.random() - 0.5) * 20;
-    $(this).css({
-      transform: `translate(${randomX}px, ${randomY}px) rotate(${(Math.random() - 0.5) * 30}deg)`,
-      transition: 'transform 0.3s ease',
-    });
-    setTimeout(() => {
-      $(this).css({ transform: 'translate(0, 0) rotate(0deg)' });
-    }, 300);
+  $(document).on('mouseenter', '.scramble', function () {
+    const el = this;
+    const originalText = el.textContent;
+    const chars = Array.from(new Set(originalText.replace(/\s/g, '').split(''))).join('');
+    const duration = 600;
+    const steps = 10;
+    let frame = 0;
+  
+    const scrambleInterval = setInterval(() => {
+      let output = "";
+  
+      for (let i = 0; i < originalText.length; i++) {
+        if (frame > steps) {
+          output += originalText[i];
+        } else if (Math.random() < frame / steps) {
+          output += originalText[i];
+        } else {
+          output += chars[Math.floor(Math.random() * chars.length)];
+        }
+      }
+  
+      el.textContent = output;
+      frame++;
+  
+      if (frame > steps) {
+        clearInterval(scrambleInterval);
+      }
+    }, duration / steps);
   });
+  
 
   $(document).on("click", ".tag-button", function () {
     const label = $(this).data("label");
@@ -178,3 +221,6 @@ $(document).ready(function () {
     }
   });
 });
+
+
+

@@ -338,10 +338,10 @@ i {
 }
 
 .column.author {
-  flex: 0.15;
+  flex: 0.2;
   text-align: left;
   align-items: flex-start;
-  overflow: visible;
+  overflow: auto;
 }
 
 .column.messsage {
@@ -756,4 +756,4 @@ i {
   color: rgb(242, 226, 235); 
 }
 
-}
+/* scramble animation */
