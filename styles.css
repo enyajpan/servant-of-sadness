@@ -26,6 +26,7 @@ body, html {
   font-size: 2rem;
   letter-spacing: -0.1rem;
   line-height: 1.1;
+  padding: 1px 2px;
   z-index: 100;
   background: none;
   border: none;
@@ -45,7 +46,7 @@ html, body {
 
 #scroll-wrapper {
   position: absolute;
-  top: 110px; 
+  top: 107px; 
   left: 0;
   right: 0;
   bottom: 0;
@@ -553,7 +554,9 @@ i {
 #submission-form input[name="subject line"],
 #submission-form input[name="author"] {
   color: rgb(229, 140, 192); 
-  padding: 6px;
+  padding: 5px;
+  border: 1px solid rgb(87, 124, 193);
+  border-radius: 4px;
 }
 
 #submission-form input[name="subject line"]::placeholder,
@@ -689,7 +692,7 @@ i {
   height: 14px;
   width: 14px;
   background-color: white;
-  border: 1px solid rgb(0, 89, 255);
+  border: 1px solid rgb(87, 124, 193);
   border-radius: 2px;
   box-sizing: border-box;
 }
