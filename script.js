@@ -42,9 +42,14 @@ function makeLinks() {
         const newline = $(`
           <div class='line entry-line'>
             <div class="column number">${number}</div>
-            <div class="column title">${title}</div>
-            <div class="column author">${author}</div>
-            <div class="column message">${message.replace(/\n/g, "<br>")}</div>
+            <div class="column title"><span class="scramble-paragraph">${title}</span></div>
+            <div class="column author"><span class="scramble-paragraph">${author}</span></div>
+            <div class="column message">${
+              message
+                .split('\n')
+                .map(p => `<span class="scramble-paragraph">${p}</span>`)
+                .join('<br>')
+            }</div>
             <div class="column label">
               ${
                 Array.isArray(label)
@@ -102,42 +107,43 @@ $(document).ready(function () {
   });
 
   // Scramble on hover
-  $(document).on('mouseenter', '.scramble', function (e) {
-    if (e.target.tagName === "BUTTON") return;
-  
-    const el = this;
-    const originalHTML = el.innerHTML;
-  
-    // Preserve line breaks
-    const parts = originalHTML.split(/<br\s*\/?>/i);
-    const plainText = parts.map(part => $('<div>').html(part).text()).join('');
-    const uniqueChars = Array.from(new Set(plainText.replace(/\s/g, '').split(''))).join('');
-    
-    const duration = 300;
-    const steps = 10;
-    let frame = 3;
-  
-    const scrambleInterval = setInterval(() => {
-      const scrambledParts = parts.map(part => {
-        const text = $('<div>').html(part).text(); // strip HTML
-        let scrambled = '';
-        for (let i = 0; i < text.length; i++) {
-          if (frame > steps) {
-            scrambled += text[i];
-          } else if (Math.random() < frame / steps) {
-            scrambled += text[i];
-          } else {
-            scrambled += uniqueChars[Math.floor(Math.random() * uniqueChars.length)];
-          }
-        }
-        return scrambled;
-      });
-  
-      el.innerHTML = scrambledParts.join('<br>');
-      frame++;
-      if (frame > steps) clearInterval(scrambleInterval);
-    }, duration / steps);
-  });  
+  // Scramble animation for each paragraph span
+$(document).on('mouseenter', '.scramble-paragraph', function () {
+  const el = this;
+
+  // Only store once
+  if (!el.dataset.originalText) {
+    el.dataset.originalText = el.textContent;
+  }
+
+  const originalText = el.dataset.originalText;
+  const chars = Array.from(new Set(originalText.replace(/\s/g, '').split(''))).join('');
+  const duration = 300;
+  const steps = 8;
+  let frame = 0;
+
+  const scrambleInterval = setInterval(() => {
+    let output = '';
+    for (let i = 0; i < originalText.length; i++) {
+      if (frame > steps) {
+        output += originalText[i];
+      } else if (Math.random() < frame / steps) {
+        output += originalText[i];
+      } else {
+        output += chars[Math.floor(Math.random() * chars.length)];
+      }
+    }
+
+    el.textContent = output;
+    frame++;
+
+    if (frame > steps) {
+      clearInterval(scrambleInterval);
+      el.textContent = originalText;
+    }
+  }, duration / steps);
+});
+
 
   $(document).on("click", ".tag-button", function () {
     const label = $(this).data("label");
