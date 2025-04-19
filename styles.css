@@ -73,6 +73,18 @@ html, body {
   pointer-events: auto; /* only the link is clickable */
 }
 
+/* sort button formatting */
+#sort-button.sort-button {
+  margin-left: 20px;
+  font-size: 0.9rem;
+  padding: 1px 3px;
+  vertical-align: middle;
+}
+
+.sort-button:hover {
+  font-style: italic;
+}
+
 /* header formatting at top  */
 #fixed-th {
   font-family: 'Gaisyr Book Italic', serif;
@@ -97,10 +109,14 @@ html, body {
   align-items: left;
   padding: 2 1px;
   pointer-events: none; /* so text isn't selectable/clickable */
+  overflow: hidden;
 }
 #fixed-th .column.timestamp {
   text-align: center;
   align-items: flex-start;
+}
+#fixed-th .column button {
+  pointer-events: auto;
 }
 
 
@@ -280,20 +296,21 @@ i {
     font-size: 6rem;
     letter-spacing: -0.3rem;
   }
-
-  .line:not(#th):hover{
+  
+  .entry-line:hover {
     color: rgb(242, 226, 235);
     background-color: rgb(154, 178, 223);
     justify-content: space-around;
     font-size: 2rem;
     letter-spacing: -0.05rem;
   }
-
-  .line:not(#th):hover .column {
+  
+  .entry-line:hover .column {
     font-size: 2.5rem;
     transition: font-size 0.2s ease;
     line-height: 1;
   }
+  
 
   .line-alt:not(#th):hover {
     letter-spacing: -0.2rem;
@@ -380,8 +397,8 @@ i {
   overflow: visible;
 }
 
-.line:hover .column.number,
-.line:hover .column.timestamp {
+.entry-line:hover .column.number,
+.entry-line:hover .column.timestamp {
   font-size: 1rem !important; /* to not grow font size of number and timestamp */
 }
 
@@ -404,7 +421,7 @@ i {
   transition: max-height 0.3s ease;
 }
 
-.line:hover .number {
+.entry-line:hover .number {
   -webkit-line-clamp: unset;
   max-height: none; /* expands to full height */
 }
@@ -427,7 +444,7 @@ i {
   transition: max-height 0.3s ease;
 }
 
-.line:hover .title {
+.entry-line:hover .title {
   -webkit-line-clamp: unset;
   max-height: none; /* expands to full height */
 }
@@ -451,7 +468,7 @@ i {
   transition: max-height 0.3s ease;
 }
 
-.line:hover .author {
+.entry-line:hover .author {
   -webkit-line-clamp: unset;
   max-height: none; /* expands to full height */
 }
@@ -474,7 +491,7 @@ i {
   transition: max-height 0.3s ease;
 }
 
-.line:hover .message {
+.entry-line:hover .message {
   -webkit-line-clamp: unset;
   max-height: none; /* expands to full height */
 }
@@ -497,7 +514,7 @@ i {
   transition: max-height 0.3s ease;
 }
 
-.line:hover .timestamp {
+.entry-line:hover .timestamp {
   -webkit-line-clamp: unset;
   max-height: none; /* expands to full height */
 }
@@ -725,25 +742,18 @@ i {
   font-size: 1.25rem; */
 }
 
-/* #submission-form button:hover {
-  color: white;
-  background-color: rgb(0, 89, 255);
+#submission-form button:hover {
+  font-style: italic;
 }
-
-#submission-form button:active {
-  background-color: rgb(0, 60, 200); 
-  border-color: rgb(0, 60, 200);
-} */
 
 /* label tag */
 .tag-button {
   display: inline-block;
   padding: 0.5px 2px;
-  background-color: rgb(242, 226, 235);
   color: rgb(229, 140, 192);
-  border: 1px;
-  border-color: rgb(229, 140, 192);
-  border-radius: 5px;
+  background-color: rgb(242, 245, 249);
+  border: 1px solid rgb(229, 140, 192);
+  border-radius: 4px;
   font-size: 0.9rem;
   cursor: pointer;
   white-space: nowrap;

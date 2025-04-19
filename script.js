@@ -15,12 +15,21 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* listen and populate entries */
+let unsubscribe = null;
+let sortDescending = true; // start with newest first
+
+/* Sorting State */
+
 function makeLinks() {
-  db.collection("entries")
-    .orderBy("timestamp", "desc")
+  const sortDirection = sortDescending ? "desc" : "asc";
+
+  if (unsubscribe) unsubscribe(); // stop previous listener
+
+  unsubscribe = db.collection("entries")
+    .orderBy("timestamp", sortDirection)
     .onSnapshot((snapshot) => {
       $("#container .line:not(#th)").remove();
+
       snapshot.forEach((doc) => {
         const value = doc.data();
         const title = value["subject line"] || "";
@@ -31,7 +40,7 @@ function makeLinks() {
         const timestamp = value.timestamp?.toDate?.().toLocaleString() || "";
 
         const newline = $(`
-          <div class='line'>
+          <div class='line entry-line'>
             <div class="column number">${number}</div>
             <div class="column title">${title}</div>
             <div class="column author">${author}</div>
@@ -45,94 +54,68 @@ function makeLinks() {
             </div>
             <div class="column timestamp">${timestamp}</div>
           </div>
-        `);
+        `);        
 
         $("#container").append(newline);
       });
 
       $(".column.title, .column.author, .column.message").addClass("scramble");
-
     });
 }
 
 $(document).ready(function () {
-  makeLinks();
+  makeLinks(); // initial load uses default sortDescending value
 
-  // subject line - live error handling
-  const subjectField = document.querySelector('input[name="subject line"]');
-  const subjectError = document.getElementById("error-subject");
-  subjectField.addEventListener("input", () => {
-    if (subjectField.value.trim()) {
-      subjectError.textContent = "";
-    }
+  $('#sort-button').on('click', function () {
+    sortDescending = !sortDescending;
+    const newLabel = sortDescending ? "Sort: Oldest First ↑" : "Sort: Newest First ↓";
+    $(this).text(newLabel);
+    makeLinks(); // call with new direction
+});
+  
+  
+  
+
+  // Live error handling
+  const fields = [
+    { name: "subject line", errorId: "error-subject" },
+    { name: "author", errorId: "error-author" },
+    { name: "message", errorId: "error-message", isTextarea: true }
+  ];
+
+  fields.forEach(({ name, errorId, isTextarea }) => {
+    const field = document.querySelector(`${isTextarea ? "textarea" : "input"}[name="${name}"]`);
+    const error = document.getElementById(errorId);
+    field.addEventListener("input", () => {
+      if (field.value.trim()) error.textContent = "";
+    });
   });
 
-  // author - live error handling
-  const authorField = document.querySelector('input[name="author"]');
-  const authorError = document.getElementById("error-author");
-  authorField.addEventListener("input", () => {
-    if (authorField.value.trim()) {
-      authorError.textContent = "";
-    }
-  });
-
-  // message - live error handling
-  const messageField = document.querySelector('textarea[name="message"]');
-  const messageError = document.getElementById("error-message");
-  messageField.addEventListener("input", () => {
-    if (messageField.value.trim()) {
-      messageError.textContent = "";
-    }
-  });
-
-  // labels (checkbox group) - live error handling
   const labelCheckboxes = document.querySelectorAll('input[name="label"]');
   const labelError = document.getElementById("error-label");
+
   labelCheckboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
       const anyChecked = Array.from(labelCheckboxes).some(cb => cb.checked);
-      if (anyChecked) {
-        labelError.textContent = "";
-      }
+      if (anyChecked) labelError.textContent = "";
     });
-
-    $(document).on('mouseenter', '.scramble', function () {
-      const el = this;
-      const originalText = el.textContent;
-      const letters = originalText.split('');
-      const shuffled = [...letters].sort(() => Math.random() - 0.5);
-      let frame = 0;
-      const totalFrames = 10;
-      const delay = 30;
-
-      const interval = setInterval(() => {
-        if (frame === totalFrames) {
-          el.textContent = originalText;
-          clearInterval(interval);
-        } else if (frame < totalFrames / 2) {
-          // Scramble
-          el.textContent = shuffled.join('');
-        } else {
-          // Unscramble
-          el.textContent = originalText;
-        }
-        frame++;
-      }, delay);
-    });
-    
   });
 
-  $(document).on('mouseenter', '.scramble', function () {
+  // Scramble on hover
+  $(document).on('mouseenter', '.scramble', function (e) {
+    // Don’t scramble if hovering on a button
+    if (e.target.tagName === "BUTTON") return;
+
     const el = this;
     const originalText = el.textContent;
     const chars = Array.from(new Set(originalText.replace(/\s/g, '').split(''))).join('');
     const duration = 300;
     const steps = 10;
     let frame = 3;
-  
+
     const scrambleInterval = setInterval(() => {
       let output = "";
-  
+
       for (let i = 0; i < originalText.length; i++) {
         if (frame > steps) {
           output += originalText[i];
@@ -142,32 +125,22 @@ $(document).ready(function () {
           output += chars[Math.floor(Math.random() * chars.length)];
         }
       }
-  
+
       el.textContent = output;
       frame++;
-  
+
       if (frame > steps) {
         clearInterval(scrambleInterval);
       }
     }, duration / steps);
   });
-  
 
   $(document).on("click", ".tag-button", function () {
     const label = $(this).data("label");
     alert(`You clicked label: ${label}`);
   });
 
-  // Helper to show custom error
-  function showError(id, message) {
-    $(`#${id}`).text(message).show();
-  }
-
-  // Helper to clear all errors
-  function clearErrors() {
-    $(".error-message").text("").hide();
-  }
-
+  // Submit
   $("#submission-form").on("submit", async function (e) {
     e.preventDefault();
     clearErrors();
@@ -178,26 +151,10 @@ $(document).ready(function () {
     const labels = $('input[name="label"]:checked');
 
     let hasError = false;
-
-    if (!subject) {
-      showError("error-subject", "Please enter a subject line.");
-      hasError = true;
-    }
-
-    if (!author) {
-      showError("error-author", "What's your name? :D");
-      hasError = true;
-    }
-
-    if (!message) {
-      showError("error-message", "You must include message to post.");
-      hasError = true;
-    }
-
-    if (labels.length === 0) {
-      showError("error-label", "Please select at least one label.");
-      hasError = true;
-    }
+    if (!subject) { showError("error-subject", "Please enter a subject line."); hasError = true; }
+    if (!author) { showError("error-author", "What's your name? :D"); hasError = true; }
+    if (!message) { showError("error-message", "You must include message to post."); hasError = true; }
+    if (labels.length === 0) { showError("error-label", "Please select at least one label."); hasError = true; }
 
     if (hasError) return;
 
@@ -220,7 +177,12 @@ $(document).ready(function () {
       console.error("Error submitting:", err);
     }
   });
+
+  function showError(id, message) {
+    $(`#${id}`).text(message).show();
+  }
+
+  function clearErrors() {
+    $(".error-message").text("").hide();
+  }
 });
-
-
-

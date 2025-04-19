@@ -21,14 +21,19 @@
         In case of loss, please return to:
       </a>
     </div>
+    
+    <div id="sort-controls">    
 
     <!-- Fixed header row -->
     <div id="fixed-th">
-      <div class="line">
+      <div class="line header-line">
         <div class="column number">id.</div>
         <div class="column title scramble">Subject line:</div>
         <div class="column author scramble">From:</div>           
-        <div class="column message scramble">Message</div>
+        <div class="column message">
+          <span class="header-label scramble">Message</span>
+          <button id="sort-button" class="sort-button">Sort: Oldest First ↑</button>
+        </div>             
         <div class="column label">Label</div> 
         <div class="column timestamp scramble">Timestamp</div>
       </div>
