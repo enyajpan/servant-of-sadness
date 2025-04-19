@@ -76,8 +76,9 @@ html, body {
 /* sort button formatting */
 #sort-button.sort-button {
   margin-left: 20px;
+  margin-top: -5px;
   font-size: 0.9rem;
-  padding: 1px 3px;
+  padding: 0.5px 2px;
   vertical-align: middle;
 }
 
