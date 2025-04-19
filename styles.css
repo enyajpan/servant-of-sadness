@@ -54,6 +54,42 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* pop-up formatting */
+#popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 90vw;
+  height: 90vh;
+  z-index: 999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#popup-container {
+  position: relative;
+  display: inline-block;
+}
+#popup-image {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: block;
+}
+#close-popup {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: rgb(87, 124, 193);
+  cursor: pointer;
+  z-index: 1000000;
+}
+#close-popup:hover {
+  color: rgb(229, 140, 192);
+}
+
 /* in case of loss please return title formatting */
 #fixed-header {
   position: fixed;
@@ -66,7 +102,6 @@ html, body {
   z-index: 1000;
   pointer-events: none; /* makes it non-blocking unless you want it to be clickable */
 }
-
 #fixed-header a {
   color: inherit;
   text-decoration: none;
@@ -81,7 +116,6 @@ html, body {
   padding: 0.5px 2px;
   vertical-align: middle;
 }
-
 .sort-button:hover {
   font-style: italic;
 }
@@ -736,11 +770,11 @@ i {
   /* color: rgb(0, 89, 255);
   border: 1px solid rgb(0, 89, 255);
   border-radius: 3px;
-  padding: 4px; 
   background: none; */
   cursor: pointer;
-  /* font: inherit;
-  font-size: 1.25rem; */
+  font-size: 1rem;
+  padding: 0 2px;
+  /* font: inherit; */
 }
 
 #submission-form button:hover {

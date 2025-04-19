@@ -104,6 +104,12 @@ $(document).ready(function () {
       const anyChecked = Array.from(labelCheckboxes).some(cb => cb.checked);
       if (anyChecked) labelError.textContent = "";
     });
+
+  // Close popup
+  $("#close-popup").on("click", function () {
+    $("#popup-overlay").fadeOut();
+  });
+
   });
 
   // Scramble on hover
@@ -142,6 +148,7 @@ $(document).on('mouseenter', '.scramble-paragraph', function () {
       el.textContent = originalText;
     }
   }, duration / steps);
+  
 });
 
 

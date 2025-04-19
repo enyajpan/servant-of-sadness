@@ -14,6 +14,16 @@
 
     <link rel="stylesheet" href="./styles.css">
   </head>
+
+  <!-- pop-up instructions -->
+  <div id="popup-overlay">
+    <div id="popup-container">
+      <button id="close-popup">×</button>
+      <img src="assets/intro.png" alt="Intro" id="popup-image">
+    </div>
+  </div>
+  
+  
   <body>
     <!-- Fixed page title -->
     <div id="fixed-header">
@@ -92,7 +102,7 @@
           <!-- Stack subject + author -->
           <input name="number" type="hidden" />
           <div class="input-stack">
-            <input name="subject line" placeholder="Subject line" required />
+            <input name="subject line" placeholder="Subject" required />
             <span class="error-message" id="error-subject"></span>
             <input name="author" placeholder="Your name" required />
             <span class="error-message" id="error-author"></span>
@@ -100,11 +110,11 @@
 
           <!-- Message on separate row -->
           <div class="message-wrapper">
-            <textarea name="message" placeholder="Message" required></textarea>
+            <textarea name="message" placeholder="Write your message here. What do you want to leave with the world?" required></textarea>
             <span class="error-message" id="error-message"></span>
           </div>
 
-          <button type="post">Post</button>
+          <button type="post">Post !!</button>
         </form>                             
       </div>
     </div>
