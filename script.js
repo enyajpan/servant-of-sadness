@@ -16,14 +16,12 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 let unsubscribe = null;
-let sortDescending = true; // start with newest first
-
-/* Sorting State */
+let sortDescending = true;
 
 function makeLinks() {
   const sortDirection = sortDescending ? "desc" : "asc";
 
-  if (unsubscribe) unsubscribe(); // stop previous listener
+  if (unsubscribe) unsubscribe();
 
   unsubscribe = db.collection("entries")
     .orderBy("timestamp", sortDirection)
@@ -59,7 +57,7 @@ function makeLinks() {
             </div>
             <div class="column timestamp">${timestamp}</div>
           </div>
-        `);        
+        `);
 
         $("#container").append(newline);
       });
@@ -69,17 +67,14 @@ function makeLinks() {
 }
 
 $(document).ready(function () {
-  makeLinks(); // initial load uses default sortDescending value
+  makeLinks();
 
   $('#sort-button').on('click', function () {
     sortDescending = !sortDescending;
     const newLabel = sortDescending ? "Sort: Oldest First ↑" : "Sort: Newest First ↓";
     $(this).text(newLabel);
-    makeLinks(); // call with new direction
-});
-  
-  
-  
+    makeLinks();
+  });
 
   // Live error handling
   const fields = [
@@ -104,53 +99,53 @@ $(document).ready(function () {
       const anyChecked = Array.from(labelCheckboxes).some(cb => cb.checked);
       if (anyChecked) labelError.textContent = "";
     });
+  });
 
-  // Close popup
+  // Close intro popup if present
   $("#close-popup").on("click", function () {
     $("#popup-overlay").fadeOut();
   });
 
+  // Close thank-you popup
+  $(document).on("click", "#close-thank-you", function () {
+    $("#thank-you-popup").fadeOut();
   });
 
   // Scramble on hover
-  // Scramble animation for each paragraph span
-$(document).on('mouseenter', '.scramble-paragraph', function () {
-  const el = this;
+  $(document).on('mouseenter', '.scramble-paragraph', function () {
+    const el = this;
 
-  // Only store once
-  if (!el.dataset.originalText) {
-    el.dataset.originalText = el.textContent;
-  }
+    if (!el.dataset.originalText) {
+      el.dataset.originalText = el.textContent;
+    }
 
-  const originalText = el.dataset.originalText;
-  const chars = Array.from(new Set(originalText.replace(/\s/g, '').split(''))).join('');
-  const duration = 300;
-  const steps = 8;
-  let frame = 0;
+    const originalText = el.dataset.originalText;
+    const chars = Array.from(new Set(originalText.replace(/\s/g, '').split(''))).join('');
+    const duration = 300;
+    const steps = 8;
+    let frame = 0;
 
-  const scrambleInterval = setInterval(() => {
-    let output = '';
-    for (let i = 0; i < originalText.length; i++) {
-      if (frame > steps) {
-        output += originalText[i];
-      } else if (Math.random() < frame / steps) {
-        output += originalText[i];
-      } else {
-        output += chars[Math.floor(Math.random() * chars.length)];
+    const scrambleInterval = setInterval(() => {
+      let output = '';
+      for (let i = 0; i < originalText.length; i++) {
+        if (frame > steps) {
+          output += originalText[i];
+        } else if (Math.random() < frame / steps) {
+          output += originalText[i];
+        } else {
+          output += chars[Math.floor(Math.random() * chars.length)];
+        }
       }
-    }
 
-    el.textContent = output;
-    frame++;
+      el.textContent = output;
+      frame++;
 
-    if (frame > steps) {
-      clearInterval(scrambleInterval);
-      el.textContent = originalText;
-    }
-  }, duration / steps);
-  
-});
-
+      if (frame > steps) {
+        clearInterval(scrambleInterval);
+        el.textContent = originalText;
+      }
+    }, duration / steps);
+  });
 
   $(document).on("click", ".tag-button", function () {
     const label = $(this).data("label");
@@ -190,6 +185,10 @@ $(document).on('mouseenter', '.scramble-paragraph', function () {
 
       await db.collection("entries").add(formData);
       this.reset();
+      $("#thank-you-popup").fadeIn(200);
+      $("#close-thank-you").on("click", function () {
+        $("#thank-you-popup").fadeOut(200);
+      });
     } catch (err) {
       console.error("Error submitting:", err);
     }

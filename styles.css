@@ -801,4 +801,33 @@ i {
   color: rgb(242, 226, 235); 
 }
 
-/* scramble animation */
+/* thank you message formatting */
+#thank-you-popup {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#thank-you-popup .popup-content {
+  position: relative;
+}
+#thank-you-popup .popup-content img {
+  max-width: 50vw;
+  max-height: 50vh;
+  display: block;
+}
+#close-thank-you {
+  position: absolute;
+  top: 10%;
+  left: 48%;
+  transform: translate(-50%,-50%);
+  font-size: 0.9rem;
+  padding: 0.5px 2px;
+  cursor: pointer;
+}
+#close-thank-you:hover {
+  font-style: italic;
+}
