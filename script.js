@@ -66,6 +66,7 @@ function makeLinks() {
     });
 }
 
+
 $(document).ready(function () {
   makeLinks();
 
@@ -75,6 +76,18 @@ $(document).ready(function () {
     $(this).text(newLabel);
     makeLinks();
   });
+
+  let isAboutInFront = true;
+
+  $("#about-overlay").on("click", function () {
+    if (isAboutInFront) {
+      $(this).css("z-index", 0); // behind view-all-background.png
+    } else {
+      $(this).css("z-index", 10000); // in front
+    }
+    isAboutInFront = !isAboutInFront;
+  });
+
 
   // Live error handling
   const fields = [
@@ -103,12 +116,12 @@ $(document).ready(function () {
 
   // Close intro popup if present
   $("#close-popup").on("click", function () {
-    $("#popup-overlay").fadeOut();
+    $("#popup-overlay").fadeOut(100);
   });
 
   // Close thank-you popup
   $(document).on("click", "#close-thank-you", function () {
-    $("#thank-you-popup").fadeOut();
+    $("#thank-you-popup").fadeOut(100);
   });
 
   // Scramble on hover
