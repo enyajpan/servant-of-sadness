@@ -70,19 +70,14 @@ html, body {
 #popup-container {
   position: relative;
   display: inline-block;
-}
-#popup-image {
-  max-width: 100vw;
-  max-height: 70vh;
-  align-items: center;
-  display: block;
+  transform: scale(0.5);
 }
 #close-popup {
   position: absolute;
-  top: 22%;
-  left: 58%;
-  transform: translate(-50%,-50%);
-  font-size: 0.9rem;
+  top: 32%;
+  left: 55.5%;
+  transform: scale(1.5);
+  font-size: 1.25rem;
   padding: 0.5px 2px;
   cursor: pointer;
 }
