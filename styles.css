@@ -249,6 +249,7 @@ i {
   z-index: 10000;
   opacity: 0.9;
   pointer-events: auto;
+  cursor: pointer;
 }
 
 
