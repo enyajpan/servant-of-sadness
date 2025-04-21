@@ -72,6 +72,10 @@ html, body {
   display: inline-block;
   transform: scale(0.5);
 }
+#popup-image{
+  display: block;
+  position: relative;
+}
 #close-popup {
   position: absolute;
   top: 32%;
