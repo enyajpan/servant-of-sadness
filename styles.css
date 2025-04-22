@@ -4,6 +4,10 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Flowers';
+  src: url('assets/flowers.otf') format('opentype');
+}
 
 body, html {
   padding: 0;
@@ -514,6 +518,14 @@ i {
   line-height: 1em;
   padding: 1px 2px; /* top/bottom & sides */
   transition: max-height 0.3s ease;
+}
+
+/* formatting for 404 messages */
+.message-404 {
+  font-family: 'Flowers', sans-serif;
+}
+.message-404:hover {
+  font-size: 10rem !important;
 }
 
 .entry-line:hover .message {

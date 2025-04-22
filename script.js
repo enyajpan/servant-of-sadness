@@ -42,12 +42,14 @@ function makeLinks() {
             <div class="column number">${number}</div>
             <div class="column title"><span class="scramble-paragraph">${title}</span></div>
             <div class="column author"><span class="scramble-paragraph">${author}</span></div>
-            <div class="column message">${
-              message
-                .split('\n')
-                .map(p => `<span class="scramble-paragraph">${p}</span>`)
-                .join('<br>')
-            }</div>
+            <div class="column message ${label.includes('404-error') ? 'message-404' : ''}">
+              ${
+                message
+                  .split('\n')
+                  .map(p => `<span class="scramble-paragraph">${p}</span>`)
+                  .join('<br>')
+              }
+            </div>
             <div class="column label">
               ${
                 Array.isArray(label)
@@ -58,6 +60,7 @@ function makeLinks() {
             <div class="column timestamp">${timestamp}</div>
           </div>
         `);
+        
 
         $("#container").append(newline);
       });
