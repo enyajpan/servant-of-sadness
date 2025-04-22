@@ -102,7 +102,7 @@ html, body {
   font-size: 5.5rem;
   letter-spacing: -0.3rem;
   color: rgb(154, 178, 223);
-  z-index: 1000;
+  z-index: 1;
   pointer-events: none; /* makes it non-blocking unless you want it to be clickable */
 }
 #fixed-header a {
@@ -528,6 +528,7 @@ i {
 }
 .message-404:hover {
   font-size: 8rem !important;
+  line-height-step:
 }
 
 .entry-line:hover .message {
