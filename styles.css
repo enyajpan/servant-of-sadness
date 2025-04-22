@@ -834,3 +834,19 @@ i {
 #close-thank-you:hover {
   font-style: italic;
 }
+
+/* other tab backgrounds */
+#background-404 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: auto;
+  z-index: 0; /* Lowest layer */
+  pointer-events: none;
+  opacity: 1;
+}
+
+#container-bg {
+  z-index: 1; /* Still above the 404 background */
+}
