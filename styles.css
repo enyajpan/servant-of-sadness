@@ -836,15 +836,22 @@ i {
 }
 
 /* other tab backgrounds */
-#background-404 {
+#link-404 {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: auto;
-  z-index: 0; /* Lowest layer */
-  pointer-events: none;
+  z-index: 0; /* same as image */
+  pointer-events: auto; /* enable click */
+}
+
+#background-404 {
+  width: 100vw;
+  height: auto;
+  pointer-events: auto;
   opacity: 1;
+  display: block;
 }
 
 #container-bg {
