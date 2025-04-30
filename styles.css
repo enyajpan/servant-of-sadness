@@ -13,9 +13,9 @@ body, html {
   padding: 0;
   font-family: sans-serif;
   font-size: 12px;
-  color: rgb(154, 178, 223);
+  color: rgb(115, 115, 118);
   line-height: 1;
-  background-color: rgb(242, 226, 235);
+  background-color: rgb(226,228,235);
 }
 
 * {
@@ -50,7 +50,7 @@ html, body {
 
 #scroll-wrapper {
   position: absolute;
-  top: 107px; 
+  top: 115px; 
   left: 0;
   right: 0;
   bottom: 0;
@@ -101,7 +101,7 @@ html, body {
   width: 100vw;
   font-size: 5.5rem;
   letter-spacing: -0.3rem;
-  color: rgb(154, 178, 223);
+  color: rgb(66,122,237);
   z-index: 1;
   pointer-events: none; /* makes it non-blocking unless you want it to be clickable */
 }
@@ -126,9 +126,9 @@ html, body {
 /* header formatting at top  */
 #fixed-th {
   font-family: 'Gaisyr Book Italic', serif;
-  color: rgb(87, 124, 193);
+  color: rgb(124, 77, 255);
   position: fixed;
-  top: 75px;
+  top: 85px;
   width: 97vw;
   z-index: 9999;
   overflow: visible;
@@ -136,7 +136,6 @@ html, body {
 }
 #fixed-th .line {
   display: flex;
-  background-color: rgb(242, 245, 249);
   justify-content: space-between;
   padding: 0px;
 }
@@ -171,10 +170,24 @@ html, body {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-bottom: 1px solid rgb(154, 178, 223);
   padding: 5px 5px;
   font-size: 1rem;
-  line-height: 1.1;
+  line-height: 0.5;
+}
+
+.line::after {
+  content: "/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: rgb(83, 160, 82);
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .timestamp {
@@ -275,8 +288,8 @@ i {
   background-color: black; */
   font-size: 3rem;
   font-style: italic;
-  background-color: rgb(154, 178, 223);
-  color: rgb(242, 226, 235);
+  background-color: rgb(226,228,235);
+  color: rgb(255, 109, 17);
   border-radius: 2px;
 }
 
@@ -327,11 +340,12 @@ i {
   }
   
   .entry-line:hover {
-    color: rgb(242, 226, 235);
-    background-color: rgb(154, 178, 223);
+    color: rgb(83, 160, 82);
+    background-color: rgb(226,228,235);
     justify-content: space-around;
     font-size: 2rem;
     letter-spacing: -0.05rem;
+    line-height: 0.1;
   }
   
   .entry-line:hover .column {
@@ -523,10 +537,12 @@ i {
 /* formatting for 404 messages */
 .message-404 {
   font-family: 'Flowers', sans-serif;
+  color: rgb(199, 56, 198);
   font-size: 1.5rem;
   line-height: 0.9;
 }
 .message-404:hover {
+  color: rgb(83, 160, 82);
   font-size: 8rem !important;
   line-height-step:
 }
@@ -610,26 +626,27 @@ i {
 
 #submission-form input[name="subject line"],
 #submission-form input[name="author"] {
-  color: rgb(229, 140, 192); 
+  color: rgb(83, 160, 82); 
   padding: 5px;
-  border: 1px solid rgb(87, 124, 193);
+  border: 1px solid rgb(83, 160, 82);
+  background-color: rgb(236, 238, 245);
   border-radius: 4px;
   font-size: 1rem;
 }
 
 #submission-form input[name="subject line"]::placeholder,
 #submission-form input[name="author"]::placeholder {
-  color:rgb(154, 178, 223);
+  color:rgb(169, 169, 170);
   font-size: 1rem;
 }
 #submission-form textarea[name="message"]::placeholder {
-  color: rgb(154, 178, 223);
+  color: rgb(169, 169, 170);
 }
 #submission-form input:focus,
 #submission-form textarea:focus {
   outline: none;
-  border: 1px solid rgb(229, 140, 192); 
-  box-shadow: 0 0 0 2px rgba(255, 70, 178, 0.2); /* optional soft glow */
+  border: 1px solid rgb(83, 160, 82); 
+  box-shadow: 0 0 0 2px rgba(152, 195, 121, 0.3);
 }
 
 #submission-form textarea[name="message"] {
@@ -639,8 +656,9 @@ i {
   width: 600px;
   height: 7rem;
   padding: 6px;
-  color: rgb(229, 140, 192);
-  border: 1px solid rgb(87, 124, 193);
+  color: rgb(83, 160, 82);
+  border: 1px solid rgb(83, 160, 82);
+  background-color: rgb(236, 238, 245);
   border-radius: 4px;
   resize: none;
 }
@@ -673,7 +691,7 @@ i {
 
 /* submission form error message formatting */
 .error-message {
-  color: rgb(229, 140, 192);
+  color: rgb(205, 96, 105);
   font-size: 0.8rem;
   margin-top: 2px;
   padding-left: 0px;
@@ -698,7 +716,7 @@ i {
   font-family: 'Gaisyr Book Italic', serif;
   font-size: 1.1rem;
   letter-spacing: -0.02em;
-  color: rgb(87, 124, 193);
+  color: rgb(115, 115, 118);
   margin-top: -12px;
 }
 
@@ -739,7 +757,7 @@ i {
   user-select: none;
   display: inline-flex;
   align-items: center;
-  color: rgb(87, 124, 193);
+  color: rgb(115, 115, 118);
 }
 
 /* Custom square box */
@@ -749,8 +767,8 @@ i {
   left: 0;
   height: 14px;
   width: 14px;
-  background-color: white;
-  border: 1px solid rgb(87, 124, 193);
+  background-color: rgb(236, 238, 245);
+  border: 1px solid rgb(83, 160, 82);
   border-radius: 2px;
   box-sizing: border-box;
 }
@@ -763,13 +781,13 @@ i {
   top: -2px;
   width: 5px;
   height: 10px;
-  border: solid rgb(229, 140, 192);
+  border: solid rgb(83, 160, 82);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
 
 .custom-checkbox:hover .checkmark {
-  background-color: rgb(242, 226, 235);
+  background-color: rgb(236, 238, 245);
 }
 
 #submission-form button {
@@ -787,24 +805,57 @@ i {
   font-style: italic;
 }
 
-/* label tag */
+/* Base tag style */
 .tag-button {
   display: inline-block;
   padding: 0.5px 2px;
-  color: rgb(229, 140, 192);
-  background-color: rgb(242, 245, 249);
-  border: 1px solid rgb(229, 140, 192);
   border-radius: 4px;
   font-size: 0.9rem;
   cursor: pointer;
   white-space: nowrap;
   transition: background-color 0.2s ease;
   margin: 0px;
+  background-color: transparent;
 }
 
-.tag-button:hover {
-  background-color: rgb(229, 140, 192);
-  color: rgb(242, 226, 235); 
+/* Missed Connections */
+.tag-button[data-label="missed-connections"] {
+  color: rgb(255, 109, 17);
+  border: 1px solid rgb(255, 109, 17);
+}
+.tag-button[data-label="missed-connections"]:hover {
+  background-color: rgb(255, 109, 17);
+  color: rgb(236, 238, 245);
+}
+
+/* Past Lives */
+.tag-button[data-label="past-lives"] {
+  color: rgb(83, 160, 82);
+  border: 1px solid rgb(83, 160, 82);
+}
+.tag-button[data-label="past-lives"]:hover {
+  background-color: rgb(83, 160, 82);
+  color: rgb(236, 238, 245);
+}
+
+/* 404 Error */
+.tag-button[data-label="404-error"] {
+  color: rgb(199, 56, 198);
+  border: 1px solid rgb(199, 56, 198);
+}
+.tag-button[data-label="404-error"]:hover {
+  background-color: rgb(199, 56, 198);
+  color: rgb(236, 238, 245);
+}
+
+/* Servant of Sadness */
+.tag-button[data-label="servant-of-sadness"] {
+  color: rgb(0, 190, 196);
+  border: 1px solid rgb(0, 190, 196);
+}
+.tag-button[data-label="servant-of-sadness"]:hover {
+  background-color: rgb(0, 190, 196);
+  color: rgb(236, 238, 245);
 }
 
 /* thank you message formatting */

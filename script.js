@@ -127,7 +127,7 @@ $(document).ready(function () {
     $("#thank-you-popup").fadeOut(100);
   });
 
-  // Scramble on hover
+  /* // Scramble on hover
   $(document).on('mouseenter', '.scramble-paragraph', function () {
     const el = this;
 
@@ -161,7 +161,7 @@ $(document).ready(function () {
         el.textContent = originalText;
       }
     }, duration / steps);
-  });
+  }); */
 
   $(document).on("click", ".tag-button", function () {
     const label = $(this).data("label");
