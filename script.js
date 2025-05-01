@@ -18,6 +18,26 @@ const db = firebase.firestore();
 let unsubscribe = null;
 let sortDescending = true;
 
+function highlightKeywords(text) {
+  return text
+    .replace(/(I['’` ]?m sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
+    .replace(/(I miss you)/gi, '<span style="color:rgb(199, 56, 198)">$1</span>')
+    .replace(/(I have missed you)/gi, '<span style="color:rgb(199, 56, 198)">$1</span>')
+    .replace(/(I love you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(in love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(I've always loved)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(my true love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(I fell in love with you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(love)/gi, '<span style="font-family: \'Gaisyr Book Italic\'; color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(I've loved)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(home)/gi, '<span style="color: rgb(0, 190, 196);">$1</span>')
+    .replace(/(we can still be friends)/gi, '<span style="font-family: \'Gaisyr Book Italic\'; color: rgb(255, 109, 17);">$1</span>')
+    .replace(/(I'm leaving you)/gi, '<span style="color: rgb(124, 77, 255);">$1</span>')
+    .replace(/(letting him go)/gi, '<span style="color: rgb(66, 132, 237);">$1</span>')
+    .replace(/(letting her go)/gi, '<span style="color: rgb(66, 132, 237);">$1</span>')
+    .replace(/(my heart)/gi, '<span style="color: rgb(199, 56, 198);">$1</span>')
+  }
+
 function makeLinks() {
   const sortDirection = sortDescending ? "desc" : "asc";
 
@@ -46,7 +66,7 @@ function makeLinks() {
               ${
                 message
                   .split('\n')
-                  .map(p => `<span class="scramble-paragraph">${p}</span>`)
+                  .map(p => `<span class="scramble-paragraph">${highlightKeywords(p)}</span>`)
                   .join('<br>')
               }
             </div>

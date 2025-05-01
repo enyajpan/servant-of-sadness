@@ -557,7 +557,6 @@ i {
 /* formatting for 404 messages */
 .message-404 {
   font-family: 'Flowers', sans-serif;
-  color: rgb(199, 56, 198);
   font-size: 1.5rem;
   line-height: 0.9;
 }
