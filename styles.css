@@ -50,7 +50,7 @@ html, body {
 
 #scroll-wrapper {
   position: absolute;
-  top: 115px; 
+  top: 106px; 
   left: 0;
   right: 0;
   bottom: 0;
@@ -101,7 +101,7 @@ html, body {
   width: 100vw;
   font-size: 5.5rem;
   letter-spacing: -0.3rem;
-  color: rgb(66,122,237);
+  color: rgb(169, 169, 170);
   z-index: 1;
   pointer-events: none; /* makes it non-blocking unless you want it to be clickable */
 }
@@ -126,9 +126,9 @@ html, body {
 /* header formatting at top  */
 #fixed-th {
   font-family: 'Gaisyr Book Italic', serif;
-  color: rgb(124, 77, 255);
+  color: rgb(66, 122, 237);
   position: fixed;
-  top: 85px;
+  top: 75px;
   width: 97vw;
   z-index: 9999;
   overflow: visible;
@@ -147,6 +147,15 @@ html, body {
   padding: 2 1px;
   pointer-events: none; /* so text isn't selectable/clickable */
   overflow: hidden;
+}
+#fixed-th .author {
+  color:rgb(66, 122, 237);
+}
+#fixed-th .timestamp {
+  color:rgb(66, 122, 237);
+}
+#fixed-th .number {
+  color:rgb(66, 122, 237);
 }
 #fixed-th .column.timestamp {
   text-align: center;
@@ -340,14 +349,22 @@ i {
   }
   
   .entry-line:hover {
-    color: rgb(83, 160, 82);
-    background-color: rgb(226,228,235);
+    color: rgb(83, 160, 82) !important;
+    background-color: rgb(210, 213, 224);
     justify-content: space-around;
     font-size: 2rem;
     letter-spacing: -0.05rem;
     line-height: 0.1;
   }
-  
+  .entry-line:hover .author {
+    color: rgb(83, 160, 82) !important;
+  }
+  .entry-line:hover .message-404 {
+    color: rgb(83, 160, 82) !important;
+    font-size: 6rem !important;
+    line-height: 0.8 !important;
+  }
+
   .entry-line:hover .column {
     font-size: 2.5rem;
     transition: font-size 0.2s ease;
@@ -445,6 +462,9 @@ i {
   font-size: 1rem !important; /* to not grow font size of number and timestamp */
 }
 
+.author {
+  color:rgb(124, 77, 255);
+}
 
 /* No. line formatting */
 .number {
@@ -541,11 +561,6 @@ i {
   font-size: 1.5rem;
   line-height: 0.9;
 }
-.message-404:hover {
-  color: rgb(83, 160, 82);
-  font-size: 8rem !important;
-  line-height-step:
-}
 
 .entry-line:hover .message {
   -webkit-line-clamp: unset;
@@ -573,6 +588,14 @@ i {
 .entry-line:hover .timestamp {
   -webkit-line-clamp: unset;
   max-height: none; /* expands to full height */
+}
+
+.line .timestamp {
+  color:rgb(83, 160, 82);
+}
+
+.line .number {
+  color:rgb(83, 160, 82);
 }
 
 /* submission form css */
