@@ -29,6 +29,12 @@
   
   
   <body>
+    <div id="sidebar-index">
+      <div id="sidebar-scroll">
+        <!-- Entries will be injected here via JS -->
+      </div>
+    </div>
+    
     <!-- Fixed page title -->
     <div id="fixed-header">
       <a href="https://enyajpan.github.io/in-case-of-loss/" target="_top">
@@ -41,15 +47,14 @@
     <!-- Fixed header row -->
     <div id="fixed-th">
       <div class="line header-line">
-        <div class="column number">id.</div>
-        <div class="column title scramble">Subject line:</div>
-        <div class="column author scramble">From:</div>           
+        <div class="column number">#</div>
         <div class="column message">
-          <span class="header-label scramble">Message</span>
+          <span class="header-label">Message:</span>
           <button id="sort-button" class="sort-button">Sort: Oldest First ↑</button>
         </div>             
-        <div class="column label">Label</div> 
-        <div class="column timestamp scramble">Timestamp</div>
+        <div class="column author">From:</div>           
+        <div class="column label">Label:</div> 
+        <div class="column timestamp">Time:</div>
       </div>
     </div>
 

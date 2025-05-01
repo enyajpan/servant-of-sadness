@@ -21,9 +21,11 @@ let sortDescending = true;
 function highlightKeywords(text) {
   return text
     .replace(/(I['’` ]?m sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
+    .replace(/(sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
     .replace(/(I miss you)/gi, '<span style="color:rgb(199, 56, 198)">$1</span>')
     .replace(/(I have missed you)/gi, '<span style="color:rgb(199, 56, 198)">$1</span>')
     .replace(/(I love you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(I loved you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
     .replace(/(in love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
     .replace(/(I've always loved)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
     .replace(/(my true love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
@@ -48,20 +50,40 @@ function makeLinks() {
     .onSnapshot((snapshot) => {
       $("#container .line:not(#th)").remove();
 
+      $("#sidebar-scroll").empty(); // clear sidebar
+
       snapshot.forEach((doc) => {
         const value = doc.data();
+        const number = value.number || "";
         const title = value["subject line"] || "";
+
+        const indexEntry = $(`
+          <div class="index-entry">
+            ${number}. ${title}
+          </div>
+        `);
+
+        $("#sidebar-scroll").append(indexEntry);
+      });
+
+
+      snapshot.forEach((doc) => {
+        const value = doc.data();
         const author = value.author || "";
         const number = value.number || "";
         const message = value.message || "";
         const label = value.label || [];
-        const timestamp = value.timestamp?.toDate?.().toLocaleString() || "";
-
+        const dateObj = value.timestamp?.toDate?.();
+        let timestamp = "";
+        if (dateObj) {
+          const date = dateObj.toLocaleDateString(); // e.g., 5/1/2025
+          const time = dateObj.toLocaleTimeString(); // e.g., 1:12:04 PM
+          timestamp = `<div>${date}</div><div class="time-line">${time}</div>`;
+        }
+        
         const newline = $(`
           <div class='line entry-line'>
             <div class="column number">${number}</div>
-            <div class="column title"><span class="scramble-paragraph">${title}</span></div>
-            <div class="column author"><span class="scramble-paragraph">${author}</span></div>
             <div class="column message ${label.includes('404-error') ? 'message-404' : ''}">
               ${
                 message
@@ -70,6 +92,7 @@ function makeLinks() {
                   .join('<br>')
               }
             </div>
+            <div class="column author"><span class="scramble-paragraph">${author}</span></div>            
             <div class="column label">
               ${
                 Array.isArray(label)

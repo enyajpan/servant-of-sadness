@@ -44,13 +44,13 @@ a {
 
 /* scrollable area */
 html, body {
-  height: 100vh;
+  height: 100%;
   overflow: hidden; /* prevent default scroll */
 }
 
 #scroll-wrapper {
   position: absolute;
-  top: 106px; 
+  top: 110px; 
   left: 0;
   right: 0;
   bottom: 0;
@@ -97,7 +97,7 @@ html, body {
 #fixed-header {
   position: fixed;
   top: 2;
-  left: 10;
+  left: 185px;
   width: 100vw;
   font-size: 5.5rem;
   letter-spacing: -0.3rem;
@@ -113,8 +113,8 @@ html, body {
 
 /* sort button formatting */
 #sort-button.sort-button {
-  margin-left: 20px;
-  margin-top: -3px;
+  margin-left: 10px;
+  margin-top: -5px;
   font-size: 0.9rem;
   padding: 0.5px 2px;
   vertical-align: middle;
@@ -123,14 +123,51 @@ html, body {
   font-style: italic;
 }
 
+/* sidebar index - separate scroll */
+#sidebar-index {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 100vh;
+  background-color: rgb(236, 238, 245); /* light background like VS Code sidebar */
+  border-right: 1px solid rgb(210, 213, 224);
+  z-index: 100;
+  overflow: hidden;
+  padding-top: 100px;
+  box-shadow: 0 0 10px rgb(169, 169, 170);
+}
+#sidebar-scroll {
+  height: calc(100vh - 100px);
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+#sidebar-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+.index-entry {
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  color: rgb(115, 115, 118);
+  cursor: pointer;
+  border-bottom: 1px solid rgb(226,228,235);
+}
+.index-entry:hover {
+  background-color: rgb(210, 213, 224);
+  color: rgb(66, 122, 237);
+}
+
 /* header formatting at top  */
 #fixed-th {
   font-family: 'Gaisyr Book Italic', serif;
   color: rgb(66, 122, 237);
   position: fixed;
-  top: 75px;
-  width: 97vw;
+  top: 70px;
+  left: 175px;
+  width: calc(100vw - 200px);
   z-index: 9999;
+  padding: 5px 5px;
   overflow: visible;
   pointer-events: none; /* so it doesn't block clicks */
 }
@@ -142,9 +179,9 @@ html, body {
 #fixed-th .column {
   font-size: 2.2rem;
   letter-spacing: -0.1rem;
-  line-height: 1.1;
+  line-height: 1.2;
   align-items: left;
-  padding: 2 1px;
+  padding: 1 1px;
   pointer-events: none; /* so text isn't selectable/clickable */
   overflow: hidden;
 }
@@ -153,9 +190,12 @@ html, body {
 }
 #fixed-th .timestamp {
   color:rgb(66, 122, 237);
+  text-align: right;
 }
 #fixed-th .number {
   color:rgb(66, 122, 237);
+  font-size: 1.5rem;
+  text-align: center;
 }
 #fixed-th .column.timestamp {
   text-align: center;
@@ -164,6 +204,10 @@ html, body {
 #fixed-th .column button {
   pointer-events: auto;
 }
+.time-line {
+  text-align: right;
+}
+
 
 
 .about {
@@ -176,27 +220,32 @@ html, body {
 }
 
 .line {
+  max-width: 100%;
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* prevent columns from wrapping */
   padding: 5px 5px;
   font-size: 1rem;
   line-height: 0.5;
+  position: relative; /* required for ::after to align properly */
 }
-
 .line::after {
-  content: "/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */";
+  content: "/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */";
   position: absolute;
   bottom: 0;
   left: 0;
   font-family: monospace;
   font-size: 0.8rem;
   color: rgb(83, 160, 82);
-  width: 100%;
+  width: 100%; /* aligns with .line */
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
   pointer-events: none;
+}
+#container-wrapper,
+#container {
+  max-width: calc(100vw - 195px);
 }
 
 .timestamp {
@@ -211,7 +260,8 @@ html, body {
 /* Wraps the background image behind container */
 #container-wrapper {
   position: relative;
-  width: 100vw;
+  margin-left: 175px;
+  width: calc(100vw - 200px);
   height: auto;
   overflow: hidden;
 }
@@ -221,6 +271,7 @@ html, body {
   top: 0;
   left: 0;
   width: 100vw;
+  max-width: 100%;
   height: auto;
   z-index: 1;
   pointer-events: none;
@@ -229,9 +280,9 @@ html, body {
 
 /* Makes the actual content 80% wide and centered */
 #container {
-  width: 98vw;
+  width: 100%;
   left: 0;
-  padding: 5px;
+  padding: 0px;
 }
 
 #spacer {
@@ -351,13 +402,18 @@ i {
   .entry-line:hover {
     color: rgb(83, 160, 82) !important;
     background-color: rgb(210, 213, 224);
-    justify-content: space-around;
+    justify-content: flex-start !important;
     font-size: 2rem;
     letter-spacing: -0.05rem;
     line-height: 0.1;
   }
   .entry-line:hover .author {
     color: rgb(83, 160, 82) !important;
+    letter-spacing: normal;
+  }
+  .entry-line:hover .timestamp {
+    color: rgb(83, 160, 82) !important;
+    letter-spacing: normal;
   }
   .entry-line:hover .message-404 {
     color: rgb(83, 160, 82) !important;
@@ -400,67 +456,54 @@ i {
   flex-direction: column;
   align-items: flex-start;
 }
-
 .column.number {
-  flex: 0.08;
+  flex: 0 0 3%;
+  max-width: 3%;
   text-align: left;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  font-size: 0.9rem;
 }
-
-.column.title{
-  flex: 0.3;
+.column.message {
+  flex: 0 0 70%;
+  max-width: 70%;
   text-align: left;
-  align-items: flex-start;
 }
-
-.column.author {
-  flex: 0.2;
-  text-align: left;
-  align-items: flex-start;
-  overflow: auto;
-}
-
-.column.messsage {
-  flex: 12;
-  white-space: normal;
-  line-height: 1.4;
-  text-align: left;
-  align-items: flex-start;
-  overflow: visible;
-}
-
 .column.message br {
   display: block;
   margin-bottom: 0.5em; /* adds space between paragraphs */
   overflow: visible;
 }
-
-.column.label {
-  font-size: 1em;
-  flex: 0.2;
-  flex-direction: column;
+.column.author {
+  flex: 0 0 8%;
+  max-width: 8%;
   text-align: left;
-  align-items: flex-start;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px; 
-  overflow: visible;
 }
-
-
+.column.label {
+  font-size: 0.9rem;
+  flex: 0 0 10%;
+  max-width: 10%;
+  text-align: left;
+}
 .column.timestamp {
-  font-size: 1em;
-  flex: 0.2;
+  font-size: 0.9rem;
+  flex: 0 0 8%;
+  max-width: 8%;
   text-align: right;
-  align-items: flex-start;
-  overflow: visible;
+}
+.column {
+  border: 0.5px dashed rgba(0,0,0,0.2);
 }
 
 .entry-line:hover .column.number,
 .entry-line:hover .column.timestamp {
-  font-size: 1rem !important; /* to not grow font size of number and timestamp */
+  font-size: 0.9rem !important; /* to not grow font size of number and timestamp */
 }
+
+.entry-line:hover .column.author {
+  align-items: flex-start !important;
+  text-align: left !important;
+  font-size: 1rem;
+}
+
 
 .author {
   color:rgb(124, 77, 255);
