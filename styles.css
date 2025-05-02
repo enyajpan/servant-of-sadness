@@ -50,7 +50,7 @@ html, body {
 
 #scroll-wrapper {
   position: absolute;
-  top: 110px; 
+  top: 115px; 
   left: 0;
   right: 0;
   bottom: 0;
@@ -130,11 +130,11 @@ html, body {
   left: 0;
   width: 180px;
   height: 100vh;
-  background-color: rgb(236, 238, 245); /* light background like VS Code sidebar */
+  background-color: rgb(244, 246, 253);
   border-right: 1px solid rgb(210, 213, 224);
   z-index: 100;
   overflow: hidden;
-  padding-top: 100px;
+  padding-top: 30px;
   box-shadow: 0 0 10px rgb(169, 169, 170);
 }
 #sidebar-scroll {
@@ -147,8 +147,8 @@ html, body {
   display: none; /* Chrome/Safari */
 }
 .index-entry {
-  padding: 4px 10px;
-  font-size: 0.9rem;
+  padding: 4px 8px;
+  font-size: 0.95rem;
   color: rgb(115, 115, 118);
   cursor: pointer;
   border-bottom: 1px solid rgb(226,228,235);
@@ -658,8 +658,9 @@ i {
 
 #submission-bg {
   position: absolute;
+  left: 0;
   bottom: 0;
-  width: 100%;
+  width: 88%;
   height: auto;
   z-index: 1;
 }
@@ -872,6 +873,23 @@ i {
   font-style: italic;
 }
 
+/* close submission form button */
+.close-button {
+  position: absolute;
+  top: 130px;
+  right: 210px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(10, 10, 10, 0.6);
+  border-radius: 3px;
+  padding: 1px 4px;
+  cursor: pointer;
+  z-index: 9999;
+}
+.close-button:hover {
+  font-style: italic;
+  background: rgb(232, 232, 232);
+}
+
 /* Base tag style */
 .tag-button {
   display: inline-block;
@@ -897,11 +915,11 @@ i {
 
 /* Past Lives */
 .tag-button[data-label="past-lives"] {
-  color: rgb(83, 160, 82);
-  border: 1px solid rgb(83, 160, 82);
+  color: rgb(205, 96, 105);
+  border: 1px solid rgb(205, 96, 105);
 }
 .tag-button[data-label="past-lives"]:hover {
-  background-color: rgb(83, 160, 82);
+  background-color: rgb(205, 96, 105);
   color: rgb(236, 238, 245);
 }
 

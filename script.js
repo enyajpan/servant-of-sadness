@@ -18,6 +18,7 @@ const db = firebase.firestore();
 let unsubscribe = null;
 let sortDescending = true;
 
+/* keywords */
 function highlightKeywords(text) {
   return text
     .replace(/(I['’` ]?m sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
@@ -261,3 +262,32 @@ $(document).ready(function () {
     $(".error-message").text("").hide();
   }
 });
+
+// close submission form
+
+const submissionToggle = document.getElementById('close-submission-form');
+const submissionOverlay = document.getElementById('submission-overlay');
+const submissionBg = document.getElementById('submission-bg');
+const messageWrapper = document.querySelector('.message-wrapper');
+const inputStack = document.querySelector('.input-stack');
+
+let isSubmissionVisible = true;
+
+submissionToggle.addEventListener('click', () => {
+  if (isSubmissionVisible) {
+    submissionOverlay.style.display = 'none';
+    submissionBg.style.display = 'none';
+    if (messageWrapper) messageWrapper.style.display = 'none';
+    if (inputStack) inputStack.style.display = 'none';
+    submissionToggle.textContent = 'Leave Something';
+  } else {
+    submissionOverlay.style.display = 'flex';
+    submissionBg.style.display = 'block';
+    if (messageWrapper) messageWrapper.style.display = '';
+    if (inputStack) inputStack.style.display = '';
+    submissionToggle.textContent = 'X';
+  }
+
+  isSubmissionVisible = !isSubmissionVisible;
+});
+
