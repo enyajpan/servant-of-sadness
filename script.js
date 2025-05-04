@@ -147,15 +147,58 @@ $(document).ready(function () {
   makeLinks();
 
   /* sync hover states for sidebar index and entries container */
-  $(document).on('mouseenter', '.entry-line', function () {
-    const number = $(this).data('number');
-    $(`.index-entry[data-number="${number}"]`).addClass('hover-sync');
-  });
+  $(document).on("mouseenter", ".index-entry", function () {
+    const entryNumber = $(this).find(".index-number").text().trim();
+  
+    // Remove hover state from all sidebar entries
+    $(".index-entry").removeClass("hover-sync");
+    // Add to current
+    $(this).addClass("hover-sync");
+  
+    // Remove active state from all entries
+    $(".entry-line").removeClass("active");
+  
+    // Add active state to corresponding entry
+    const targetEntry = $(`.entry-line .column.number:contains('${entryNumber}')`).closest(".entry-line");
+    targetEntry.addClass("active");
+  
+    // Scroll to it
+    const scrollWrapper = $("#scroll-wrapper");
+    const scrollTop = targetEntry.offset().top - scrollWrapper.offset().top + scrollWrapper.scrollTop();
+  
+    scrollWrapper.stop(true).animate({ scrollTop }, 400);
+  });   
 
-  $(document).on('mouseleave', '.entry-line', function () {
-    const number = $(this).data('number');
-    $(`.index-entry[data-number="${number}"]`).removeClass('hover-sync');
+  $(document).on("mouseleave", ".index-entry", function () {
+    $(".entry-line").removeClass("active");
+  });  
+
+  /* vice versa */
+  $(document).on("mouseenter", ".entry-line", function () {
+    const entryNumber = $(this).find(".column.number").text().trim();
+    $(`.index-entry .index-number:contains('${entryNumber}')`).closest(".index-entry").addClass("hover-sync");
   });
+  $(document).on("mouseleave", ".entry-line", function () {
+    $(".index-entry").removeClass("hover-sync");
+  });  
+  
+  /* let clicks in sidebar sync hover state with entries container */
+  $(document).on("click", ".index-entry", function () {
+    const entryNumber = $(this).find(".index-number").text().trim();
+  
+    $(".entry-line").removeClass("active");
+    $(".index-entry").removeClass("hover-sync");
+  
+    const targetEntry = $(`.entry-line .column.number:contains('${entryNumber}')`).closest(".entry-line");
+    targetEntry.addClass("active");
+    $(this).addClass("hover-sync");
+  
+    // Scroll to that entry
+    const scrollWrapper = $("#scroll-wrapper");
+    const scrollTop = targetEntry.offset().top - scrollWrapper.offset().top + scrollWrapper.scrollTop();
+    scrollWrapper.animate({ scrollTop }, 600);
+  });  
+  
   
 
   $('#sort-button').on('click', function () {

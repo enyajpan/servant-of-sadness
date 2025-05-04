@@ -433,15 +433,26 @@ i {
     letter-spacing: -0.3rem;
   }
   
-  .entry-line:hover {
-    color: rgb(83, 160, 82) !important;
-    background-color: rgb(184, 204, 249, 0.5);
-    justify-content: flex-start !important;
-    font-size: 2rem;
-    letter-spacing: -0.05rem;
-    line-height: 0.1;
-  }
-  .entry-line:hover .author {
+.entry-line:hover,
+.entry-line.active {
+  color: rgb(83, 160, 82) !important;
+  background-color: rgb(184, 204, 249, 0.5);
+  justify-content: flex-start !important;
+  font-size: 2rem;
+  letter-spacing: -0.05rem;
+  line-height: 0.1;
+}
+
+.entry-line:hover .column,
+.entry-line.active .column {
+  font-size: 2.5rem;
+  transition: font-size 0.2s ease;
+  line-height: 1;
+}
+
+  .entry-line:hover .author,
+  .entry-line.active .author {
+    font-size: 1rem !important;
     color: rgb(83, 160, 82) !important;
     letter-spacing: normal;
   }
@@ -449,7 +460,8 @@ i {
     color: rgb(83, 160, 82) !important;
     letter-spacing: -0.05rem !important;
   }
-  .entry-line:hover .message-404 {
+  .entry-line:hover .message-404,
+  .entry-line.active .message-404 {
     color: rgb(83, 160, 82) !important;
     font-size: 6rem !important;
     line-height: 0.75 !important;
@@ -460,7 +472,6 @@ i {
     transition: font-size 0.2s ease;
     line-height: 1;
   }
-  
 
   .line-alt:not(#th):hover {
     letter-spacing: -0.2rem;
@@ -643,6 +654,18 @@ i {
 .entry-line:hover .message {
   -webkit-line-clamp: unset;
   max-height: none; /* expands to full height */
+}
+.entry-line.active .message {
+  -webkit-line-clamp: unset;
+  max-height: none;
+}
+
+.entry-line.active .author,
+.entry-line.active .timestamp,
+.entry-line.active .title,
+.entry-line.active .number {
+  -webkit-line-clamp: unset;
+  max-height: none;
 }
 
 /* timestamp formatting */
