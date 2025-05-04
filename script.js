@@ -31,9 +31,9 @@ function highlightKeywords(text) {
     .replace(/(I've always loved)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
     .replace(/(my true love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
     .replace(/(I fell in love with you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
-    .replace(/(love)/gi, '<span style="font-family: \'Gaisyr Book Italic\'; color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(love)/gi, '<span style="font-family: \'Gaisyr Book Italic\'; color:rgb(250, 39, 142)">$1</span>')
     .replace(/(I've loved)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
-    .replace(/(home)/gi, '<span style="color: rgb(0, 190, 196);">$1</span>')
+    .replace(/(home)/gi, '<span style="color: rgb(198, 123, 218);">$1</span>')
     .replace(/(we can still be friends)/gi, '<span style="font-family: \'Gaisyr Book Italic\'; color: rgb(255, 109, 17);">$1</span>')
     .replace(/(I'm leaving you)/gi, '<span style="color: rgb(124, 77, 255);">$1</span>')
     .replace(/(letting him go)/gi, '<span style="color: rgb(66, 132, 237);">$1</span>')
@@ -41,78 +41,93 @@ function highlightKeywords(text) {
     .replace(/(my heart)/gi, '<span style="color: rgb(199, 56, 198);">$1</span>')
   }
 
-function makeLinks() {
-  const sortDirection = sortDescending ? "desc" : "asc";
-
-  if (unsubscribe) unsubscribe();
-
-  unsubscribe = db.collection("entries")
-    .orderBy("timestamp", sortDirection)
-    .onSnapshot((snapshot) => {
-      $("#container .line:not(#th)").remove();
-
-      $("#sidebar-scroll").empty(); // clear sidebar
-
-      snapshot.forEach((doc) => {
-        const value = doc.data();
-        const number = value.number || "";
-        const title = value["subject line"] || "";
-
-        const indexEntry = $(`
-          <div class="index-entry">
-            ${number}. ${title}
+  function makeLinks() {
+    const sortDirection = sortDescending ? "desc" : "asc";
+  
+    if (unsubscribe) unsubscribe();
+  
+    unsubscribe = db.collection("entries")
+      .orderBy("timestamp", sortDirection)
+      .onSnapshot((snapshot) => {
+        $("#container .line:not(#th)").remove();
+        $("#sidebar-scroll").empty(); // clear sidebar
+        $("#archive-footer").remove(); // remove any existing footer
+  
+        snapshot.forEach((doc) => {
+          const value = doc.data();
+          const number = value.number || "";
+          const title = value["subject line"] || "";
+  
+          const indexEntry = $(`
+            <div class="index-entry">
+              <span class="index-number">${number}</span> ${title}
+            </div>
+          `);
+          $("#sidebar-scroll").append(indexEntry);
+        });
+  
+        snapshot.forEach((doc) => {
+          const value = doc.data();
+          const author = value.author || "";
+          const number = value.number || "";
+          const message = value.message || "";
+          const label = value.label || [];
+          const dateObj = value.timestamp?.toDate?.();
+          let timestamp = "";
+          if (dateObj) {
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const year = String(dateObj.getFullYear());
+            const date = `${month}/${day}/${year}`;
+            const time = dateObj
+              .toLocaleTimeString([], {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+              })
+              .toUpperCase();         
+            timestamp = `<div>${date}</div><div class="time-line">${time}</div>`;
+          }
+  
+          const newline = $(`
+            <div class='line entry-line'>
+              <div class="column number">${number}</div>
+              <div class="column message ${label.includes('404-error') ? 'message-404' : ''}">
+                ${
+                  message
+                    .split('\n')
+                    .map(p => `<span class="scramble-paragraph">${highlightKeywords(p)}</span>`)
+                    .join('<br>')
+                }
+              </div>
+              <div class="column author"><span class="scramble-paragraph">${author}</span></div>
+              <div class="column label">
+                ${
+                  Array.isArray(label)
+                    ? label.map(l => `<button class="tag-button" data-label="${l}">${l}</button>`).join('')
+                    : `<button class="tag-button" data-label="${label}">${label}</button>`
+                }
+              </div>
+              <div class="column timestamp">${timestamp}</div>
+            </div>
+          `);
+  
+          $("#container").append(newline);
+        });
+  
+        // Add the static archive footer after all entries
+        $("#container").append(`
+          <div id="archive-footer">
+            <p>
+              You've reached the beginning of this archive, birthed on April 18, 2025 at 3:01am Eastern Standard Time. 
+            </p>
           </div>
         `);
-
-        $("#sidebar-scroll").append(indexEntry);
+  
+        $(".column.title, .column.author, .column.message").addClass("scramble");
       });
-
-
-      snapshot.forEach((doc) => {
-        const value = doc.data();
-        const author = value.author || "";
-        const number = value.number || "";
-        const message = value.message || "";
-        const label = value.label || [];
-        const dateObj = value.timestamp?.toDate?.();
-        let timestamp = "";
-        if (dateObj) {
-          const date = dateObj.toLocaleDateString(); // e.g., 5/1/2025
-          const time = dateObj.toLocaleTimeString(); // e.g., 1:12:04 PM
-          timestamp = `<div>${date}</div><div class="time-line">${time}</div>`;
-        }
-        
-        const newline = $(`
-          <div class='line entry-line'>
-            <div class="column number">${number}</div>
-            <div class="column message ${label.includes('404-error') ? 'message-404' : ''}">
-              ${
-                message
-                  .split('\n')
-                  .map(p => `<span class="scramble-paragraph">${highlightKeywords(p)}</span>`)
-                  .join('<br>')
-              }
-            </div>
-            <div class="column author"><span class="scramble-paragraph">${author}</span></div>            
-            <div class="column label">
-              ${
-                Array.isArray(label)
-                  ? label.map(l => `<button class="tag-button" data-label="${l}">${l}</button>`).join('')
-                  : `<button class="tag-button" data-label="${label}">${label}</button>`
-              }
-            </div>
-            <div class="column timestamp">${timestamp}</div>
-          </div>
-        `);
-        
-
-        $("#container").append(newline);
-      });
-
-      $(".column.title, .column.author, .column.message").addClass("scramble");
-    });
-}
-
+  }
+  
 
 $(document).ready(function () {
   makeLinks();
@@ -261,33 +276,65 @@ $(document).ready(function () {
   function clearErrors() {
     $(".error-message").text("").hide();
   }
+
+  $("#scroll-to-top-button").on("click", function () {
+    $("#scroll-wrapper").animate({ scrollTop: 0 }, 600);
+  });
 });
 
 // close submission form
+// Run only after DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.getElementById('close-submission-form');
+  const submissionWrapper = document.getElementById('submission-wrapper');
+  const submissionOverlay = document.getElementById('submission-overlay');
+  const submissionBg = document.getElementById('submission-bg');
+  const messageWrapper = document.querySelector('.message-wrapper');
+  const inputStack = document.querySelector('.input-stack');
 
-const submissionToggle = document.getElementById('close-submission-form');
-const submissionOverlay = document.getElementById('submission-overlay');
-const submissionBg = document.getElementById('submission-bg');
-const messageWrapper = document.querySelector('.message-wrapper');
-const inputStack = document.querySelector('.input-stack');
+  let isSubmissionVisible = true;
 
-let isSubmissionVisible = true;
+  closeBtn.addEventListener('click', () => {
+    if (isSubmissionVisible) {
+      // Hide form layers
+      submissionWrapper.style.zIndex = -10;
+      submissionWrapper.style.pointerEvents = 'none';
 
-submissionToggle.addEventListener('click', () => {
-  if (isSubmissionVisible) {
-    submissionOverlay.style.display = 'none';
-    submissionBg.style.display = 'none';
-    if (messageWrapper) messageWrapper.style.display = 'none';
-    if (inputStack) inputStack.style.display = 'none';
-    submissionToggle.textContent = 'Leave Something';
-  } else {
-    submissionOverlay.style.display = 'flex';
-    submissionBg.style.display = 'block';
-    if (messageWrapper) messageWrapper.style.display = '';
-    if (inputStack) inputStack.style.display = '';
-    submissionToggle.textContent = 'X';
-  }
+      submissionOverlay.style.zIndex = -10;
+      submissionOverlay.style.pointerEvents = 'none';
 
-  isSubmissionVisible = !isSubmissionVisible;
+      submissionBg.style.zIndex = -10;
+      submissionBg.style.pointerEvents = 'none';
+
+      if (messageWrapper) messageWrapper.style.display = 'none';
+      if (inputStack) inputStack.style.display = 'none';
+
+      // Show button in bottom-right
+      closeBtn.textContent = 'Leave something';
+      closeBtn.classList.add('bottom-position');
+    } else {
+      // Show form again
+      submissionWrapper.style.zIndex = 1000;
+      submissionWrapper.style.pointerEvents = 'auto';
+
+      submissionOverlay.style.zIndex = 1000;
+      submissionOverlay.style.pointerEvents = 'auto';
+
+      submissionBg.style.zIndex = 1;
+      submissionBg.style.pointerEvents = 'auto';
+
+      if (messageWrapper) messageWrapper.style.display = '';
+      if (inputStack) inputStack.style.display = '';
+
+      // Restore button
+      closeBtn.textContent = '×';
+      closeBtn.classList.remove('bottom-position');
+    }
+
+    isSubmissionVisible = !isSubmissionVisible;
+  });
 });
+
+
+
 
