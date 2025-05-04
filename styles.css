@@ -166,6 +166,11 @@ html, body {
   background-color: rgb(184, 204, 249, 0.5);
   color: rgb(66, 122, 237);
 }
+.index-entry.hover-sync {
+  background-color: rgb(184, 204, 249, 0.5);
+  color: rgb(66, 122, 237);
+}
+
 #sidebar-index-title {
   font-family: sans-serif;
   font-size: 1rem;
@@ -843,17 +848,44 @@ i {
   padding-left: 2px;
 }
 
+/* tooltip */
+.label-text {
+  position: relative;
+  cursor: pointer;
+}
+.label-text::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%; /* position above */
+  left: 80%;
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.9);
+  color: rgb(66, 122, 237);
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 200px;
+  white-space: normal;
+  text-align: left;
+  box-sizing: border-box;
+  box-shadow: 0 0 20px rgba(96, 96, 96, 0.9);
+  display: none;
+  z-index: 10;
+}
+.label-text:hover::after {
+  display: block;
+}
+
+/* checkboxes */ 
 .checkbox-labels {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
-
 /* Hide default checkbox */
 .custom-checkbox input[type="checkbox"] {
   display: none;
 }
-
 /* Label setup */
 .custom-checkbox {
   position: relative;
@@ -866,7 +898,6 @@ i {
   align-items: center;
   color: rgb(115, 115, 118);
 }
-
 /* Custom square box */
 .custom-checkbox .checkmark {
   position: absolute;
@@ -879,7 +910,6 @@ i {
   border-radius: 2px;
   box-sizing: border-box;
 }
-
 /* add checkmark when checked */
 .custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
   content: "";
@@ -892,11 +922,11 @@ i {
   border-width: 0 1.5px 1.5px 0;
   transform: rotate(45deg);
 }
-
 .custom-checkbox:hover .checkmark {
   background-color: rgb(236, 238, 245);
 }
 
+/* post button */
 #submission-form button {
   /* color: rgb(0, 89, 255);
   border: 1px solid rgb(0, 89, 255);
@@ -907,7 +937,6 @@ i {
   padding: 0 2px;
   /* font: inherit; */
 }
-
 #submission-form button:hover {
   font-style: italic;
 }
@@ -1049,8 +1078,9 @@ i {
 /* at end of the entries container */
 #archive-footer {
   margin-bottom: 100px;
+  margin-left: 10px;
   padding: 10px;
-  text-align: center;
+  text-align: left;
   font-family: 'Cascadia Mono', monospace;
   letter-spacing: -0.05rem;
   font-size: 0.9rem;

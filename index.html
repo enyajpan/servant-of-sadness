@@ -104,23 +104,27 @@
         <form id="submission-form" novalidate>
           <!-- Checkboxes -->
           <div class="label-wrapper">
-            <div class="label-title">Label your loss:</div>
+            <div class="label-title">What type of loss was it?</div>
             <div class="label-column">
               <label class="custom-checkbox">
                 <input type="checkbox" name="label" value="missed-connections" />
-                <span class="checkmark"></span> missed-connections
+                <span class="checkmark"></span>
+                <span class="label-text" data-tooltip="An encounter with another where you briefly connect, experience a spark, but fail to exchange contact information, leading to a desire to reconnect.">missed.connections</span>
               </label>
               <label class="custom-checkbox">
                 <input type="checkbox" name="label" value="past-lives" />
-                <span class="checkmark"></span> past-lives
+                <span class="checkmark"></span>
+                <span class="label-text" data-tooltip="A previously lived life, or perhaps a life in another dimension—the 'what could have been' had you had chosen differently. You know you can no longer go back, but you will forever dream and reminisce and carry the longing for a life or version of yourself that could never come true.">past.lives</span>
               </label>
               <label class="custom-checkbox">
                 <input type="checkbox" name="label" value="404-error" />
-                <span class="checkmark"></span> 404-error
+                <span class="checkmark"></span>
+                <span class="label-text" data-tooltip="A broken link, corrupted file, loss of access. When you can no longer find what you're seeking. Perhaps they (it) no longer exist(s), or perhaps they've (it) already severed all ties. Or, maybe it's you the one breaking the link — would you choose to remember or to forget?">404.error</span>
               </label>
               <label class="custom-checkbox">
                 <input type="checkbox" name="label" value="servant-of-sadness" />
-                <span class="checkmark"></span> servant-of-sadness
+                <span class="checkmark"></span>
+                <span class="label-text" data-tooltip="description">servant.of.sadness</span>
               </label>
             </div>
             <span class="error-message" id="error-label"></span>
@@ -135,13 +139,18 @@
             <span class="error-message" id="error-author"></span>
           </div>          
 
-          <!-- Message on separate row -->
+          <!-- Message -->
           <div class="message-wrapper">
-            <textarea name="message" placeholder="Write your message here. What do you want to leave with the world?" required></textarea>
+            <textarea 
+              name="message" 
+              placeholder="If you are brave enough to tell the world, what do you feel like you have lost?
+Use this space to tell your story however you wish."
+              required
+            ></textarea>
             <span class="error-message" id="error-message"></span>
           </div>
 
-          <button type="post">Post !!</button>
+          <button type="post">Post</button>
         </form>                          
       </div>
     </div>
