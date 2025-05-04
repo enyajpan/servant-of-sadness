@@ -275,18 +275,6 @@ html, body {
   padding-bottom: 120px;
 }
 
-#archive-footer {
-  margin-top: auto;
-  padding: 40px 20px;
-  align-items: left;
-  text-align: left;
-  font-size: 0.9rem;
-  font-style: normal;
-  color: rgb(169, 169, 170);
-  line-height: 1.5;
-  z-index: 10000;
-}
-
 .timestamp {
   font-family: 'Cascadia Mono', monospace;
   font-size: 0.9rem !important;
@@ -741,7 +729,7 @@ i {
   color: rgb(83, 160, 82); 
   padding: 5px;
   border: 1px solid rgb(83, 160, 82);
-  background-color: rgb(236, 238, 245);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
   font-size: 1rem;
 }
@@ -770,7 +758,7 @@ i {
   padding: 6px;
   color: rgb(83, 160, 82);
   border: 1px solid rgb(83, 160, 82);
-  background-color: rgb(236, 238, 245);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
   resize: none;
 }
@@ -886,7 +874,7 @@ i {
   left: 0;
   height: 14px;
   width: 14px;
-  background-color: rgb(236, 238, 245);
+  background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgb(83, 160, 82);
   border-radius: 2px;
   box-sizing: border-box;
@@ -1058,8 +1046,9 @@ i {
   z-index: 1; /* Still above the 404 background */
 }
 
+/* at end of the entries container */
 #archive-footer {
-  margin-bottom: 20px;
+  margin-bottom: 100px;
   padding: 10px;
   text-align: center;
   font-family: 'Cascadia Mono', monospace;
@@ -1067,5 +1056,15 @@ i {
   font-size: 0.9rem;
   font-style: normal;
   color: rgb(115, 115, 118);
-  z-index: 10;
+  z-index: 100;
+}
+#scroll-to-top-button {
+  margin-left: 10px;
+  margin-top: -5px;
+  font-size: 0.9rem;
+  padding: 0.5px 2px;
+  vertical-align: middle;
+}
+#scroll-to-top-button:hover {
+  font-style: italic;
 }

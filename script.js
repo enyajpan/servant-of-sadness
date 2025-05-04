@@ -119,7 +119,8 @@ function highlightKeywords(text) {
         $("#container").append(`
           <div id="archive-footer">
             <p>
-              You've reached the beginning of this archive, birthed on April 18, 2025 at 3:01am Eastern Standard Time. 
+              You've reached the bottom of this archive, birthed on April 18, 2025 at 3:01am Eastern Standard Time. 
+              <button id="scroll-to-top-button">Take me back to the top</button>
             </p>
           </div>
         `);
@@ -277,9 +278,9 @@ $(document).ready(function () {
     $(".error-message").text("").hide();
   }
 
-  $("#scroll-to-top-button").on("click", function () {
-    $("#scroll-wrapper").animate({ scrollTop: 0 }, 600);
-  });
+  $(document).on("click", "#scroll-to-top-button", function () {
+    $("#scroll-wrapper").animate({ scrollTop: 0 }, 300);
+  });  
 });
 
 // close submission form
