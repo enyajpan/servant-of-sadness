@@ -373,6 +373,21 @@ i {
   width: auto;
   max-width: 100vw;
   object-fit: contain;
+  z-index: 10001;
+  opacity: 0.9;
+  pointer-events: auto;
+  cursor: pointer;
+}
+/* #TODO tab */
+#todo-overlay {
+  position: fixed;
+  bottom: 0;
+  right: 10%;
+  height: auto;
+  max-height: 97%;
+  width: auto;
+  max-width: 100vw;
+  object-fit: contain;
   z-index: 10000;
   opacity: 0.9;
   pointer-events: auto;
@@ -538,6 +553,27 @@ i {
   max-width: 8%;
   text-align: left;
 }
+/* PRINT BUTTON IN AUTHOR COLUMN */
+.print-wrapper {
+  display: none; /* hidden by default */
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.entry-line:hover .print-wrapper,
+.entry-line.active .print-wrapper {
+  display: block; /* show only on hover or active */
+}
+
+.print-button {
+  font-size: 0.9rem;
+  padding: 0 2px;
+  cursor: pointer;
+}
+.print-button:hover {
+  font-style: italic;
+}
+
 .column.label {
   font-size: 0.9rem;
   flex: 0 0 10%;

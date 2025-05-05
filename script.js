@@ -113,7 +113,10 @@ function highlightKeywords(text) {
                     .join('<br>')
                 }
               </div>
-              <div class="column author"><span class="scramble-paragraph">${author}</span></div>
+              <div class="column author">
+                <div class="author-name"><span class="scramble-paragraph">${author}</span></div>
+                <div class="print-wrapper"><button class="print-button">Print</button></div>
+              </div>
               <div class="column label">
                 ${
                   Array.isArray(label)
@@ -214,9 +217,20 @@ $(document).ready(function () {
     if (isAboutInFront) {
       $(this).css("z-index", 0); // behind view-all-background.png
     } else {
-      $(this).css("z-index", 10000); // in front
+      $(this).css("z-index", 10001); // in front
     }
     isAboutInFront = !isAboutInFront;
+  });
+
+  let isTodoInFront = true;
+
+  $("#todo-overlay").on("click", function () {
+    if (isTodoInFront) {
+      $(this).css("z-index", 0); // behind view-all-background.png
+    } else {
+      $(this).css("z-index", 10000); // in front
+    }
+    isTodoInFront = !isTodoInFront;
   });
 
 
@@ -404,5 +418,110 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+/* print button logic */
+$(document).on('click', '.print-button', function () {
+  const printButton = this;
 
+  printButton.textContent = "Preparing your print...";
+  printButton.disabled = true;
+  printButton.style.opacity = "0.6";
 
+  setTimeout(() => {
+    const pickedNew = Array.from(document.querySelector('#picked-letters-new')?.children || []);
+    const pickedGrid = Array.from(document.querySelector('#picked-letters-grid')?.children || []);
+    const pickedLetters = [...pickedNew, ...pickedGrid];
+
+    const rows = 11;
+    const cols = 3;
+    const totalSlots = rows * cols;
+
+    while (pickedLetters.length < totalSlots) {
+      const emptyDiv = document.createElement('div');
+      emptyDiv.classList.add('picked-letter');
+      emptyDiv.innerHTML = '&nbsp;';
+      pickedLetters.push(emptyDiv);
+    }
+
+    const columns = [[], [], []];
+    for (let i = 0; i < pickedLetters.length; i++) {
+      const colIndex = i % cols;
+      columns[colIndex].push(pickedLetters[i]);
+    }
+
+    let arranged = '';
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        arranged += columns[col][row]?.outerHTML || '';
+      }
+    }
+
+    const printContent = `
+      <html>
+        <head>
+          <title>Print Picked Letters</title>
+          <style>
+            @font-face {
+              font-family: sans-serif;
+            }
+
+            @page {
+              size: landscape;
+              margin: 0;
+            }
+
+            body {
+              background: url(USE_PLACEHOLDER_FOR_NOW.png);
+              text-align: center;
+              margin: 0;
+              padding: 0;
+              background-size: contain;
+              background-repeat: no-repeat;
+              background-position: top;
+              width: 11in;
+              height: 8.5in;
+              overflow: hidden;
+              position: relative;
+            }
+
+            #print-container {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              grid-template-rows: repeat(11, 1fr); 
+              row-gap: 2px;
+              column-gap: 4px;
+              position: absolute;
+              top: 4%;
+              right: 16%;
+              bottom: 5%;
+              width: 40%;
+              height: 100%;
+              padding: 1in;
+              box-sizing: border-box;
+              z-index: 1;
+            }
+          </style>
+        </head>
+        <body>
+          <div id="print-container">
+            ${arranged}
+          </div>
+        </body>
+      </html>
+    `;
+
+    const printWindow = window.open('', '', 'width=1200,height=900');
+    printWindow.document.open();
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 250);
+
+    printButton.textContent = "Print";
+    printButton.disabled = false;
+    printButton.style.opacity = "1";
+  }, 600);
+});
