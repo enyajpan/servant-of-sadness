@@ -7,6 +7,8 @@
 @font-face {
   font-family: 'Flowers';
   src: url('assets/flowers.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
   font-family: 'Cascadia Mono';
@@ -157,7 +159,7 @@ html, body {
   border-bottom: 1px solid rgb(226,228,235);
 }
 .index-entry .index-number {
-  font-family: 'Cascadia Mono', monospace !important;
+  font-family: monospace !important;
   font-size: 0.85rem;
   color: rgb(83, 160, 82) !important;
   margin-right: 2px;
@@ -281,7 +283,7 @@ html, body {
 }
 
 .timestamp {
-  font-family: 'Cascadia Mono', monospace;
+  font-family: monospace;
   font-size: 0.9rem !important;
   letter-spacing: -0.05rem !important;
 }
@@ -367,7 +369,7 @@ i {
 #about-overlay {
   position: fixed;
   bottom: 0;
-  right: 3%;
+  right: 2%;
   height: auto;
   max-height: 97%;
   width: auto;
@@ -382,7 +384,7 @@ i {
 #todo-overlay {
   position: fixed;
   bottom: 0;
-  right: 10%;
+  right: 9%;
   height: auto;
   max-height: 97%;
   width: auto;
@@ -749,7 +751,7 @@ i {
 
 .line .number {
   color: rgb(83, 160, 82);
-  font-family: 'Cascadia Mono', monospace;
+  font-family: monospace;
   font-size: 0.9rem !important;
   letter-spacing: -0.05rem;
 }
@@ -1051,7 +1053,7 @@ i {
 /* Base tag style */
 .tag-button {
   display: inline-block;
-  font-family: 'Cascadia Mono', monospace;
+  font-family: monospace;
   font-size: 0.8rem !important;
   letter-spacing: -0.05rem;
   padding: 0.5px 2px;
@@ -1177,6 +1179,16 @@ i {
   z-index: 1;
   pointer-events: none;
 }
+#bg-guest-book {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 100%;
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+}
 #link-404 {
   position: fixed;
   top: 45.5%;
@@ -1225,6 +1237,18 @@ i {
   display: block;
   /* background: rgba(255, 0, 0, 0.2); */ 
 }
+#link-guest-book {
+  position: fixed;
+  bottom: 5%;
+  right: 0%;
+  width: 3%;
+  height: 80px;
+  z-index: 10000;
+  pointer-events: auto;
+  cursor: pointer;
+  display: block;
+  /* background: rgba(255, 0, 0, 0.2); */ 
+}
 
 #container-bg {
   z-index: 1; /* Still above the 404 background */
@@ -1236,7 +1260,7 @@ i {
   margin-left: 10px;
   padding: 10px;
   text-align: left;
-  font-family: 'Cascadia Mono', monospace;
+  font-family: monospace;
   letter-spacing: -0.05rem;
   font-size: 0.9rem;
   font-style: normal;

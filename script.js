@@ -427,89 +427,161 @@ $(document).on('click', '.print-button', function () {
   printButton.style.opacity = "0.6";
 
   setTimeout(() => {
-    const pickedNew = Array.from(document.querySelector('#picked-letters-new')?.children || []);
-    const pickedGrid = Array.from(document.querySelector('#picked-letters-grid')?.children || []);
-    const pickedLetters = [...pickedNew, ...pickedGrid];
+    const $entry = $(printButton).closest('.entry-line');
 
-    const rows = 11;
-    const cols = 3;
-    const totalSlots = rows * cols;
+    const number = $entry.find('.column.number').text().trim();
+    const messageHtml = $entry.find('.column.message').html();
+    const messageText = $('<div>').html(messageHtml).text(); // convert HTML to plain text
+    const author = $entry.find('.author-name').text().trim();
+    const timestamp = $entry.find('.column.timestamp').html();
+    const subjectLine = $('#sidebar-scroll .index-entry')
+      .filter((_, el) => $(el).data('number') === number)
+      .text()
+      .replace(number, '')
+      .trim();
+    const labels = $entry.find('.tag-button').map((_, el) => $(el).text()).get().join(', ');
 
-    while (pickedLetters.length < totalSlots) {
-      const emptyDiv = document.createElement('div');
-      emptyDiv.classList.add('picked-letter');
-      emptyDiv.innerHTML = '&nbsp;';
-      pickedLetters.push(emptyDiv);
-    }
+    const is404 = $entry.find('.column.message').hasClass('message-404');
+    const bodyClass = is404 ? 'flowers-font' : '';
 
-    const columns = [[], [], []];
-    for (let i = 0; i < pickedLetters.length; i++) {
-      const colIndex = i % cols;
-      columns[colIndex].push(pickedLetters[i]);
-    }
+    const labelsHtml = labels
+        .split(',')
+        .map(l => `<button class="tag-button">${l.trim()}</button>`)
+        .join('');
 
-    let arranged = '';
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        arranged += columns[col][row]?.outerHTML || '';
-      }
-    }
+        const pageHeader = `
+          <h1><span style="font-family: monospace;">${number}.</span> <span style="font-family: sans-serif;">${subjectLine || '(No Subject)'}</span></h1>
+          <div class="body">From: <span style="font-family: sans-serif;">${author || 'Anonymous'}</span></div>
+          <div class="meta">${labelsHtml || '<em>None</em>'}</div>
+          <div style="margin-bottom: 1em;"></div>
+        `;
 
-    const printContent = `
-      <html>
-        <head>
-          <title>Print Picked Letters</title>
-          <style>
-            @font-face {
-              font-family: sans-serif;
-            }
+        const messageDiv = document.createElement("div");
+        messageDiv.innerHTML = messageHtml;
+        messageDiv.className = `message ${is404 ? 'message-404' : ''}`;
 
-            @page {
-              size: landscape;
-              margin: 0;
-            }
+        // Split into paragraph blocks
+        const paragraphs = Array.from(messageDiv.querySelectorAll("span, p, div, br"));
 
-            body {
-              background: url(USE_PLACEHOLDER_FOR_NOW.png);
-              text-align: center;
-              margin: 0;
-              padding: 0;
-              background-size: contain;
-              background-repeat: no-repeat;
-              background-position: top;
-              width: 11in;
-              height: 8.5in;
-              overflow: hidden;
-              position: relative;
-            }
+        // Start paginated pages
+        let pagesHtml = "";
+        let currentPageContent = pageHeader;
+        let tempContainer = document.createElement("div");
+        tempContainer.style.position = "absolute";
+        tempContainer.style.visibility = "hidden";
+        tempContainer.style.width = "1000px"; // print window width
+        tempContainer.style.columnCount = "2";
+        tempContainer.style.fontSize = "2rem";
+        document.body.appendChild(tempContainer);
 
-            #print-container {
-              display: grid;
-              grid-template-columns: repeat(3, 1fr);
-              grid-template-rows: repeat(11, 1fr); 
-              row-gap: 2px;
-              column-gap: 4px;
-              position: absolute;
-              top: 4%;
-              right: 16%;
-              bottom: 5%;
-              width: 40%;
-              height: 100%;
-              padding: 1in;
-              box-sizing: border-box;
-              z-index: 1;
-            }
-          </style>
-        </head>
-        <body>
-          <div id="print-container">
-            ${arranged}
+        for (let i = 0; i < paragraphs.length; i++) {
+          const el = paragraphs[i].cloneNode(true);
+          tempContainer.innerHTML = currentPageContent + el.outerHTML;
+          
+          if (tempContainer.scrollHeight > 800) { // ~ landscape height in px
+            pagesHtml += `
+              <div class="print-page">
+                <div class="page-columns">
+                  ${currentPageContent}
+                </div>
+              </div>
+            `;
+            currentPageContent = el.outerHTML;
+          } else {
+            currentPageContent += el.outerHTML;
+          }
+        }
+        pagesHtml += `
+          <div class="print-page">
+            <div class="page-columns">
+              ${currentPageContent}
+              <hr style="border: none; border-top: 1px dashed rgba(0,0,0,0.2); margin: 1em 0;">
+              <div class="meta">Posted: ${timestamp}</div>
+            </div>
           </div>
-        </body>
-      </html>
-    `;
+        `;
+        document.body.removeChild(tempContainer);
 
-    const printWindow = window.open('', '', 'width=1200,height=900');
+        // Now inject everything into the print window
+        const printContent = `
+          <html>
+            <head>
+              <title>Print Message Entry</title>
+              <style>
+                @font-face {
+                  font-family: 'Flowers';
+                  src: url('https://enyajpan.github.io/in-case-of-loss/assets/flowers.otf') format('opentype');
+                }
+
+                @page {
+                  size: landscape;
+                  margin: 0;
+                }
+
+                body {
+                  font-family: sans-serif;
+                  font-size: 2rem;
+                  padding: 0;
+                  margin: 0;
+                  color: rgb(83, 160, 82);
+                }
+
+                .print-page {
+                  page-break-after: always;
+                  padding: 2em;
+                  box-sizing: border-box;
+                  height: 100vh;
+                }
+
+                .page-columns {
+                  column-count: 2;
+                  column-gap: 1em;
+                  height: 100%;
+                  column-fill: auto;
+                }
+
+                .message-404 {
+                  font-family: 'Flowers';
+                  font-size: 4em;
+                  letter-spacing: 0.05em;
+                }
+
+                h1 {
+                  font-family: monospace;
+                  font-size: 1em;
+                  margin-bottom: 0.2em;
+                }
+
+                .meta {
+                  font-family: monospace;
+                  font-size: 0.9em;
+                  margin-bottom: 1em;
+                }
+
+                .tag-button {
+                  display: inline-block;
+                  padding: 0.1em 0.4em;
+                  margin: 0.2em 0.2em 0.2em 0;
+                  font-size: 0.7em;
+                  font-family: monospace;
+                  border: 1px solid rgb(83, 160, 82);
+                  border-radius: 6px;
+                  background-color: transparent;
+                  color: rgb(83, 160, 82);
+                  text-transform: lowercase;
+                  cursor: default;
+                }
+              </style>
+            </head>
+            <body class="${bodyClass}">
+              ${pagesHtml}
+            </body>
+          </html>
+        `;
+
+      
+
+    const printWindow = window.open('', '', 'width=1000,height=800');
     printWindow.document.open();
     printWindow.document.write(printContent);
     printWindow.document.close();
@@ -518,10 +590,11 @@ $(document).on('click', '.print-button', function () {
     setTimeout(() => {
       printWindow.print();
       printWindow.close();
-    }, 250);
+    }, 300);
 
     printButton.textContent = "Print";
     printButton.disabled = false;
     printButton.style.opacity = "1";
-  }, 600);
+  }, 300);
 });
+
