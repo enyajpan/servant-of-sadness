@@ -515,12 +515,17 @@ $(document).on('click', '.print-button', function () {
 
                 @page {
                   size: landscape;
-                  margin: 0;
+                  margin-top: 0;
+                  margin-bottom: 0;
+                  margin-right: 4em;
+                  margin-left: 4em;
                 }
 
                 body {
                   font-family: sans-serif;
-                  font-size: 2rem;
+                  font-size: 30px;
+                  letter-spacing: -0.01em;
+                  line-height: 1;
                   padding: 0;
                   margin: 0;
                   color: rgb(83, 160, 82);
@@ -548,13 +553,13 @@ $(document).on('click', '.print-button', function () {
 
                 h1 {
                   font-family: monospace;
-                  font-size: 1em;
+                  font-size: 11px;
                   margin-bottom: 0.2em;
                 }
 
                 .meta {
                   font-family: monospace;
-                  font-size: 0.9em;
+                  font-size: 10px;
                   margin-bottom: 1em;
                 }
 
@@ -562,7 +567,7 @@ $(document).on('click', '.print-button', function () {
                   display: inline-block;
                   padding: 0.1em 0.4em;
                   margin: 0.2em 0.2em 0.2em 0;
-                  font-size: 0.7em;
+                  font-size: 10px;
                   font-family: monospace;
                   border: 1px solid rgb(83, 160, 82);
                   border-radius: 6px;
@@ -597,4 +602,3 @@ $(document).on('click', '.print-button', function () {
     printButton.style.opacity = "1";
   }, 300);
 });
-
