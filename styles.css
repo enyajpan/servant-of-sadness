@@ -138,7 +138,7 @@ html, body {
   left: 0;
   width: 180px;
   height: 100vh;
-  background-color: rgb(244, 246, 253);
+  background-color: rgb(249, 250, 253);
   border-right: 1px solid rgb(210, 213, 224);
   z-index: 100;
   overflow: hidden;
@@ -148,8 +148,8 @@ html, body {
 #sidebar-scroll {
   height: calc(100vh - 100px);
   overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE 10+ */
+  scrollbar-width: auto; /* Firefox */
+  -ms-overflow-style: auto;  /* IE 10+ */
 }
 .index-entry {
   padding: 4px 8px;

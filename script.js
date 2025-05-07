@@ -458,16 +458,19 @@ $(document).on('click', '.print-button', function () {
 
         const messageDiv = document.createElement("div");
         messageDiv.innerHTML = messageHtml;
-        messageDiv.className = `message ${is404 ? 'message-404' : ''}`;
 
-        // Split into paragraph blocks
-        const paragraphs = Array.from(messageDiv.innerHTML.split(/<br\s*\/?>/gi))
+        // Split into paragraph blocks (preserve line breaks)
+        const paragraphs = messageHtml.split(/<br\s*\/?>/gi)
           .map(p => p.trim())
           .filter(p => p.length > 0);
 
+        // Prepare wrapper for font
+        const messageWrapperStart = is404 ? '<div class="flowers-font">' : '';
+        const messageWrapperEnd = is404 ? '</div>' : '';
+
         // Start paginated pages
         let pagesHtml = "";
-        let currentPageContent = pageHeader;
+        let currentPageContent = pageHeader + messageWrapperStart;
         let tempContainer = document.createElement("div");
         tempContainer.style.position = "absolute";
         tempContainer.style.visibility = "hidden";
@@ -477,33 +480,40 @@ $(document).on('click', '.print-button', function () {
         document.body.appendChild(tempContainer);
 
         for (let i = 0; i < paragraphs.length; i++) {
-          const elHtml = paragraphs[i];
+          const elHtml = `<div>${paragraphs[i]}</div>`;
           tempContainer.innerHTML = currentPageContent + elHtml;
-        
+
           if (tempContainer.scrollHeight > 800) {
             pagesHtml += `
               <div class="print-page">
                 <div class="page-columns">
                   ${currentPageContent}
+                  ${messageWrapperEnd}
                 </div>
               </div>
             `;
-            currentPageContent = elHtml;
+            currentPageContent = messageWrapperStart + elHtml;
           } else {
             currentPageContent += elHtml;
           }
         }
-        
+
+        // Close final page
         pagesHtml += `
           <div class="print-page">
-            <div class="page-columns">
+            <div class="page-columns ${is404 ? 'flowers-font' : ''}">
               ${currentPageContent}
+              ${messageWrapperEnd}
               <hr style="border: none; border-top: 1px dashed rgba(0,0,0,0.2); margin: 1em 0;">
               <div class="meta">Posted: ${timestamp}</div>
             </div>
           </div>
         `;
+
+
+
         document.body.removeChild(tempContainer);
+
 
         // Now inject everything into the print window
         const printContent = `
@@ -514,6 +524,11 @@ $(document).on('click', '.print-button', function () {
                 @font-face {
                   font-family: 'Flowers';
                   src: url('https://enyajpan.github.io/in-case-of-loss/assets/flowers.otf') format('opentype');
+                }
+                .flowers-font {
+                  font-family: 'Flowers', sans-serif;
+                  font-size: 75px;
+                  line-height: 0.75;
                 }
 
                 @page {
@@ -544,14 +559,24 @@ $(document).on('click', '.print-button', function () {
                 .page-columns {
                   column-count: 2;
                   column-gap: 1em;
-                  height: 100%;
                   column-fill: auto;
+                  height: 100%;
+                }
+
+                .flowers-font.page-columns {
+                  column-count: 2; 
+                  column-fill: auto;
+                  break-inside: avoid;
+                  overflow-wrap: break-word;
+                  word-break: break-word;
+                  padding-right: 0;
                 }
 
                 .message-404 {
                   font-family: 'Flowers';
-                  font-size: 4em;
-                  letter-spacing: 0.05em;
+                  font-size: 75px;
+                  letter-spacing: 0em;
+                  line-height: 0.75;
                 }
 
                 h1 {
@@ -586,7 +611,7 @@ $(document).on('click', '.print-button', function () {
                 }
               </style>
             </head>
-            <body class="${bodyClass}">
+            <body>
               ${pagesHtml}
             </body>
           </html>
