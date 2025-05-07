@@ -397,7 +397,6 @@ $(document).on('click', '.print-button', function () {
 
     const number = $entry.find('.column.number').text().trim();
     const messageHtml = $entry.find('.column.message').html();
-    const messageText = '';
     const author = $entry.find('.author-name').text().trim();
     const timestamp = $entry.find('.column.timestamp').html();
     const subjectLine = $('#sidebar-scroll .index-entry')
@@ -411,192 +410,175 @@ $(document).on('click', '.print-button', function () {
     const bodyClass = is404 ? 'flowers-font' : '';
 
     const labelsHtml = labels
-        .split(',')
-        .map(l => `<button class="tag-button">${l.trim()}</button>`)
-        .join('');
+      .split(',')
+      .map(l => `<button class="tag-button">${l.trim()}</button>`)
+      .join('');
 
-        const pageHeader = `
-          <h1><span style="font-family: monospace;">${number}.</span> <span style="font-family: sans-serif;">${subjectLine || '(No Subject)'}</span></h1>
-          <div class="body">From: <span style="font-family: sans-serif;">${author || 'Anonymous'}</span></div>
-          <div class="meta">${labelsHtml || '<em>None</em>'}</div>
-          <div style="margin-bottom: 1em;"></div>
-        `;
+    const pageHeader = `
+      <h1><span style="font-family: monospace;">${number}.</span> <span style="font-family: sans-serif;">${subjectLine || '(No Subject)'}</span></h1>
+      <div class="body">From: <span style="font-family: sans-serif;">${author || 'Anonymous'}</span></div>
+      <div class="meta">${labelsHtml || '<em>None</em>'}</div>
+      <div style="margin-bottom: 1em;"></div>
+    `;
 
-        const messageDiv = document.createElement("div");
-        messageDiv.innerHTML = messageHtml;
+    const messageWrapperStart = is404 ? '<div class="flowers-font">' : '';
+    const messageWrapperEnd = is404 ? '</div>' : '';
 
-        // Parse messageHtml into a container for manipulation
-        const tempParser = document.createElement("div");
-        tempParser.innerHTML = messageHtml;
+    // Parse messageHtml and split into lines with spacer for double returns
+    const tempParser = document.createElement("div");
+    tempParser.innerHTML = messageHtml;
 
-        // Extract paragraph-like blocks without extra breaks
-        const paragraphs = [];
-        tempParser.childNodes.forEach(node => {
-          if (
-            node.nodeType === Node.ELEMENT_NODE &&
-            !(node.tagName === "BR") &&
-            node.outerHTML.trim()
-          ) {
-            paragraphs.push(node.outerHTML.trim());
-          } else if (
-            node.nodeType === Node.TEXT_NODE &&
-            node.textContent.trim()
-          ) {
-            paragraphs.push(node.textContent.trim());
-          }
-        });
+    const lines = [];
+    let lastWasBreak = false;
 
-        // Prepare wrapper for font
-        const messageWrapperStart = is404 ? '<div class="flowers-font">' : '';
-        const messageWrapperEnd = is404 ? '</div>' : '';
-
-        // Start paginated pages
-        let pagesHtml = "";
-        let currentPageContent = pageHeader + messageWrapperStart;
-        let tempContainer = document.createElement("div");
-        tempContainer.style.position = "absolute";
-        tempContainer.style.visibility = "hidden";
-        tempContainer.style.width = "1000px"; // print window width
-        tempContainer.style.columnCount = "2";
-        tempContainer.style.fontSize = "2rem";
-        document.body.appendChild(tempContainer);
-
-        for (let i = 0; i < paragraphs.length; i++) {
-          const elHtml = `<div>${paragraphs[i]}</div>`;
-          tempContainer.innerHTML = currentPageContent + elHtml;
-
-          if (tempContainer.scrollHeight > 800) {
-            pagesHtml += `
-              <div class="print-page">
-                <div class="page-columns">
-                  ${currentPageContent}
-                  ${messageWrapperEnd}
-                </div>
-              </div>
-            `;
-            currentPageContent = messageWrapperStart + elHtml;
-          } else {
-            currentPageContent += elHtml;
-          }
+    tempParser.childNodes.forEach((node) => {
+      if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "BR") {
+        if (lastWasBreak) {
+          lines.push('<div style="margin-bottom: 1.5em;"></div>');
+          lastWasBreak = false;
+        } else {
+          lastWasBreak = true;
         }
+      } else if (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE) {
+        const html = node.outerHTML || node.textContent;
+        if (html && html.trim()) {
+          lines.push(`<div>${html.trim()}</div>`);
+          lastWasBreak = false;
+        }
+      }
+    });
 
-        // close final page
+    // Paginate line-by-line
+    let pagesHtml = "";
+    let currentPageContent = pageHeader + messageWrapperStart;
+    const tempContainer = document.createElement("div");
+    tempContainer.style.position = "absolute";
+    tempContainer.style.visibility = "hidden";
+    tempContainer.style.width = "1000px";
+    tempContainer.style.columnCount = "2";
+    tempContainer.style.fontSize = "2rem";
+    document.body.appendChild(tempContainer);
+
+    lines.forEach(line => {
+      tempContainer.innerHTML = currentPageContent + line;
+      if (tempContainer.scrollHeight > 800) {
         pagesHtml += `
           <div class="print-page">
             <div class="page-columns ${is404 ? 'flowers-font' : ''}">
               ${currentPageContent}
               ${messageWrapperEnd}
-              <hr style="border: none; border-top: 1px dashed rgba(0,0,0,0.2); margin: 1em 0;">
-              <div class="meta">Posted: ${timestamp}</div>
             </div>
           </div>
         `;
+        currentPageContent = messageWrapperStart + line;
+      } else {
+        currentPageContent += line;
+      }
+    });
 
-        document.body.removeChild(tempContainer);
+    pagesHtml += `
+      <div class="print-page">
+        <div class="page-columns ${is404 ? 'flowers-font' : ''}">
+          ${currentPageContent}
+          ${messageWrapperEnd}
+          <hr style="border: none; border-top: 1px dashed rgba(0,0,0,0.2); margin: 1em 0;">
+          <div class="meta">Posted: ${timestamp}</div>
+        </div>
+      </div>
+    `;
 
-        // Now inject everything into the print window
-        const printContent = `
-          <html>
-            <head>
-              <title>Print Message Entry</title>
-              <style>
-                @font-face {
-                  font-family: 'Flowers';
-                  src: url('https://enyajpan.github.io/in-case-of-loss/assets/flowers.otf') format('opentype');
-                }
-                .flowers-font {
-                  font-family: 'Flowers', sans-serif;
-                  font-size: 75px;
-                  line-height: 0.75;
-                }
+    document.body.removeChild(tempContainer);
 
-                @page {
-                  size: landscape;
-                  margin-top: 0;
-                  margin-bottom: 0;
-                  margin-right: 4em;
-                  margin-left: 4em;
-                }
-
-                body {
-                  font-family: sans-serif;
-                  font-size: 30px;
-                  letter-spacing: -0.01em;
-                  line-height: 1;
-                  padding: 0;
-                  margin: 0;
-                  color: rgb(83, 160, 82);
-                }
-
-                .print-page {
-                  page-break-after: always;
-                  padding: 2em;
-                  box-sizing: border-box;
-                  height: 100vh;
-                }
-
-                .page-columns {
-                  column-count: 2;
-                  column-gap: 1em;
-                  column-fill: auto;
-                  height: 100%;
-                }
-
-                .flowers-font.page-columns {
-                  column-count: 2; 
-                  column-fill: auto;
-                  break-inside: avoid;
-                  overflow-wrap: break-word;
-                  word-break: break-word;
-                  padding-right: 0;
-                }
-
-                .message-404 {
-                  font-family: 'Flowers';
-                  font-size: 75px;
-                  letter-spacing: 0em;
-                  line-height: 0.75;
-                }
-
-                h1 {
-                  font-family: monospace;
-                  font-size: 11px;
-                  margin-bottom: 0.2em;
-                }
-
-                .meta {
-                  font-family: monospace;
-                  font-size: 10px;
-                  margin-bottom: 1em;
-                }
-
-                .body {
-                  font-size: 10px;
-                  margin-bottom: 0.5em;
-                }
-
-                .tag-button {
-                  display: inline-block;
-                  padding: 0.1em 0.4em;
-                  margin: 0.2em 0.2em 0.2em 0;
-                  font-size: 10px;
-                  font-family: monospace;
-                  border: 1px solid rgb(83, 160, 82);
-                  border-radius: 6px;
-                  background-color: transparent;
-                  color: rgb(83, 160, 82);
-                  text-transform: lowercase;
-                  cursor: default;
-                }
-              </style>
-            </head>
-            <body>
-              ${pagesHtml}
-            </body>
-          </html>
-        `;
-
-      
+    const printContent = `
+      <html>
+        <head>
+          <title>Print Message Entry</title>
+          <style>
+            @font-face {
+              font-family: 'Flowers';
+              src: url('https://enyajpan.github.io/in-case-of-loss/assets/flowers.otf') format('opentype');
+            }
+            .flowers-font {
+              font-family: 'Flowers', sans-serif;
+              font-size: 75px;
+              line-height: 0.75;
+            }
+            @page {
+              size: landscape;
+              margin-top: 0;
+              margin-bottom: 0;
+              margin-right: 4em;
+              margin-left: 4em;
+            }
+            body {
+              font-family: sans-serif;
+              font-size: 30px;
+              letter-spacing: -0.01em;
+              line-height: 1;
+              padding: 0;
+              margin: 0;
+              color: rgb(83, 160, 82);
+            }
+            .print-page {
+              page-break-after: always;
+              padding: 2em;
+              box-sizing: border-box;
+              height: 100vh;
+            }
+            .page-columns {
+              column-count: 2;
+              column-gap: 1em;
+              column-fill: auto;
+              height: 100%;
+            }
+            .flowers-font.page-columns {
+              column-count: 2;
+              column-fill: auto;
+              break-inside: avoid;
+              overflow-wrap: break-word;
+              word-break: break-word;
+              padding-right: 0;
+            }
+            .message-404 {
+              font-family: 'Flowers';
+              font-size: 75px;
+              letter-spacing: 0em;
+              line-height: 0.75;
+            }
+            h1 {
+              font-family: monospace;
+              font-size: 11px;
+              margin-bottom: 0.2em;
+            }
+            .meta {
+              font-family: monospace;
+              font-size: 10px;
+              margin-bottom: 1em;
+            }
+            .body {
+              font-size: 10px;
+              margin-bottom: 0.5em;
+            }
+            .tag-button {
+              display: inline-block;
+              padding: 0.1em 0.4em;
+              margin: 0.2em 0.2em 0.2em 0;
+              font-size: 10px;
+              font-family: monospace;
+              border: 1px solid rgb(83, 160, 82);
+              border-radius: 6px;
+              background-color: transparent;
+              color: rgb(83, 160, 82);
+              text-transform: lowercase;
+              cursor: default;
+            }
+          </style>
+        </head>
+        <body>
+          ${pagesHtml}
+        </body>
+      </html>
+    `;
 
     const printWindow = window.open('', '', 'width=1000,height=800');
     printWindow.document.open();
@@ -614,3 +596,4 @@ $(document).on('click', '.print-button', function () {
     printButton.style.opacity = "1";
   }, 300);
 });
+
