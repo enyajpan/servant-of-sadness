@@ -51,7 +51,9 @@ function highlightKeywords(text) {
       if (tag) return tag;
       if (paren) return `<span style="color: rgb(241, 137, 220);">${paren}</span>`;
       if (semicolon) return `<span style="color: rgb(169, 169, 170);">${semicolon}</span>`;
-    });    
+      if (number) return `<span style="color: rgb(83, 160, 82);">${number}</span>`;
+      return match; // fallback
+    });     
   }
 
   function makeLinks() {
@@ -459,10 +461,26 @@ $(document).on('click', '.print-button', function () {
         const messageDiv = document.createElement("div");
         messageDiv.innerHTML = messageHtml;
 
-        // Split into paragraph blocks (preserve line breaks)
-        const paragraphs = messageHtml.split(/<br\s*\/?>/gi)
-          .map(p => p.trim())
-          .filter(p => p.length > 0);
+        // Parse messageHtml into a container for manipulation
+        const tempParser = document.createElement("div");
+        tempParser.innerHTML = messageHtml;
+
+        // Extract paragraph-like blocks without extra breaks
+        const paragraphs = [];
+        tempParser.childNodes.forEach(node => {
+          if (
+            node.nodeType === Node.ELEMENT_NODE &&
+            !(node.tagName === "BR") &&
+            node.outerHTML.trim()
+          ) {
+            paragraphs.push(node.outerHTML.trim());
+          } else if (
+            node.nodeType === Node.TEXT_NODE &&
+            node.textContent.trim()
+          ) {
+            paragraphs.push(node.textContent.trim());
+          }
+        });
 
         // Prepare wrapper for font
         const messageWrapperStart = is404 ? '<div class="flowers-font">' : '';
@@ -498,7 +516,7 @@ $(document).on('click', '.print-button', function () {
           }
         }
 
-        // Close final page
+        // close final page
         pagesHtml += `
           <div class="print-page">
             <div class="page-columns ${is404 ? 'flowers-font' : ''}">
@@ -510,10 +528,7 @@ $(document).on('click', '.print-button', function () {
           </div>
         `;
 
-
-
         document.body.removeChild(tempContainer);
-
 
         // Now inject everything into the print window
         const printContent = `
