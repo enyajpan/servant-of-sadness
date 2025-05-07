@@ -271,42 +271,6 @@ $(document).ready(function () {
     $("#thank-you-popup").fadeOut(100);
   });
 
-  /* // Scramble on hover
-  $(document).on('mouseenter', '.scramble-paragraph', function () {
-    const el = this;
-
-    if (!el.dataset.originalText) {
-      el.dataset.originalText = el.textContent;
-    }
-
-    const originalText = el.dataset.originalText;
-    const chars = Array.from(new Set(originalText.replace(/\s/g, '').split(''))).join('');
-    const duration = 300;
-    const steps = 8;
-    let frame = 0;
-
-    const scrambleInterval = setInterval(() => {
-      let output = '';
-      for (let i = 0; i < originalText.length; i++) {
-        if (frame > steps) {
-          output += originalText[i];
-        } else if (Math.random() < frame / steps) {
-          output += originalText[i];
-        } else {
-          output += chars[Math.floor(Math.random() * chars.length)];
-        }
-      }
-
-      el.textContent = output;
-      frame++;
-
-      if (frame > steps) {
-        clearInterval(scrambleInterval);
-        el.textContent = originalText;
-      }
-    }, duration / steps);
-  }); */
-
   $(document).on("click", ".tag-button", function () {
     const label = $(this).data("label");
     alert(`You clicked label: ${label}`);
