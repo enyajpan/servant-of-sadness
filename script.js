@@ -431,7 +431,7 @@ $(document).on('click', '.print-button', function () {
 
     const number = $entry.find('.column.number').text().trim();
     const messageHtml = $entry.find('.column.message').html();
-    const messageText = $('<div>').html(messageHtml).text(); // convert HTML to plain text
+    const messageText = '';
     const author = $entry.find('.author-name').text().trim();
     const timestamp = $entry.find('.column.timestamp').html();
     const subjectLine = $('#sidebar-scroll .index-entry')
@@ -461,7 +461,9 @@ $(document).on('click', '.print-button', function () {
         messageDiv.className = `message ${is404 ? 'message-404' : ''}`;
 
         // Split into paragraph blocks
-        const paragraphs = Array.from(messageDiv.querySelectorAll("span, p, div, br"));
+        const paragraphs = Array.from(messageDiv.innerHTML.split(/<br\s*\/?>/gi))
+          .map(p => p.trim())
+          .filter(p => p.length > 0);
 
         // Start paginated pages
         let pagesHtml = "";
@@ -475,10 +477,10 @@ $(document).on('click', '.print-button', function () {
         document.body.appendChild(tempContainer);
 
         for (let i = 0; i < paragraphs.length; i++) {
-          const el = paragraphs[i].cloneNode(true);
-          tempContainer.innerHTML = currentPageContent + el.outerHTML;
-          
-          if (tempContainer.scrollHeight > 800) { // ~ landscape height in px
+          const elHtml = paragraphs[i];
+          tempContainer.innerHTML = currentPageContent + elHtml;
+        
+          if (tempContainer.scrollHeight > 800) {
             pagesHtml += `
               <div class="print-page">
                 <div class="page-columns">
@@ -486,11 +488,12 @@ $(document).on('click', '.print-button', function () {
                 </div>
               </div>
             `;
-            currentPageContent = el.outerHTML;
+            currentPageContent = elHtml;
           } else {
-            currentPageContent += el.outerHTML;
+            currentPageContent += elHtml;
           }
         }
+        
         pagesHtml += `
           <div class="print-page">
             <div class="page-columns">
@@ -561,6 +564,11 @@ $(document).on('click', '.print-button', function () {
                   font-family: monospace;
                   font-size: 10px;
                   margin-bottom: 1em;
+                }
+
+                .body {
+                  font-size: 10px;
+                  margin-bottom: 0.5em;
                 }
 
                 .tag-button {
