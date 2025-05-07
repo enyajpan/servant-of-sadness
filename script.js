@@ -387,27 +387,21 @@ document.addEventListener("DOMContentLoaded", () => {
 /* print button logic */
 $(document).on('click', '.print-button', function () {
   const printButton = this;
-
   printButton.textContent = "Preparing your print...";
   printButton.disabled = true;
   printButton.style.opacity = "0.6";
 
   setTimeout(() => {
     const $entry = $(printButton).closest('.entry-line');
-
     const number = $entry.find('.column.number').text().trim();
     const messageHtml = $entry.find('.column.message').html();
     const author = $entry.find('.author-name').text().trim();
     const timestamp = $entry.find('.column.timestamp').html();
     const subjectLine = $('#sidebar-scroll .index-entry')
       .filter((_, el) => $(el).data('number') === number)
-      .text()
-      .replace(number, '')
-      .trim();
+      .text().replace(number, '').trim();
     const labels = $entry.find('.tag-button').map((_, el) => $(el).text()).get().join(', ');
-
     const is404 = $entry.find('.column.message').hasClass('message-404');
-    const bodyClass = is404 ? 'flowers-font' : '';
 
     const labelsHtml = labels
       .split(',')
@@ -421,46 +415,33 @@ $(document).on('click', '.print-button', function () {
       <div style="margin-bottom: 1em;"></div>
     `;
 
+    const messageLines = messageHtml.split(/<br\s*\/?>/gi).map(line => line.trim());
     const messageWrapperStart = is404 ? '<div class="flowers-font">' : '';
     const messageWrapperEnd = is404 ? '</div>' : '';
 
-    // Parse messageHtml and split into lines with spacer for double returns
-    const tempParser = document.createElement("div");
-    tempParser.innerHTML = messageHtml;
-
-    const lines = [];
-    let lastWasBreak = false;
-
-    tempParser.childNodes.forEach((node) => {
-      if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "BR") {
-        if (lastWasBreak) {
-          lines.push('<div style="margin-bottom: 1.5em;"></div>');
-          lastWasBreak = false;
-        } else {
-          lastWasBreak = true;
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE) {
-        const html = node.outerHTML || node.textContent;
-        if (html && html.trim()) {
-          lines.push(`<div>${html.trim()}</div>`);
-          lastWasBreak = false;
-        }
-      }
-    });
-
-    // Paginate line-by-line
     let pagesHtml = "";
     let currentPageContent = pageHeader + messageWrapperStart;
     const tempContainer = document.createElement("div");
-    tempContainer.style.position = "absolute";
-    tempContainer.style.visibility = "hidden";
-    tempContainer.style.width = "1000px";
-    tempContainer.style.columnCount = "2";
-    tempContainer.style.fontSize = "2rem";
+    Object.assign(tempContainer.style, {
+      position: "absolute",
+      visibility: "hidden",
+      width: "1000px",
+      columnCount: "2",
+      fontSize: "2rem"
+    });
     document.body.appendChild(tempContainer);
 
-    lines.forEach(line => {
-      tempContainer.innerHTML = currentPageContent + line;
+    let lastLineEmpty = false;
+    for (let line of messageLines) {
+      let htmlLine;
+      if (!line) {
+        // Double return = spacer
+        htmlLine = '<div class="paragraph-spacer"></div>';
+      } else {
+        htmlLine = `<div>${line}</div>`;
+      }
+
+      tempContainer.innerHTML = currentPageContent + htmlLine;
       if (tempContainer.scrollHeight > 800) {
         pagesHtml += `
           <div class="print-page">
@@ -470,11 +451,11 @@ $(document).on('click', '.print-button', function () {
             </div>
           </div>
         `;
-        currentPageContent = messageWrapperStart + line;
+        currentPageContent = messageWrapperStart + htmlLine;
       } else {
-        currentPageContent += line;
+        currentPageContent += htmlLine;
       }
-    });
+    }
 
     pagesHtml += `
       <div class="print-page">
@@ -503,20 +484,20 @@ $(document).on('click', '.print-button', function () {
               font-size: 75px;
               line-height: 0.75;
             }
+            .paragraph-spacer {
+              height: 1.5em;
+            }
             @page {
               size: landscape;
-              margin-top: 0;
-              margin-bottom: 0;
-              margin-right: 4em;
-              margin-left: 4em;
+              margin: 0 4em;
             }
             body {
               font-family: sans-serif;
               font-size: 30px;
               letter-spacing: -0.01em;
               line-height: 1;
-              padding: 0;
               margin: 0;
+              padding: 0;
               color: rgb(83, 160, 82);
             }
             .print-page {
@@ -528,22 +509,11 @@ $(document).on('click', '.print-button', function () {
             .page-columns {
               column-count: 2;
               column-gap: 1em;
-              column-fill: auto;
               height: 100%;
             }
             .flowers-font.page-columns {
-              column-count: 2;
-              column-fill: auto;
-              break-inside: avoid;
               overflow-wrap: break-word;
               word-break: break-word;
-              padding-right: 0;
-            }
-            .message-404 {
-              font-family: 'Flowers';
-              font-size: 75px;
-              letter-spacing: 0em;
-              line-height: 0.75;
             }
             h1 {
               font-family: monospace;
@@ -574,9 +544,7 @@ $(document).on('click', '.print-button', function () {
             }
           </style>
         </head>
-        <body>
-          ${pagesHtml}
-        </body>
+        <body>${pagesHtml}</body>
       </html>
     `;
 
