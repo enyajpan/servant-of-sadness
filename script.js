@@ -22,6 +22,7 @@ let sortDescending = true;
 function highlightKeywords(text) {
   // Apply word/phrase replacements first (before tag conflicts)
   let highlighted = text
+    .replace(/([A-Z]{2,}(?:'[A-Z]{1,2})?)/g, '<span style="color:rgb(63,193,64); font-style: italic; font-size: 80%;">$1</span>')
     .replace(/(I['’` ]?m sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
     .replace(/(sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
     .replace(/(I miss you)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
@@ -45,7 +46,6 @@ function highlightKeywords(text) {
     .replace(/\b(you)\b/gi, '<span style="color: rgb(124, 77, 255);">$1</span>')
     .replace(/\b(us)\b/gi, '<span style="color: rgb(250, 39, 142);">$1</span>')
     .replace(/\b(we)\b/gi, '<span style="color: rgb(0, 190, 196);">$1</span>')
-    .replace(/\b([A-Z]{2,})\b/g, '<span style="color:rgb(63,193,64); font-size: 80%;">$1</span>')
   
     // Apply special character highlighting *outside* of existing tags
     return highlighted.replace(/(<[^>]+>)|([()])|(;)|(\d+)/g, (match, tag, paren, semicolon, number) => {
@@ -56,6 +56,12 @@ function highlightKeywords(text) {
       return match; // fallback
     });     
   }
+
+  function insertSoftHyphens(text) {
+    return text.replace(/\b([a-z]{8,})\b/g, word =>
+      word.replace(/(.{4})/g, "$1&shy;")
+    );
+  }  
 
   function makeLinks() {
     const sortDirection = sortDescending ? "desc" : "asc";
@@ -434,13 +440,9 @@ $(document).on('click', '.print-button', function () {
 
     let lastLineEmpty = false;
     for (let line of messageLines) {
-      let htmlLine;
-      if (!line) {
-        // Double return = spacer
-        htmlLine = '<div class="paragraph-spacer"></div>';
-      } else {
-        htmlLine = `<div>${line}</div>`;
-      }
+      const htmlLine = line
+        ? `<div class="message-body">${insertSoftHyphens(line)}</div>`
+        : '<div class="paragraph-spacer"></div>';
 
       tempContainer.innerHTML = currentPageContent + htmlLine;
       if (tempContainer.scrollHeight > 800) {
@@ -463,8 +465,7 @@ $(document).on('click', '.print-button', function () {
         <div class="page-columns ${is404 ? 'flowers-font' : ''}">
           ${currentPageContent}
           ${messageWrapperEnd}
-          <hr style="border: none; border-top: 1px dashed rgba(0,0,0,0.2); margin: 1em 0;">
-          <div class="meta">Posted: ${timestamp}</div>
+          <div class="meta message-body">${timestamp}</div>
         </div>
       </div>
     `;
@@ -472,7 +473,7 @@ $(document).on('click', '.print-button', function () {
     document.body.removeChild(tempContainer);
 
     const printContent = `
-      <html>
+      <html lang="en">
         <head>
           <title>Print Message Entry</title>
           <style>
@@ -487,24 +488,34 @@ $(document).on('click', '.print-button', function () {
             body {
               font-family: sans-serif;
               font-size: 30px; /* Static message text size */
-              line-height: 0.9;
+              line-height: 0.85;
               letter-spacing: -0.01em;
               margin: 0;
               padding: 0;
               color: rgb(83, 160, 82);
-              text-align: left;
+              text-align: justify;
             }
             .print-page {
               page-break-after: always;
               padding: 0;
               box-sizing: border-box;
               height: 100vh;
+              background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: cover;
             }
             .page-columns {
               column-count: 2;
               column-gap: 1em;
               height: 100%;
-              text-align: left;
+              text-align: justify !important;
+            }
+            .page-columns div {
+              hyphens: auto;
+              -webkit-hyphens: auto;
+              -ms-hyphens: auto;
+              word-break: break-word;
             }
             .flowers-font {
               font-family: 'Flowers', sans-serif;
@@ -516,29 +527,32 @@ $(document).on('click', '.print-button', function () {
             .meta,
             .body,
             .tag-button {
-              font-size: 11px !important; 
+              font-size: 12px !important; 
               text-align: left !important;
             }
             h1 {
               font-family: monospace;
-              font-size: 11px !important;
-              margin: 0 0 0.2em 0;
+              font-size: 12px !important;
+              margin: 0 0 0 0;
             }
             .meta {
               font-family: monospace;
-              font-size: 11px !important;
-              margin-bottom: 1em;
+              font-size: 12px !important;
             }
             .body {
-              font-size: 11px !important;
-              margin-bottom: 0.5em;
+              font-size: 12px !important;
+              margin-top: 0.5em;
+              margin-left: 0.2in;
+            }
+            .message-body {
+              margin-left: 0.55in;
             }
             .tag-button {
               display: inline-block;
-              padding: 0.1em 0.4em;
-              margin: 0.2em 0.2em 0.2em 0;
+              padding: 0.1em 0.2em;
+              margin-left: 0.4in;
               font-family: monospace;
-              font-size: 11px !important;
+              font-size: 10px !important;
               border: 0.5px solid rgb(83, 160, 82);
               border-radius: 4px;
               background-color: transparent;
