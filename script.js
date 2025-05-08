@@ -45,13 +45,14 @@ function highlightKeywords(text) {
     .replace(/\b(you)\b/gi, '<span style="color: rgb(124, 77, 255);">$1</span>')
     .replace(/\b(us)\b/gi, '<span style="color: rgb(250, 39, 142);">$1</span>')
     .replace(/\b(we)\b/gi, '<span style="color: rgb(0, 190, 196);">$1</span>')
+    .replace(/\b([A-Z]{2,})\b/g, '<span style="color:rgb(63,193,64); font-size: 80%;">$1</span>')
   
     // Apply special character highlighting *outside* of existing tags
     return highlighted.replace(/(<[^>]+>)|([()])|(;)|(\d+)/g, (match, tag, paren, semicolon, number) => {
       if (tag) return tag;
       if (paren) return `<span style="color: rgb(241, 137, 220);">${paren}</span>`;
       if (semicolon) return `<span style="color: rgb(169, 169, 170);">${semicolon}</span>`;
-      if (number) return `<span style="color: rgb(83, 160, 82);">${number}</span>`;
+      if (number) return `<span style="color: rgb(255, 109, 17);">${number}</span>`;
       return match; // fallback
     });     
   }
@@ -479,30 +480,23 @@ $(document).on('click', '.print-button', function () {
               font-family: 'Flowers';
               src: url('https://enyajpan.github.io/in-case-of-loss/assets/flowers.otf') format('opentype');
             }
-            .flowers-font {
-              font-family: 'Flowers', sans-serif;
-              font-size: 75px;
-              line-height: 0.75;
-            }
-            .paragraph-spacer {
-              height: 1.5em;
-            }
             @page {
               size: landscape;
-              margin: 0 4em;
+              margin: 0.25in 1in;
             }
             body {
               font-family: sans-serif;
-              font-size: 30px;
+              font-size: 30px; /* Static message text size */
+              line-height: 0.9;
               letter-spacing: -0.01em;
-              line-height: 1;
               margin: 0;
               padding: 0;
               color: rgb(83, 160, 82);
+              text-align: left;
             }
             .print-page {
               page-break-after: always;
-              padding: 2em;
+              padding: 0;
               box-sizing: border-box;
               height: 100vh;
             }
@@ -510,39 +504,54 @@ $(document).on('click', '.print-button', function () {
               column-count: 2;
               column-gap: 1em;
               height: 100%;
+              text-align: left;
             }
-            .flowers-font.page-columns {
-              overflow-wrap: break-word;
+            .flowers-font {
+              font-family: 'Flowers', sans-serif;
+              font-size: 75px;
+              line-height: 0.75;
               word-break: break-word;
+            }
+            h1,
+            .meta,
+            .body,
+            .tag-button {
+              font-size: 11px !important; 
+              text-align: left !important;
             }
             h1 {
               font-family: monospace;
-              font-size: 11px;
-              margin-bottom: 0.2em;
+              font-size: 11px !important;
+              margin: 0 0 0.2em 0;
             }
             .meta {
               font-family: monospace;
-              font-size: 10px;
+              font-size: 11px !important;
               margin-bottom: 1em;
             }
             .body {
-              font-size: 10px;
+              font-size: 11px !important;
               margin-bottom: 0.5em;
             }
             .tag-button {
               display: inline-block;
               padding: 0.1em 0.4em;
               margin: 0.2em 0.2em 0.2em 0;
-              font-size: 10px;
               font-family: monospace;
-              border: 1px solid rgb(83, 160, 82);
-              border-radius: 6px;
+              font-size: 11px !important;
+              border: 0.5px solid rgb(83, 160, 82);
+              border-radius: 4px;
               background-color: transparent;
               color: rgb(83, 160, 82);
               text-transform: lowercase;
               cursor: default;
             }
+            .print-page div {
+              margin-bottom: 0.5em;
+            }
+
           </style>
+
         </head>
         <body>${pagesHtml}</body>
       </html>
