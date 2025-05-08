@@ -499,7 +499,7 @@ $(document).on('click', '.print-button', function () {
               page-break-after: always;
               padding: 0;
               box-sizing: border-box;
-              height: 100vh;
+              height: 100%;
               background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
               background-repeat: no-repeat;
               background-position: center center;
