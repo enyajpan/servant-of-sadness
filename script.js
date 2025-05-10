@@ -465,6 +465,7 @@ $(document).on('click', '.print-button', function () {
         <div class="page-columns ${is404 ? 'flowers-font' : ''}">
           ${currentPageContent}
           ${messageWrapperEnd}
+          <div>
           <div class="meta message-body">${timestamp}</div>
         </div>
       </div>
@@ -545,12 +546,18 @@ $(document).on('click', '.print-button', function () {
               margin-top: 0.5em;
               margin-left: 0.2in;
             }
+            .timestamp-meta {
+              font-family: monospace;
+              font-size: 12px !important;
+              margin-top: 3em;
+            }
+
             .message-body {
               margin-left: 0.55in;
             }
             .tag-button {
               display: inline-block;
-              padding: 0.1em 0.2em;
+              padding: 0em 0.1em;
               margin-left: 0.4in;
               font-family: monospace;
               font-size: 10px !important;
