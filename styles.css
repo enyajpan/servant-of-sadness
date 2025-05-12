@@ -26,6 +26,13 @@ body, html {
   background-color: rgb(226,228,235);
 }
 
+body {
+  background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
 * {
   box-sizing: border-box;
 }
