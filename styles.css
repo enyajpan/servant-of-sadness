@@ -26,13 +26,6 @@ body, html {
   background-color: rgb(226,228,235);
 }
 
-body {
-  background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -1284,12 +1277,4 @@ i {
 }
 #scroll-to-top-button:hover {
   font-style: italic;
-}
-
-@media print {
-  body {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    background-color: transparent;
-  }
 }
