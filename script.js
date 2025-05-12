@@ -512,6 +512,7 @@ $(document).on('click', '.print-button', function () {
               column-gap: 1em;
               height: 100%;
               text-align: justify !important;
+              column-fill: auto;
             }
             .page-columns div {
               hyphens: auto;
