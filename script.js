@@ -465,7 +465,7 @@ $(document).on('click', '.print-button', function () {
         <div class="page-columns ${is404 ? 'flowers-font' : ''}">
           ${currentPageContent}
           ${messageWrapperEnd}
-          <div class="meta message-body">${timestamp}</div>
+          <div class="meta timestamp-meta">${timestamp}</div>
         </div>
       </div>
     `;
@@ -509,8 +509,12 @@ $(document).on('click', '.print-button', function () {
             .page-columns {
               column-count: 2;
               column-gap: 1em;
+              column-fill: auto;
               height: 100%;
               text-align: justify !important;
+            }
+            .page-columns:not(.flowers-font) {
+              font-size: 30px;
             }
             .page-columns div {
               hyphens: auto;
@@ -520,7 +524,7 @@ $(document).on('click', '.print-button', function () {
             }
             .flowers-font {
               font-family: 'Flowers', sans-serif;
-              font-size: 75px;
+              font-size: 75px !important;
               line-height: 0.75;
               word-break: break-word;
             }
@@ -540,6 +544,10 @@ $(document).on('click', '.print-button', function () {
               font-family: monospace;
               font-size: 12px !important;
             }
+            .meta.timestamp-meta {
+              margin-left: 0.55in;
+              margin-top: 3em;
+            }
             .body {
               font-size: 12px !important;
               margin-top: 0.5em;
@@ -547,6 +555,10 @@ $(document).on('click', '.print-button', function () {
             }
             .message-body {
               margin-left: 0.55in;
+            }
+            .page-columns:not(.flowers-font) .message-body {
+              font-size: 30px !important;
+              line-height: 0.85 !important;
             }
             .tag-button {
               display: inline-block;
