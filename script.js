@@ -471,10 +471,10 @@ function printRegularEntry($entry, printButton) {
       const testLine = (line + ' ' + words[i]).trim();
       tempContainer.innerHTML = currentPageContent + `<div class="message-body">${testLine}</div>`;
       const fitsInColumns = tempContainer.scrollHeight <= tempContainer.offsetHeight;
-
+    
       if (!fitsInColumns) {
         pagesHtml += `<div class="print-page"><div class="page-columns">${currentPageContent}</div></div>`;
-        currentPageContent = `<div class="message-body">${words[i]}</div>`;
+        currentPageContent = pageHeader + `<div class="message-body">${words[i]}</div>`; // ✅ fix
         line = '';
       } else {
         line = testLine;
