@@ -433,74 +433,63 @@ function printRegularEntry($entry, printButton) {
     <div style="margin-bottom: 1em;"></div>
   `;
 
-  const tempContainer = document.createElement("div");
-  Object.assign(tempContainer.style, {
+  // Create print pages
+  let pagesHtml = "";
+  const pageContents = [];
+  let currentContent = "";
+  const temp = document.createElement("div");
+
+  Object.assign(temp.style, {
     position: "absolute",
     visibility: "hidden",
     width: "1000px",
     height: "800px",
     columnCount: "2",
     fontSize: "30px",
-    lineHeight: "0.85"
+    lineHeight: "0.85",
+    padding: "0.3in 1in",
+    boxSizing: "border-box",
+    whiteSpace: "normal",
   });
-  document.body.appendChild(tempContainer);
 
-  let pagesHtml = "";
-  let currentPageContent = pageHeader;
-  const paragraphs = messageHtml.split(/<br\s*\/?>/gi);
-  let isFirstPage = true;
+  document.body.appendChild(temp);
 
-  const flushPage = () => {
-    pagesHtml += `
-      <div class="print-page">
-        <div class="page-columns">
-          ${currentPageContent}
-        </div>
-      </div>
-    `;
-    currentPageContent = pageHeader;
-    isFirstPage = false;
+  const addPage = () => {
+    pageContents.push(currentContent);
+    currentContent = "";
   };
 
+  const paragraphs = messageHtml.split(/<br\s*\/?>/gi);
+
   for (let paragraph of paragraphs) {
-    if (!paragraph.trim()) {
-      const spacer = '<div class="paragraph-spacer"></div>';
-      tempContainer.innerHTML = currentPageContent + spacer;
-      if (tempContainer.scrollHeight > tempContainer.offsetHeight) {
-        flushPage();
-        currentPageContent += spacer;
-      } else {
-        currentPageContent += spacer;
-      }
-      continue;
-    }
+    const html = paragraph.trim()
+      ? `<div class="message-body">${paragraph.trim()}</div>`
+      : '<div class="paragraph-spacer"></div>';
 
-    const words = paragraph.split(/\s+/);
-    let line = '';
+    temp.innerHTML = currentContent + html;
 
-    for (let i = 0; i < words.length; i++) {
-      const testLine = (line + ' ' + words[i]).trim();
-      const testHtml = currentPageContent + `<div class="message-body">${testLine}</div>`;
-      tempContainer.innerHTML = testHtml;
-
-      if (tempContainer.scrollHeight > tempContainer.offsetHeight) {
-        flushPage();
-        line = words[i];
-        currentPageContent += `<div class="message-body">${line}</div>`;
-        line = '';
-      } else {
-        line = testLine;
-        if (i === words.length - 1) {
-          currentPageContent += `<div class="message-body">${line}</div>`;
-        }
-      }
+    if (temp.scrollHeight > temp.offsetHeight) {
+      addPage();
+      currentContent += html;
+    } else {
+      currentContent += html;
     }
   }
 
-  // Final page with timestamp at the bottom
-  currentPageContent += `<div class="meta message-body">${timestamp}</div>`;
-  flushPage();
-  document.body.removeChild(tempContainer);
+  // Add timestamp at the end
+  currentContent += `<div class="meta message-body">${timestamp}</div>`;
+  addPage();
+  document.body.removeChild(temp);
+
+  // Build final HTML with pageHeader
+  pagesHtml = pageContents.map((content, idx) => `
+    <div class="print-page">
+      <div class="page-columns">
+        ${idx === 0 ? pageHeader : ''}
+        ${content}
+      </div>
+    </div>
+  `).join('');
 
   const printWindow = window.open('', '', 'width=1000,height=800');
   printWindow.document.open();
@@ -540,8 +529,6 @@ function printRegularEntry($entry, printButton) {
           }
           .page-columns div {
             hyphens: auto;
-            -webkit-hyphens: auto;
-            -ms-hyphens: auto;
             word-break: break-word;
           }
           h1, .meta, .body, .tag-button {
@@ -551,7 +538,7 @@ function printRegularEntry($entry, printButton) {
           h1 {
             font-family: monospace;
             font-size: 12px !important;
-            margin: 0 0 0 0;
+            margin: 0;
           }
           .meta {
             font-family: monospace;
@@ -596,6 +583,7 @@ function printRegularEntry($entry, printButton) {
     printButton.style.opacity = "1";
   }, 300);
 }
+
 
 
 
