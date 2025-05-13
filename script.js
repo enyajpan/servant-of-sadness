@@ -500,7 +500,7 @@ $(document).on('click', '.print-button', function () {
               padding: 0;
               box-sizing: border-box;
               width: 100%;
-              background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
+              background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg.png');
               background-repeat: no-repeat;
               background-position: center center;
               background-size: cover;
