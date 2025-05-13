@@ -423,11 +423,9 @@ $(document).on('click', '.print-button', function () {
     `;
 
     const messageLines = messageHtml.split(/<br\s*\/?>/gi).map(line => line.trim());
-    const messageWrapperStart = is404 ? '<div class="flowers-font">' : '';
-    const messageWrapperEnd = is404 ? '</div>' : '';
 
     let pagesHtml = "";
-    let currentPageContent = pageHeader + messageWrapperStart;
+    let currentPageContent = pageHeader;
     const tempContainer = document.createElement("div");
     Object.assign(tempContainer.style, {
       position: "absolute",
@@ -450,11 +448,10 @@ $(document).on('click', '.print-button', function () {
           <div class="print-page">
             <div class="page-columns ${is404 ? 'flowers-font' : ''}">
               ${currentPageContent}
-              ${messageWrapperEnd}
             </div>
           </div>
         `;
-        currentPageContent = messageWrapperStart + htmlLine;
+        currentPageContent = pageHeader + htmlLine;
       } else {
         currentPageContent += htmlLine;
       }
@@ -464,8 +461,6 @@ $(document).on('click', '.print-button', function () {
       <div class="print-page">
         <div class="page-columns ${is404 ? 'flowers-font' : ''}">
           ${currentPageContent}
-          ${messageWrapperEnd}
-          <div>
           <div class="meta message-body">${timestamp}</div>
         </div>
       </div>
