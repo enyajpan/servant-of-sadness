@@ -588,6 +588,20 @@ i {
   font-style: italic;
 }
 
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html, body {
+    width: 11in;
+    height: 8.5in;
+    overflow: hidden;
+  }
+}
+
+
 .column.label {
   font-size: 0.9rem;
   flex: 0 0 10%;
