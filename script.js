@@ -425,48 +425,56 @@ $(document).on('click', '.print-button', function () {
     const messageLines = messageHtml.split(/<br\s*\/?>/gi).map(line => line.trim());
 
     let pagesHtml = "";
-    let currentPageContent = pageHeader;
+    let currentPageLines = [];
+
     const tempContainer = document.createElement("div");
     Object.assign(tempContainer.style, {
       position: "absolute",
       visibility: "hidden",
       width: "1000px",
       columnCount: "2",
-      fontSize: "2rem"
+      fontSize: is404 ? "75px" : "30px", // match print styles
+      lineHeight: is404 ? "0.75" : "0.85"
     });
     document.body.appendChild(tempContainer);
 
-    let lastLineEmpty = false;
+    function flushPage() {
+      if (currentPageLines.length > 0) {
+        pagesHtml += `
+          <div class="print-page">
+            <div class="page-columns ${is404 ? 'flowers-font' : ''}">
+              ${currentPageLines.join("")}
+            </div>
+          </div>
+        `;
+        currentPageLines = [];
+      }
+    }
+
+    currentPageLines.push(pageHeader);
+
     for (let line of messageLines) {
       const htmlLine = line
         ? `<div class="message-body">${insertSoftHyphens(line)}</div>`
         : '<div class="paragraph-spacer"></div>';
 
-      tempContainer.innerHTML = currentPageContent + htmlLine;
+      tempContainer.innerHTML = currentPageLines.join("") + htmlLine;
+
       if (tempContainer.scrollHeight > 800) {
-        pagesHtml += `
-          <div class="print-page">
-            <div class="page-columns ${is404 ? 'flowers-font' : ''}">
-              ${currentPageContent}
-            </div>
-          </div>
-        `;
-        currentPageContent = pageHeader + htmlLine;
-      } else {
-        currentPageContent += htmlLine;
+        flushPage();
       }
+
+      currentPageLines.push(htmlLine);
     }
 
-    pagesHtml += `
-      <div class="print-page">
-        <div class="page-columns ${is404 ? 'flowers-font' : ''}">
-          ${currentPageContent}
-          <div class="meta message-body">${timestamp}</div>
-        </div>
-      </div>
-    `;
-
+    flushPage();
     document.body.removeChild(tempContainer);
+
+    // Add timestamp to last page
+    pagesHtml = pagesHtml.replace(
+      /(<div class="page-columns[^>]*>)([\s\S]*?)(<\/div>\s*<\/div>)$/,
+      `$1$2<div class="meta message-body">${timestamp}</div>$3`
+    );
 
     const printContent = `
       <html lang="en">
@@ -483,7 +491,7 @@ $(document).on('click', '.print-button', function () {
             }
             body {
               font-family: sans-serif;
-              font-size: 30px; /* Static message text size */
+              font-size: 30px;
               line-height: 0.85;
               letter-spacing: -0.01em;
               margin: 0;
@@ -493,14 +501,13 @@ $(document).on('click', '.print-button', function () {
             }
             .print-page {
               page-break-after: always;
-              padding: 0;
-              box-sizing: border-box;
               width: 100%;
               height: 100%;
               background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
               background-repeat: no-repeat;
               background-position: center center;
               background-size: cover;
+              box-sizing: border-box;
             }
             .page-columns {
               column-count: 2;
@@ -525,7 +532,7 @@ $(document).on('click', '.print-button', function () {
             .meta,
             .body,
             .tag-button {
-              font-size: 12px !important; 
+              font-size: 12px !important;
               text-align: left !important;
             }
             h1 {
@@ -547,7 +554,6 @@ $(document).on('click', '.print-button', function () {
               font-size: 12px !important;
               margin-top: 3em;
             }
-
             .message-body {
               margin-left: 0.55in;
             }
@@ -567,9 +573,7 @@ $(document).on('click', '.print-button', function () {
             .print-page div {
               margin-bottom: 0.5em;
             }
-
           </style>
-
         </head>
         <body>${pagesHtml}</body>
       </html>
