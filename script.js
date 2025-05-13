@@ -433,10 +433,6 @@ function printRegularEntry($entry, printButton) {
     <div style="margin-bottom: 1em;"></div>
   `;
 
-  let pagesHtml = "";
-  let currentPageContent = "";
-  let isFirstPage = true;
-
   const tempContainer = document.createElement("div");
   Object.assign(tempContainer.style, {
     position: "absolute",
@@ -449,17 +445,30 @@ function printRegularEntry($entry, printButton) {
   });
   document.body.appendChild(tempContainer);
 
+  let pagesHtml = "";
+  let currentPageContent = pageHeader;
   const paragraphs = messageHtml.split(/<br\s*\/?>/gi);
+  let isFirstPage = true;
+
+  const flushPage = () => {
+    pagesHtml += `
+      <div class="print-page">
+        <div class="page-columns">
+          ${currentPageContent}
+        </div>
+      </div>
+    `;
+    currentPageContent = pageHeader;
+    isFirstPage = false;
+  };
 
   for (let paragraph of paragraphs) {
     if (!paragraph.trim()) {
       const spacer = '<div class="paragraph-spacer"></div>';
-      tempContainer.innerHTML = (isFirstPage ? pageHeader : '') + currentPageContent + spacer;
-
+      tempContainer.innerHTML = currentPageContent + spacer;
       if (tempContainer.scrollHeight > tempContainer.offsetHeight) {
-        pagesHtml += `<div class="print-page"><div class="page-columns">${isFirstPage ? pageHeader : ''}${currentPageContent}</div></div>`;
-        currentPageContent = spacer;
-        isFirstPage = false;
+        flushPage();
+        currentPageContent += spacer;
       } else {
         currentPageContent += spacer;
       }
@@ -471,14 +480,14 @@ function printRegularEntry($entry, printButton) {
 
     for (let i = 0; i < words.length; i++) {
       const testLine = (line + ' ' + words[i]).trim();
-      tempContainer.innerHTML = (isFirstPage ? pageHeader : '') + currentPageContent + `<div class="message-body">${testLine}</div>`;
-      const fits = tempContainer.scrollHeight <= tempContainer.offsetHeight;
+      const testHtml = currentPageContent + `<div class="message-body">${testLine}</div>`;
+      tempContainer.innerHTML = testHtml;
 
-      if (!fits) {
-        pagesHtml += `<div class="print-page"><div class="page-columns">${isFirstPage ? pageHeader : ''}${currentPageContent}</div></div>`;
-        currentPageContent = `<div class="message-body">${words[i]}</div>`;
+      if (tempContainer.scrollHeight > tempContainer.offsetHeight) {
+        flushPage();
+        line = words[i];
+        currentPageContent += `<div class="message-body">${line}</div>`;
         line = '';
-        isFirstPage = false;
       } else {
         line = testLine;
         if (i === words.length - 1) {
@@ -488,16 +497,9 @@ function printRegularEntry($entry, printButton) {
     }
   }
 
-  // Final page
-  pagesHtml += `
-    <div class="print-page">
-      <div class="page-columns">
-        ${isFirstPage ? pageHeader : ''}${currentPageContent}
-        <div class="meta message-body">${timestamp}</div>
-      </div>
-    </div>
-  `;
-
+  // Final page with timestamp at the bottom
+  currentPageContent += `<div class="meta message-body">${timestamp}</div>`;
+  flushPage();
   document.body.removeChild(tempContainer);
 
   const printWindow = window.open('', '', 'width=1000,height=800');
@@ -594,6 +596,7 @@ function printRegularEntry($entry, printButton) {
     printButton.style.opacity = "1";
   }, 300);
 }
+
 
 
 /* 404 error entries print container  */
