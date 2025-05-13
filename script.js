@@ -507,7 +507,7 @@ $(document).on('click', '.print-button', function () {
             }
             .page-columns {
               column-count: 2;
-              column-gap: 0em;
+              column-gap: 1em;
               column-fill: auto;
               height: 100%;
               text-align: justify !important;
