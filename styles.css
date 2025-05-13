@@ -568,6 +568,17 @@ i {
   display: block; /* show only on hover or active */
 }
 
+.print-page {
+  page-break-after: always;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
 .print-button {
   font-size: 0.9rem;
   padding: 0 2px;

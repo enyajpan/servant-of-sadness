@@ -475,7 +475,7 @@ $(document).on('click', '.print-button', function () {
     const printContent = `
       <html lang="en">
         <head>
-          <title>Print Message Entry</title>
+          <title>Print Message</title>
           <style>
             @font-face {
               font-family: 'Flowers';
@@ -500,7 +500,6 @@ $(document).on('click', '.print-button', function () {
               padding: 0;
               box-sizing: border-box;
               width: 100%;
-              height: 100%;
               background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
               background-repeat: no-repeat;
               background-position: center center;
@@ -546,6 +545,7 @@ $(document).on('click', '.print-button', function () {
             }
             .meta.timestamp-meta {
               margin-left: 0.55in;
+              line-height: 0.7;
               margin-top: 3em;
             }
             .body {
