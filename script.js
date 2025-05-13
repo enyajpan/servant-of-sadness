@@ -410,6 +410,7 @@ $(document).on('click', '.print-button', function () {
   }, 300);
 });
 
+/* print container for all entries except 404 error */
 function printRegularEntry($entry, printButton) {
   const number = $entry.find('.column.number').text().trim();
   const messageHtml = $entry.find('.column.message').html();
@@ -433,14 +434,15 @@ function printRegularEntry($entry, printButton) {
   `;
 
   let pagesHtml = "";
-  let currentPageContent = pageHeader;
-  
+  let currentPageContent = "";
+  let isFirstPage = true;
+
   const tempContainer = document.createElement("div");
   Object.assign(tempContainer.style, {
     position: "absolute",
     visibility: "hidden",
     width: "1000px",
-    height: "800px", // needed for offsetHeight to work
+    height: "800px",
     columnCount: "2",
     fontSize: "30px",
     lineHeight: "0.85"
@@ -452,30 +454,31 @@ function printRegularEntry($entry, printButton) {
   for (let paragraph of paragraphs) {
     if (!paragraph.trim()) {
       const spacer = '<div class="paragraph-spacer"></div>';
-      tempContainer.innerHTML = currentPageContent + spacer;
-      if (tempContainer.scrollHeight > 800) {
-        pagesHtml += `<div class="print-page"><div class="page-columns">${currentPageContent}</div></div>`;
+      tempContainer.innerHTML = (isFirstPage ? pageHeader : '') + currentPageContent + spacer;
+
+      if (tempContainer.scrollHeight > tempContainer.offsetHeight) {
+        pagesHtml += `<div class="print-page"><div class="page-columns">${isFirstPage ? pageHeader : ''}${currentPageContent}</div></div>`;
         currentPageContent = spacer;
-        line = '';
+        isFirstPage = false;
       } else {
         currentPageContent += spacer;
       }
       continue;
     }
 
-    // Split long paragraph into word-wrapped lines
     const words = paragraph.split(/\s+/);
     let line = '';
 
     for (let i = 0; i < words.length; i++) {
       const testLine = (line + ' ' + words[i]).trim();
-      tempContainer.innerHTML = currentPageContent + `<div class="message-body">${testLine}</div>`;
-      const fitsInColumns = tempContainer.scrollHeight <= tempContainer.offsetHeight;
-    
-      if (!fitsInColumns) {
-        pagesHtml += `<div class="print-page"><div class="page-columns">${currentPageContent}</div></div>`;
-        currentPageContent = pageHeader + `<div class="message-body">${words[i]}</div>`; // ✅ fix
+      tempContainer.innerHTML = (isFirstPage ? pageHeader : '') + currentPageContent + `<div class="message-body">${testLine}</div>`;
+      const fits = tempContainer.scrollHeight <= tempContainer.offsetHeight;
+
+      if (!fits) {
+        pagesHtml += `<div class="print-page"><div class="page-columns">${isFirstPage ? pageHeader : ''}${currentPageContent}</div></div>`;
+        currentPageContent = `<div class="message-body">${words[i]}</div>`;
         line = '';
+        isFirstPage = false;
       } else {
         line = testLine;
         if (i === words.length - 1) {
@@ -485,11 +488,11 @@ function printRegularEntry($entry, printButton) {
     }
   }
 
-  // final page
+  // Final page
   pagesHtml += `
     <div class="print-page">
       <div class="page-columns">
-        ${currentPageContent}
+        ${isFirstPage ? pageHeader : ''}${currentPageContent}
         <div class="meta message-body">${timestamp}</div>
       </div>
     </div>
@@ -501,87 +504,84 @@ function printRegularEntry($entry, printButton) {
   printWindow.document.open();
   printWindow.document.write(`
     <html lang="en">
-        <head>
-          <title>Print Message</title>
-          <style>
-            @page {
-              size: landscape;
-              margin: 0.3in 1in;
-            }
-            body {
-              font-family: sans-serif;
-              font-size: 30px; 
-              line-height: 0.85;
-              letter-spacing: -0.01em;
-              margin: 0;
-              padding: 0;
-              color: rgb(83, 160, 82);
-              text-align: justify;
-            }
-            .print-page {
-              page-break-after: always;
-              padding: 0;
-              width: 100%;
-              height: 100%;
-              background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
-              background-repeat: no-repeat;
-              background-position: center center;
-              background-size: cover;
-              box-sizing: border-box;
-            }
-            .page-columns {
-              column-count: 2;
-              column-gap: 1em;
-              column-fill: auto;
-              height: 100%;
-              text-align: justify !important;
-            }
-            .page-columns div {
-              hyphens: auto;
-              -webkit-hyphens: auto;
-              -ms-hyphens: auto;
-              word-break: break-word;
-            }
-            h1, .meta, .body, .tag-button {
-              font-size: 12px !important; 
-              text-align: left !important;
-            }
-            h1 {
-              font-family: monospace;
-              font-size: 12px !important;
-              margin: 0 0 0 0;
-            }
-            .meta {
-              font-family: monospace;
-              font-size: 12px !important;
-            }
-            .body {
-              font-size: 12px !important;
-              margin-top: 0.5em;
-              margin-left: 0.2in;
-            }
-            .message-body {
-              margin-left: 0.55in;
-            }
-            .tag-button {
-              display: inline-block;
-              padding: 0.1em 0.2em;
-              margin-left: 0.4in;
-              font-family: monospace;
-              font-size: 10px !important;
-              border: 0.5px solid rgb(83, 160, 82);
-              border-radius: 4px;
-              background-color: transparent;
-              color: rgb(83, 160, 82);
-              cursor: default;
-            }
-            .print-page div {
-              margin-bottom: 0.5em;
-            }
-          </style>
-        </head>
-        <body>${pagesHtml}</body>
-      </html>
+      <head>
+        <title>Print Message</title>
+        <style>
+          @page { size: landscape; margin: 0.3in 1in; }
+          body {
+            font-family: sans-serif;
+            font-size: 30px;
+            line-height: 0.85;
+            letter-spacing: -0.01em;
+            margin: 0;
+            padding: 0;
+            color: rgb(83, 160, 82);
+            text-align: justify;
+          }
+          .print-page {
+            page-break-after: always;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            box-sizing: border-box;
+          }
+          .page-columns {
+            column-count: 2;
+            column-gap: 1em;
+            column-fill: auto;
+            height: 100%;
+            text-align: justify !important;
+          }
+          .page-columns div {
+            hyphens: auto;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            word-break: break-word;
+          }
+          h1, .meta, .body, .tag-button {
+            font-size: 12px !important;
+            text-align: left !important;
+          }
+          h1 {
+            font-family: monospace;
+            font-size: 12px !important;
+            margin: 0 0 0 0;
+          }
+          .meta {
+            font-family: monospace;
+            font-size: 12px !important;
+          }
+          .body {
+            font-size: 12px !important;
+            margin-top: 0.5em;
+            margin-left: 0.2in;
+          }
+          .message-body {
+            margin-left: 0.55in;
+          }
+          .tag-button {
+            display: inline-block;
+            padding: 0.1em 0.2em;
+            margin-left: 0.4in;
+            font-family: monospace;
+            font-size: 10px !important;
+            border: 0.5px solid rgb(83, 160, 82);
+            border-radius: 4px;
+            background-color: transparent;
+            color: rgb(83, 160, 82);
+            cursor: default;
+          }
+          .print-page div {
+            margin-bottom: 0.5em;
+          }
+        </style>
+      </head>
+      <body>${pagesHtml}</body>
+    </html>
   `);
   printWindow.document.close();
   printWindow.focus();
@@ -594,6 +594,7 @@ function printRegularEntry($entry, printButton) {
     printButton.style.opacity = "1";
   }, 300);
 }
+
 
 /* 404 error entries print container  */
 function print404Entry($entry, printButton) {
