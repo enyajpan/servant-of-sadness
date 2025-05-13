@@ -488,7 +488,7 @@ $(document).on('click', '.print-button', function () {
             body {
               font-family: sans-serif;
               font-size: 30px; /* Static message text size */
-              line-height: 0.85;
+              line-height: 0.9;
               letter-spacing: -0.01em;
               margin: 0;
               padding: 0;
@@ -507,7 +507,7 @@ $(document).on('click', '.print-button', function () {
             }
             .page-columns {
               column-count: 2;
-              column-gap: 1em;
+              column-gap: 0em;
               column-fill: auto;
               height: 100%;
               text-align: justify !important;
@@ -558,7 +558,7 @@ $(document).on('click', '.print-button', function () {
             }
             .page-columns:not(.flowers-font) .message-body {
               font-size: 30px !important;
-              line-height: 0.85 !important;
+              line-height: 0.9 !important;
             }
             .tag-button {
               display: inline-block;
