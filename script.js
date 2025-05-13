@@ -118,12 +118,12 @@ function highlightKeywords(text) {
                 ${
                   message
                     .split('\n')
-                    .map(p => `<span class="scramble-paragraph">${highlightKeywords(p)}</span>`)
+                    .map(p => `${highlightKeywords(p)}`)
                     .join('<br>')
                 }
               </div>
               <div class="column author">
-                <div class="author-name"><span class="scramble-paragraph">${author}</span></div>
+                <div class="author-name">${author}</div>
                 <div class="print-wrapper"><button class="print-button">Print</button></div>
               </div>
               <div class="column label">
@@ -398,100 +398,119 @@ $(document).on('click', '.print-button', function () {
   printButton.disabled = true;
   printButton.style.opacity = "0.6";
 
+  const $entry = $(printButton).closest('.entry-line');
+  const is404 = $entry.find('.column.message').hasClass('message-404');
+
   setTimeout(() => {
-    const $entry = $(printButton).closest('.entry-line');
-    const number = $entry.find('.column.number').text().trim();
-    const messageHtml = $entry.find('.column.message').html();
-    const author = $entry.find('.author-name').text().trim();
-    const timestamp = $entry.find('.column.timestamp').html();
-    const subjectLine = $('#sidebar-scroll .index-entry')
-      .filter((_, el) => $(el).data('number') === number)
-      .text().replace(number, '').trim();
-    const labels = $entry.find('.tag-button').map((_, el) => $(el).text()).get().join(', ');
-    const is404 = $entry.find('.column.message').hasClass('message-404');
-
-    const labelsHtml = labels
-      .split(',')
-      .map(l => `<button class="tag-button">${l.trim()}</button>`)
-      .join('');
-
-    const pageHeader = `
-      <h1><span style="font-family: monospace;">${number}.</span> <span style="font-family: sans-serif;">${subjectLine || '(No Subject)'}</span></h1>
-      <div class="body">From: <span style="font-family: sans-serif;">${author || 'Anonymous'}</span></div>
-      <div class="meta">${labelsHtml || '<em>None</em>'}</div>
-      <div style="margin-bottom: 1em;"></div>
-    `;
-
-    const messageLines = messageHtml.split(/<br\s*\/?>/gi).map(line => line.trim());
-
-    let pagesHtml = "";
-    let currentPageLines = [];
-
-    const tempContainer = document.createElement("div");
-    Object.assign(tempContainer.style, {
-      position: "absolute",
-      visibility: "hidden",
-      width: "1000px",
-      columnCount: "2",
-      fontSize: is404 ? "75px" : "30px", // match print styles
-      lineHeight: is404 ? "0.75" : "0.85"
-    });
-    document.body.appendChild(tempContainer);
-
-    function flushPage() {
-      if (currentPageLines.length > 0) {
-        pagesHtml += `
-          <div class="print-page">
-            <div class="page-columns ${is404 ? 'flowers-font' : ''}">
-              ${currentPageLines.join("")}
-            </div>
-          </div>
-        `;
-        currentPageLines = [];
-      }
+    if (is404) {
+      print404Entry($entry, printButton);
+    } else {
+      printRegularEntry($entry, printButton);
     }
+  }, 300);
+});
 
-    currentPageLines.push(pageHeader);
+function printRegularEntry($entry, printButton) {
+  const number = $entry.find('.column.number').text().trim();
+  const messageHtml = $entry.find('.column.message').html();
+  const author = $entry.find('.author-name').text().trim();
+  const timestamp = $entry.find('.column.timestamp').html();
+  const subjectLine = $('#sidebar-scroll .index-entry')
+    .filter((_, el) => $(el).data('number') === number)
+    .text().replace(number, '').trim();
+  const labels = $entry.find('.tag-button').map((_, el) => $(el).text()).get().join(', ');
 
-    for (let line of messageLines) {
-      const htmlLine = line
-        ? `<div class="message-body">${insertSoftHyphens(line)}</div>`
-        : '<div class="paragraph-spacer"></div>';
+  const labelsHtml = labels
+    .split(',')
+    .map(l => `<button class="tag-button">${l.trim()}</button>`)
+    .join('');
 
-      tempContainer.innerHTML = currentPageLines.join("") + htmlLine;
+  const pageHeader = `
+    <h1><span style="font-family: monospace;">${number}.</span> <span style="font-family: sans-serif;">${subjectLine || '(No Subject)'}</span></h1>
+    <div class="body">From: <span style="font-family: sans-serif;">${author || 'Anonymous'}</span></div>
+    <div class="meta">${labelsHtml || '<em>None</em>'}</div>
+    <div style="margin-bottom: 1em;"></div>
+  `;
 
+  let pagesHtml = "";
+  let currentPageContent = pageHeader;
+  
+  const tempContainer = document.createElement("div");
+  Object.assign(tempContainer.style, {
+    position: "absolute",
+    visibility: "hidden",
+    width: "1000px",
+    height: "800px", // needed for offsetHeight to work
+    columnCount: "2",
+    fontSize: "30px",
+    lineHeight: "0.85"
+  });
+  document.body.appendChild(tempContainer);
+
+  const paragraphs = messageHtml.split(/<br\s*\/?>/gi);
+
+  for (let paragraph of paragraphs) {
+    if (!paragraph.trim()) {
+      const spacer = '<div class="paragraph-spacer"></div>';
+      tempContainer.innerHTML = currentPageContent + spacer;
       if (tempContainer.scrollHeight > 800) {
-        flushPage();
+        pagesHtml += `<div class="print-page"><div class="page-columns">${currentPageContent}</div></div>`;
+        currentPageContent = spacer;
+        line = '';
+      } else {
+        currentPageContent += spacer;
       }
-
-      currentPageLines.push(htmlLine);
+      continue;
     }
 
-    flushPage();
-    document.body.removeChild(tempContainer);
+    // Split long paragraph into word-wrapped lines
+    const words = paragraph.split(/\s+/);
+    let line = '';
 
-    // Add timestamp to last page
-    pagesHtml = pagesHtml.replace(
-      /(<div class="page-columns[^>]*>)([\s\S]*?)(<\/div>\s*<\/div>)$/,
-      `$1$2<div class="meta message-body">${timestamp}</div>$3`
-    );
+    for (let i = 0; i < words.length; i++) {
+      const testLine = (line + ' ' + words[i]).trim();
+      tempContainer.innerHTML = currentPageContent + `<div class="message-body">${testLine}</div>`;
+      const fitsInColumns = tempContainer.scrollHeight <= tempContainer.offsetHeight;
 
-    const printContent = `
-      <html lang="en">
+      if (!fitsInColumns) {
+        pagesHtml += `<div class="print-page"><div class="page-columns">${currentPageContent}</div></div>`;
+        currentPageContent = `<div class="message-body">${words[i]}</div>`;
+        line = '';
+      } else {
+        line = testLine;
+        if (i === words.length - 1) {
+          currentPageContent += `<div class="message-body">${line}</div>`;
+        }
+      }
+    }
+  }
+
+  // final page
+  pagesHtml += `
+    <div class="print-page">
+      <div class="page-columns">
+        ${currentPageContent}
+        <div class="meta message-body">${timestamp}</div>
+      </div>
+    </div>
+  `;
+
+  document.body.removeChild(tempContainer);
+
+  const printWindow = window.open('', '', 'width=1000,height=800');
+  printWindow.document.open();
+  printWindow.document.write(`
+    <html lang="en">
         <head>
-          <title>Print Message Entry</title>
+          <title>Print Message</title>
           <style>
-            @font-face {
-              font-family: 'Flowers';
-              src: url('https://enyajpan.github.io/in-case-of-loss/assets/flowers.otf') format('opentype');
-            }
             @page {
               size: landscape;
-              margin: 0.25in 1in;
+              margin: 0.3in 1in;
             }
             body {
               font-family: sans-serif;
-              font-size: 30px;
+              font-size: 30px; 
               line-height: 0.85;
               letter-spacing: -0.01em;
               margin: 0;
@@ -501,6 +520,7 @@ $(document).on('click', '.print-button', function () {
             }
             .print-page {
               page-break-after: always;
+              padding: 0;
               width: 100%;
               height: 100%;
               background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
@@ -512,9 +532,9 @@ $(document).on('click', '.print-button', function () {
             .page-columns {
               column-count: 2;
               column-gap: 1em;
+              column-fill: auto;
               height: 100%;
               text-align: justify !important;
-              column-fill: auto;
             }
             .page-columns div {
               hyphens: auto;
@@ -522,17 +542,8 @@ $(document).on('click', '.print-button', function () {
               -ms-hyphens: auto;
               word-break: break-word;
             }
-            .flowers-font {
-              font-family: 'Flowers', sans-serif;
-              font-size: 75px;
-              line-height: 0.75;
-              word-break: break-word;
-            }
-            h1,
-            .meta,
-            .body,
-            .tag-button {
-              font-size: 12px !important;
+            h1, .meta, .body, .tag-button {
+              font-size: 12px !important; 
               text-align: left !important;
             }
             h1 {
@@ -549,17 +560,12 @@ $(document).on('click', '.print-button', function () {
               margin-top: 0.5em;
               margin-left: 0.2in;
             }
-            .timestamp-meta {
-              font-family: monospace;
-              font-size: 12px !important;
-              margin-top: 3em;
-            }
             .message-body {
               margin-left: 0.55in;
             }
             .tag-button {
               display: inline-block;
-              padding: 0em 0.1em;
+              padding: 0.1em 0.2em;
               margin-left: 0.4in;
               font-family: monospace;
               font-size: 10px !important;
@@ -567,7 +573,6 @@ $(document).on('click', '.print-button', function () {
               border-radius: 4px;
               background-color: transparent;
               color: rgb(83, 160, 82);
-              text-transform: lowercase;
               cursor: default;
             }
             .print-page div {
@@ -577,22 +582,162 @@ $(document).on('click', '.print-button', function () {
         </head>
         <body>${pagesHtml}</body>
       </html>
-    `;
+  `);
+  printWindow.document.close();
+  printWindow.focus();
 
-    const printWindow = window.open('', '', 'width=1000,height=800');
-    printWindow.document.open();
-    printWindow.document.write(printContent);
-    printWindow.document.close();
-    printWindow.focus();
-
-    setTimeout(() => {
-      printWindow.print();
-      printWindow.close();
-    }, 300);
-
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
     printButton.textContent = "Print";
     printButton.disabled = false;
     printButton.style.opacity = "1";
   }, 300);
-});
+}
 
+/* 404 error entries print container  */
+function print404Entry($entry, printButton) {
+  const number = $entry.find('.column.number').text().trim();
+  const messageHtml = $entry.find('.column.message').html();
+  const author = $entry.find('.author-name').text().trim();
+  const timestamp = $entry.find('.column.timestamp').html();
+  const subjectLine = $('#sidebar-scroll .index-entry')
+    .filter((_, el) => $(el).data('number') === number)
+    .text().replace(number, '').trim();
+  const labels = $entry.find('.tag-button').map((_, el) => $(el).text()).get().join(', ');
+
+  const labelsHtml = labels
+    .split(',')
+    .map(l => `<button class="tag-button">${l.trim()}</button>`)
+    .join('');
+
+  const pageHeader = `
+    <h1><span style="font-family: monospace;">${number}.</span> <span style="font-family: sans-serif;">${subjectLine || '(No Subject)'}</span></h1>
+    <div class="body">From: <span style="font-family: sans-serif;">${author || 'Anonymous'}</span></div>
+    <div class="meta">${labelsHtml || '<em>None</em>'}</div>
+    <div style="margin-bottom: 1em;"></div>
+    <div class="flowers-font">
+  `;
+
+  const messageLines = messageHtml.split(/<br\s*\/?>/gi).map(line => line.trim());
+
+  let pagesHtml = "";
+  let currentPageContent = pageHeader;
+  const tempContainer = document.createElement("div");
+  Object.assign(tempContainer.style, {
+    position: "absolute",
+    visibility: "hidden",
+    width: "1000px",
+    columnCount: "2",
+    fontSize: "75px",
+    lineHeight: "0.75"
+  });
+  document.body.appendChild(tempContainer);
+
+  for (let line of messageLines) {
+    const htmlLine = line
+      ? `<div class="message-body">${insertSoftHyphens(line)}</div>`
+      : '<div class="paragraph-spacer"></div>';
+
+    tempContainer.innerHTML = currentPageContent + htmlLine;
+    if (tempContainer.scrollHeight > 800) {
+      pagesHtml += `
+        <div class="print-page">
+          <div class="page-columns flowers-font">
+            ${currentPageContent}</div>
+        </div>
+      `;
+      currentPageContent = '<div class="flowers-font">' + htmlLine;
+    } else {
+      currentPageContent += htmlLine;
+    }
+  }
+
+  pagesHtml += `
+    <div class="print-page">
+      <div class="page-columns flowers-font">
+        ${currentPageContent}
+        <div class="meta message-body">${timestamp}</div>
+      </div>
+    </div>
+  `;
+
+  document.body.removeChild(tempContainer);
+
+  const printWindow = window.open('', '', 'width=1000,height=800');
+  printWindow.document.open();
+  printWindow.document.write(`
+    <html lang="en">
+      <head>
+        <title>Print Message</title>
+        <style>
+          @font-face {
+            font-family: 'Flowers';
+            src: url('https://enyajpan.github.io/in-case-of-loss/assets/flowers.otf') format('opentype');
+          }
+          @page { size: landscape; margin: 0.25in 1in; }
+          body {
+            font-family: 'Flowers', sans-serif;
+            font-size: 75px;
+            line-height: 0.75;
+            margin: 0;
+            padding: 0;
+            color: rgb(83, 160, 82);
+            text-align: justify;
+            word-break: break-word;
+          }
+          .print-page {
+              page-break-after: always;
+              padding: 0;
+              box-sizing: border-box;
+              width: 100%;
+              height: 100%;
+              background-image: url('https://enyajpan.github.io/in-case-of-loss/assets/print-bg-graphic.png');
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: cover;
+            }
+          .page-columns {
+            column-count: 2;
+            column-gap: 1em;
+            height: 100%;
+            column-fill: auto;
+          }
+          .page-columns div {
+            word-break: break-word;
+            hyphens: auto;
+          }
+          h1, .meta, .body, .tag-button {
+            font-size: 12px !important;
+          }
+          .message-body {
+            margin-left: 0.55in;
+          }
+          .tag-button {
+              display: inline-block;
+              padding: 0.1em 0.2em;
+              margin-left: 0.4in;
+              font-family: monospace;
+              font-size: 10px !important;
+              border: 0.5px solid rgb(83, 160, 82);
+              border-radius: 4px;
+              background-color: transparent;
+              color: rgb(83, 160, 82);
+              text-transform: lowercase;
+              cursor: default;
+        </style>
+      </head>
+      <body>${pagesHtml}</body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.focus();
+
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
+    printButton.textContent = "Print";
+    printButton.disabled = false;
+    printButton.style.opacity = "1";
+  }, 300);
+}
