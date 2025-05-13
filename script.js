@@ -483,7 +483,7 @@ $(document).on('click', '.print-button', function () {
             }
             @page {
               size: landscape;
-              margin: 0.25in 1in;
+              margin: 0.3in 1in;
             }
             body {
               font-family: sans-serif;
