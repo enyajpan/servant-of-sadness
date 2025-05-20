@@ -588,20 +588,6 @@ i {
   font-style: italic;
 }
 
-@media print {
-  body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  html, body {
-    width: 11in;
-    height: 8.5in;
-    overflow: hidden;
-  }
-}
-
-
 .column.label {
   font-size: 0.9rem;
   flex: 0 0 10%;
@@ -789,11 +775,17 @@ i {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 250px; 
+  height: 250px;
   z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  transition: transform 0.6s ease;
+  transform: translateY(0);
+}
+
+#submission-wrapper.slide-down {
+  transform: translateY(50%);
 }
 
 #submission-bg {
@@ -803,6 +795,13 @@ i {
   width: 88%;
   height: auto;
   z-index: 1;
+  transition: transform 0.5s ease;
+  transform: translateY(0); /* default position */
+  cursor: pointer; /* Optional: show it’s clickable */
+}
+
+#submission-wrapper.slide-down {
+  transform: translateY(50%);
 }
 
 #submission-overlay {

@@ -46,6 +46,7 @@ function highlightKeywords(text) {
     .replace(/\b(you)\b/gi, '<span style="color: rgb(124, 77, 255);">$1</span>')
     .replace(/\b(us)\b/gi, '<span style="color: rgb(250, 39, 142);">$1</span>')
     .replace(/\b(we)\b/gi, '<span style="color: rgb(0, 190, 196);">$1</span>')
+    .replace(/\b(our)\b/gi, '<span style="color: rgb(241, 137, 220);">$1</span>')
   
     // Apply special character highlighting *outside* of existing tags
     return highlighted.replace(/(<[^>]+>)|([()])|(;)|(\d+)/g, (match, tag, paren, semicolon, number) => {
@@ -599,4 +600,16 @@ $(document).on('click', '.print-button', function () {
     printButton.disabled = false;
     printButton.style.opacity = "1";
   }, 300);
+});
+
+/* open and close submission form */
+document.addEventListener('DOMContentLoaded', () => {
+  const wrapper = document.getElementById('submission-wrapper');
+  const bg = document.getElementById('submission-bg');
+
+  wrapper.addEventListener('click', (event) => {
+    if (event.target === bg) {
+      wrapper.classList.toggle('slide-down');
+    }
+  });
 });
