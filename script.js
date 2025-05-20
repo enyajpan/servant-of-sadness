@@ -22,38 +22,38 @@ let sortDescending = true;
 function highlightKeywords(text) {
   // Apply word/phrase replacements first (before tag conflicts)
   let highlighted = text
-    .replace(/([A-Z]{2,}(?:'[A-Z]{1,2})?)/g, '<span style="color:rgb(63,193,64); font-style: italic; font-size: 80%;">$1</span>')
-    .replace(/(I['’` ]?m sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
-    .replace(/(sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
-    .replace(/(I have missed you)/gi, '<span style="color:rgb(199, 56, 198)">$1</span>')
-    .replace(/(I love you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
-    .replace(/(I loved you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
-    .replace(/(I miss you)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
-    .replace(/(in love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
-    .replace(/(I've always loved)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
-    .replace(/(my true love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
-    .replace(/(I fell in love with you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
-    .replace(/(love)/gi, '<span style="font-style: italic; color:rgb(250, 39, 142)">$1</span>')
-    .replace(/(I've loved)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/([A-Z]{2,}(?:'[A-Z]{1,2})?)/g, '<span style="color:rgb(87, 183, 195); font-style: italic; font-size: 80%;">$1</span>')
+    .replace(/(I['’` ]?m sorry)/gi, '<span style="color:rgb(100, 149, 238)">$1</span>')
+    .replace(/(sorry)/gi, '<span style="color:rgb(100, 149, 238)">$1</span>')
+    .replace(/(I have missed you)/gi, '<span style="color:rgb(207, 104, 225)">$1</span>')
+    .replace(/(I love you)/gi, '<span style="color:rgb(224, 108, 117)">$1</span>')
+    .replace(/(I loved you)/gi, '<span style="color:rgb(224, 108, 117)">$1</span>')
+    .replace(/(I miss you)/gi, '<span style="color:rgb(100, 149, 238)">$1</span>')
+    .replace(/(in love)/gi, '<span style="color:rgb(224, 108, 117)">$1</span>')
+    .replace(/(I've always loved)/gi, '<span style="color:rgb(224, 108, 117)">$1</span>')
+    .replace(/(my true love)/gi, '<span style="color:rgb(224, 108, 117)">$1</span>')
+    .replace(/(I fell in love with you)/gi, '<span style="color:rgb(224, 108, 117)">$1</span>')
+    .replace(/(love)/gi, '<span style="font-style: italic; color:rgb(236, 39, 107)">$1</span>')
+    .replace(/(I've loved)/gi, '<span style="color:rgb(224, 108, 117)">$1</span>')
     .replace(/\b(home)\b/gi, '<span style="color: rgb(198, 123, 218);">$1</span>')
-    .replace(/(friends)/gi, '<span style="color: rgb(255, 109, 17);">$1</span>')
-    .replace(/(I'm leaving you)/gi, '<span style="color: rgb(241, 137, 220);">$1</span>')
-    .replace(/(letting him go)/gi, '<span style="color: rgb(66, 132, 237);">$1</span>')
-    .replace(/(letting her go)/gi, '<span style="color: rgb(66, 132, 237);">$1</span>')
-    .replace(/(my heart)/gi, '<span style="color: rgb(199, 56, 198);">$1</span>')
-    .replace(/(forever)/gi, '<span style="color: rgb(240, 170, 9);">$1</span>')
-    .replace(/\b(me)\b/gi, '<span style="color: rgb(199, 56, 198);">$1</span>')
-    .replace(/\b(you)\b/gi, '<span style="color: rgb(124, 77, 255);">$1</span>')
-    .replace(/\b(us)\b/gi, '<span style="color: rgb(250, 39, 142);">$1</span>')
-    .replace(/\b(we)\b/gi, '<span style="color: rgb(0, 190, 196);">$1</span>')
-    .replace(/\b(our)\b/gi, '<span style="color: rgb(241, 137, 220);">$1</span>')
+    .replace(/(friends)/gi, '<span style="color: rgb(255, 145, 112);">$1</span>')
+    .replace(/(I'm leaving you)/gi, '<span style="color: rgb(255, 208, 246);">$1</span>')
+    .replace(/(letting him go)/gi, '<span style="color: rgb(100, 149, 238);">$1</span>')
+    .replace(/(letting her go)/gi, '<span style="color: rgb(100, 149, 238);">$1</span>')
+    .replace(/(my heart)/gi, '<span style="color: rgb(207, 104, 225);">$1</span>')
+    .replace(/(forever)/gi, '<span style="color: rgb(255, 145, 112);">$1</span>')
+    .replace(/\b(me)\b/gi, '<span style="color: rgb(207, 104, 225);">$1</span>')
+    .replace(/\b(you)\b/gi, '<span style="color: rgb(167, 140, 250);">$1</span>')
+    .replace(/\b(us)\b/gi, '<span style="color: rgb(236, 39, 107);">$1</span>')
+    .replace(/\b(we)\b/gi, '<span style="color: rgb(87, 183, 195);">$1</span>')
+    .replace(/\b(our)\b/gi, '<span style="color: rgb(255, 208, 246);">$1</span>')
   
     // Apply special character highlighting *outside* of existing tags
     return highlighted.replace(/(<[^>]+>)|([()])|(;)|(\d+)/g, (match, tag, paren, semicolon, number) => {
       if (tag) return tag;
-      if (paren) return `<span style="color: rgb(241, 137, 220);">${paren}</span>`;
-      if (semicolon) return `<span style="color: rgb(169, 169, 170);">${semicolon}</span>`;
-      if (number) return `<span style="color: rgb(255, 109, 17);">${number}</span>`;
+      if (paren) return `<span style="color: rgb(255, 208, 246);">${paren}</span>`;
+      if (semicolon) return `<span style="color: rgb(176, 183, 195);">${semicolon}</span>`;
+      if (number) return `<span style="color: rgb(255, 145, 112);">${number}</span>`;
       return match; // fallback
     });     
   }

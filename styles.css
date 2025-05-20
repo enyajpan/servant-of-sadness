@@ -28,7 +28,7 @@
   background: radial-gradient(
     circle at var(--x, 50%) var(--y, 50%),
     rgba(255, 255, 255, 0) 100px,
-    rgba(255, 255, 255, 0.7) 300px
+    rgba(255, 255, 255, 0.3) 300px
   );
   transition: background-position 0.1s ease;
 }
@@ -210,9 +210,9 @@ html, body {
   font-size: 1rem;
   letter-spacing: -0.05rem;
   margin-left: 6px;
-  color: rgb(169, 169, 170);
+  color: rgb(176, 183, 195);
   padding: 0px 2px 4px 2px;
-  border-bottom: 1px solid rgb(210, 213, 224);
+  border-bottom: 1px solid rgb(123, 137, 180);
 }
 
 /* header formatting at top  */
@@ -243,17 +243,17 @@ html, body {
   overflow: hidden;
 }
 #fixed-th .author {
-  color:rgb(66, 122, 237);
+  color:rgb(100, 149, 238);
 }
 #fixed-th .timestamp {
   font-family: 'Gaisyr Book Italic', serif !important;
   font-size: 2.2rem !important;
   letter-spacing: -0.05rem !important;
-  color:rgb(66, 122, 237);
+  color:rgb(100, 149, 238);
   text-align: right;
 }
 #fixed-th .number {
-  color:rgb(66, 122, 237);
+  color:rgb(100, 149, 238);
   font-family: 'Gaisyr Book Italic', serif !important;
   font-size: 1.5rem !important;
   letter-spacing: -0.1rem !important;
@@ -518,16 +518,16 @@ i {
   .entry-line:hover .author,
   .entry-line.active .author {
     font-size: 1rem !important;
-    color: rgb(83, 160, 82) !important;
+    color: rgb(205, 255, 147) !important;
     letter-spacing: normal;
   }
   .entry-line:hover .timestamp {
-    color: rgb(83, 160, 82) !important;
+    color: rgb(205, 255, 147) !important;
     letter-spacing: -0.05rem !important;
   }
   .entry-line:hover .message-404,
   .entry-line.active .message-404 {
-    color: rgb(83, 160, 82) !important;
+    color: rgb(205, 255, 147) !important;
     font-size: 6rem !important;
     line-height: 0.75 !important;
   }
@@ -651,7 +651,7 @@ i {
 
 
 .author {
-  color:rgb(124, 77, 255);
+  color:rgb(167, 140, 350);
 }
 
 /* No. line formatting */
@@ -790,11 +790,11 @@ i {
 }
 
 .line .timestamp {
-  color:rgb(83, 160, 82);
+  color:rgb(205, 255, 147);
 }
 
 .line .number {
-  color: rgb(83, 160, 82);
+  color: rgb(205, 255, 147);
   font-family: monospace;
   font-size: 0.9rem !important;
   letter-spacing: -0.05rem;
@@ -865,9 +865,9 @@ i {
 
 #submission-form input[name="subject line"],
 #submission-form input[name="author"] {
-  color: rgb(83, 160, 82); 
+  color: rgb(152, 195, 121); 
   padding: 5px;
-  border: 1px solid rgb(83, 160, 82);
+  border: 1px solid rgb(152, 195, 121);
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
   font-size: 1rem;
@@ -875,16 +875,16 @@ i {
 
 #submission-form input[name="subject line"]::placeholder,
 #submission-form input[name="author"]::placeholder {
-  color:rgb(169, 169, 170);
+  color:rgb(176, 183, 195);
   font-size: 1rem;
 }
 #submission-form textarea[name="message"]::placeholder {
-  color: rgb(169, 169, 170);
+  color: rgb(176, 183, 195);
 }
 #submission-form input:focus,
 #submission-form textarea:focus {
   outline: none;
-  border: 1px solid rgb(83, 160, 82); 
+  border: 1px solid rgb(152, 195, 121); 
   box-shadow: 0 0 0 2px rgba(152, 195, 121, 0.3);
 }
 
@@ -895,8 +895,8 @@ i {
   width: 600px;
   height: 7rem;
   padding: 6px;
-  color: rgb(83, 160, 82);
-  border: 1px solid rgb(83, 160, 82);
+  color: rgb(152, 195, 121);
+  border: 1px solid rgb(152, 195, 121);
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
   resize: none;
@@ -937,7 +937,7 @@ i {
 
 /* submission form error message formatting */
 .error-message {
-  color: rgb(205, 96, 105);
+  color: rgb(224, 108, 177);
   font-size: 0.8rem;
   margin-top: 2px;
   padding-left: 0px;
@@ -962,7 +962,7 @@ i {
   font-family: 'Gaisyr Book Italic', serif;
   font-size: 1.1rem;
   letter-spacing: -0.02em;
-  color: rgb(115, 115, 118);
+  color: rgb(176, 183, 195);
   margin-top: -12px;
 }
 .label-subtitle {
@@ -1002,7 +1002,7 @@ i {
   left: 80%;
   transform: translateY(-6px);
   background: rgba(243, 243, 243, 0.9);
-  color: rgb(66, 122, 237);
+  color: rgb(100, 149, 238);
   padding: 6px 8px;
   border-radius: 4px;
   font-size: 0.9rem;
@@ -1038,7 +1038,7 @@ i {
   user-select: none;
   display: inline-flex;
   align-items: center;
-  color: rgb(115, 115, 118);
+  color: rgb(176, 183, 195);
 }
 /* Custom square box */
 .custom-checkbox .checkmark {
@@ -1048,7 +1048,7 @@ i {
   height: 14px;
   width: 14px;
   background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgb(83, 160, 82);
+  border: 1px solid rgb(152, 195, 121);
   border-radius: 2px;
   box-sizing: border-box;
 }
@@ -1060,7 +1060,7 @@ i {
   top: -2px;
   width: 5px;
   height: 10px;
-  border: solid rgb(83, 160, 82);
+  border: solid rgb(152, 195, 121);
   border-width: 0 1.5px 1.5px 0;
   transform: rotate(45deg);
 }
@@ -1121,46 +1121,6 @@ i {
   transition: background-color 0.2s ease;
   margin: 0px;
   background-color: transparent;
-}
-
-/* Missed Connections */
-.tag-button[data-label="missed-connections"] {
-  color: rgb(255, 109, 17);
-  border: 1px solid rgb(255, 109, 17);
-}
-.tag-button[data-label="missed-connections"]:hover {
-  background-color: rgb(255, 109, 17);
-  color: rgb(236, 238, 245);
-}
-
-/* Past Lives */
-.tag-button[data-label="past-lives"] {
-  color: rgb(241, 137, 220);
-  border: 1px solid rgb(241, 137, 220);
-}
-.tag-button[data-label="past-lives"]:hover {
-  background-color: rgb(241, 137, 220);
-  color: rgb(236, 238, 245);
-}
-
-/* 404 Error */
-.tag-button[data-label="404-error"] {
-  color: rgb(199, 56, 198);
-  border: 1px solid rgb(199, 56, 198);
-}
-.tag-button[data-label="404-error"]:hover {
-  background-color: rgb(199, 56, 198);
-  color: rgb(236, 238, 245);
-}
-
-/* Servant of Sadness */
-.tag-button[data-label="servant-of-sadness"] {
-  color: rgb(0, 190, 196);
-  border: 1px solid rgb(0, 190, 196);
-}
-.tag-button[data-label="servant-of-sadness"]:hover {
-  background-color: rgb(0, 190, 196);
-  color: rgb(236, 238, 245);
 }
 
 /* thank you message formatting */
@@ -1330,7 +1290,7 @@ i {
   letter-spacing: -0.05rem;
   font-size: 0.9rem;
   font-style: normal;
-  color: rgb(115, 115, 118);
+  color: rgb(176, 183, 195);
   z-index: 100;
 }
 #scroll-to-top-button {
