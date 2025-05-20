@@ -32,6 +32,38 @@
   );
   transition: background-position 0.1s ease;
 }
+/* For spotlight effect styling */
+#dark-overlay::after {
+  content: "";
+  position: absolute;
+  top: var(--mouse-y, 50%);
+  left: var(--mouse-x, 50%);
+  width: 250px;
+  height: 250px;
+  margin-left: -125px;
+  margin-top: -125px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(255, 255, 255, 0) 100px,
+    rgba(255, 255, 255, 0.3) 300px
+  );
+  mix-blend-mode: multiply;
+  z-index: 9999;
+}
+/* Individual letter hover effect */
+.word-zoom {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.word-zoom:hover {
+  font-size: 15rem !important;
+  color: rgb(207, 104, 255);
+  line-height: 0.6 !important;
+  z-index: 10;
+  position: relative;
+}
 
 #spotlight-container {
   position: relative;
@@ -620,12 +652,6 @@ i {
   font-style: italic;
 }
 
-.column.label {
-  font-size: 0.9rem;
-  flex: 0 0 10%;
-  max-width: 10%;
-  text-align: left;
-}
 .column.timestamp {
   font-size: 0.9rem;
   flex: 0 0 6%;
@@ -644,9 +670,6 @@ i {
   align-items: flex-start !important;
   text-align: left !important;
   font-size: 1rem;
-}
-.entry-line:hover .column.label {
-  font-size: 0.9rem;
 }
 
 
@@ -1276,7 +1299,7 @@ i {
   /* background: rgba(255, 0, 0, 0.2); */
 }
 
-#container-bg {
+#container-bg { 
   z-index: 1; /* Still above the 404 background */
 }
 

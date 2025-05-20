@@ -64,6 +64,16 @@ function highlightKeywords(text) {
     );
   }  
 
+  function wrapWords(text) {
+    return text
+      .split(/(\s+)/) // keeps spaces intact
+      .map(word => {
+        if (word.trim() === "") return word; // preserve spaces
+        return `<span class="word-zoom">${word}</span>`;
+      })
+      .join("");
+  }
+  
   function makeLinks() {
     const sortDirection = sortDescending ? "desc" : "asc";
   
@@ -128,19 +138,14 @@ function highlightKeywords(text) {
               <div class="column message ${label.includes('404-error') ? 'message-404' : ''}">
                 ${
                   message
-                    .split('\n')
-                    .map(p => `<span class="scramble-paragraph">${highlightKeywords(p)}</span>`)
-                    .join('<br>')
+                  .split('\n')
+                  .map(p => `<span class="scramble-paragraph">${highlightKeywords(wrapWords(p))}</span>`)
+                  .join('<br>')
                 }
               </div>
               <div class="column author">
                 <div class="author-name"><span class="scramble-paragraph">${author}</span></div>
                 <div class="print-wrapper"><button class="print-button">Print</button></div>
-              </div>
-              <div class="column label">
-                ${
-                  label.map(l => `<button class="tag-button" data-label="${l}">${l}</button>`).join('')
-                }
               </div>
               <div class="column timestamp">${timestamp}</div>
             </div>
@@ -229,27 +234,28 @@ $(document).ready(function () {
     makeLinks();
   });
 
-  let isAboutInFront = true;
+  // Set default z-index to -1 (back)
+  const $about = $("#about-overlay");
+  const $todo = $("#todo-overlay");
+  $about.css("z-index", 0);
+  $todo.css("z-index", 0);
 
-  $("#about-overlay").on("click", function () {
-    if (isAboutInFront) {
-      $(this).css("z-index", 0); // behind view-all-background.png
-    } else {
-      $(this).css("z-index", 10001); // in front
-    }
+  let isAboutInFront = false;
+  let isTodoInFront = false;
+  let pickedLettersVisible = true;
+
+  // toggle about 
+  $about.on("click", function () {
     isAboutInFront = !isAboutInFront;
+    $about.css("z-index", isAboutInFront ? 10001 : 0);
   });
 
-  let isTodoInFront = true;
-
-  $("#todo-overlay").on("click", function () {
-    if (isTodoInFront) {
-      $(this).css("z-index", 0); // behind view-all-background.png
-    } else {
-      $(this).css("z-index", 10000); // in front
-    }
+  // toggle todo
+  $todo.on("click", function () {
     isTodoInFront = !isTodoInFront;
+    $todo.css("z-index", isTodoInFront ? 10000 : 0);
   });
+
 
 
   // Live error handling
@@ -631,3 +637,25 @@ document.addEventListener("mousemove", function (e) {
     overlay.style.background = `radial-gradient(circle 120px at ${x}px ${y}px, transparent 0%, rgba(40,44,52,0.95) 100%)`;
   }
 });
+
+document.addEventListener("mousemove", (e) => {
+  const x = e.clientX;
+  const y = e.clientY;
+  document.documentElement.style.setProperty('--mouse-x', `${x}px`);
+  document.documentElement.style.setProperty('--mouse-y', `${y}px`);
+
+  $(".letter-zoom").each(function () {
+    const rect = this.getBoundingClientRect();
+    const dx = rect.left + rect.width / 2 - x;
+    const dy = rect.top + rect.height / 2 - y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const radius = 125;
+
+    if (distance < radius) {
+      $(this).addClass("hovered");
+    } else {
+      $(this).removeClass("hovered");
+    }
+  });
+});
+
