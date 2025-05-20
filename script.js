@@ -25,10 +25,10 @@ function highlightKeywords(text) {
     .replace(/([A-Z]{2,}(?:'[A-Z]{1,2})?)/g, '<span style="color:rgb(63,193,64); font-style: italic; font-size: 80%;">$1</span>')
     .replace(/(I['’` ]?m sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
     .replace(/(sorry)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
-    .replace(/(I miss you)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
     .replace(/(I have missed you)/gi, '<span style="color:rgb(199, 56, 198)">$1</span>')
     .replace(/(I love you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
     .replace(/(I loved you)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
+    .replace(/(I miss you)/gi, '<span style="color:rgb(66, 132, 237)">$1</span>')
     .replace(/(in love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
     .replace(/(I've always loved)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
     .replace(/(my true love)/gi, '<span style="color:rgb(205, 96, 105)">$1</span>')
@@ -73,11 +73,17 @@ function highlightKeywords(text) {
       .orderBy("timestamp", sortDirection)
       .onSnapshot((snapshot) => {
         $("#container .line:not(#th)").remove();
-        $("#sidebar-scroll").empty(); // clear sidebar
-        $("#archive-footer").remove(); // remove any existing footer
+        $("#sidebar-scroll").empty();
+        $("#archive-footer").remove();
   
         snapshot.forEach((doc) => {
           const value = doc.data();
+          const label = value.label || [];
+  
+          if (!Array.isArray(label) || !label.includes("servant-of-sadness")) {
+            return; // Skip if it's not labeled as servant-of-sadness
+          }
+  
           const number = value.number || "";
           const title = value["subject line"] || "";
   
@@ -91,10 +97,16 @@ function highlightKeywords(text) {
   
         snapshot.forEach((doc) => {
           const value = doc.data();
+          const label = value.label || [];
+  
+          if (!Array.isArray(label) || !label.includes("servant-of-sadness")) {
+            return; // Skip if it's not labeled as servant-of-sadness
+          }
+  
           const author = value.author || "";
           const number = value.number || "";
           const message = value.message || "";
-          const label = value.label || [];
+  
           const dateObj = value.timestamp?.toDate?.();
           let timestamp = "";
           if (dateObj) {
@@ -102,13 +114,11 @@ function highlightKeywords(text) {
             const day = String(dateObj.getDate()).padStart(2, '0');
             const year = String(dateObj.getFullYear());
             const date = `${month}/${day}/${year}`;
-            const time = dateObj
-              .toLocaleTimeString([], {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-              })
-              .toUpperCase();         
+            const time = dateObj.toLocaleTimeString([], {
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true
+            }).toUpperCase();
             timestamp = `<div>${date}</div><div class="time-line">${time}</div>`;
           }
   
@@ -129,9 +139,7 @@ function highlightKeywords(text) {
               </div>
               <div class="column label">
                 ${
-                  Array.isArray(label)
-                    ? label.map(l => `<button class="tag-button" data-label="${l}">${l}</button>`).join('')
-                    : `<button class="tag-button" data-label="${label}">${label}</button>`
+                  label.map(l => `<button class="tag-button" data-label="${l}">${l}</button>`).join('')
                 }
               </div>
               <div class="column timestamp">${timestamp}</div>
@@ -141,7 +149,6 @@ function highlightKeywords(text) {
           $("#container").append(newline);
         });
   
-        // Add the static archive footer after all entries
         $("#container").append(`
           <div id="archive-footer">
             <p>
@@ -154,6 +161,7 @@ function highlightKeywords(text) {
         $(".column.title, .column.author, .column.message").addClass("scramble");
       });
   }
+  
   
 
 $(document).ready(function () {
@@ -612,4 +620,14 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapper.classList.toggle('slide-down');
     }
   });
+});
+
+// Spotlight dark mode effect
+document.addEventListener("mousemove", function (e) {
+  const x = e.clientX;
+  const y = e.clientY;
+  const overlay = document.getElementById("dark-overlay");
+  if (overlay) {
+    overlay.style.background = `radial-gradient(circle 120px at ${x}px ${y}px, transparent 0%, rgba(40,44,52,0.95) 100%)`;
+  }
 });

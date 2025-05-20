@@ -17,12 +17,28 @@
   font-style: normal;
 }
 
+#dark-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999999;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(255, 255, 255, 0) 100px,
+    rgba(255, 255, 255, 0.7) 300px
+  );
+  transition: background-position 0.1s ease;
+}
+
 #spotlight-container {
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: black;
+  background: rgb(40, 44, 52);
   color: white;
 }
 
@@ -32,18 +48,6 @@
   padding: 2rem;
 }
 
-#dark-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background: radial-gradient(circle 100px at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.96) 100%);
-  z-index: 2;
-  transition: background-position 0.1s ease;
-}
-
 
 body, html {
   padding: 0;
@@ -51,7 +55,7 @@ body, html {
   font-size: 12px;
   color: rgb(115, 115, 118);
   line-height: 1;
-  background-color: rgb(226,228,235);
+  background-color: rgb(40,44,52);
 }
 
 * {
@@ -137,7 +141,7 @@ html, body {
   width: 100vw;
   font-size: 5.5rem;
   letter-spacing: -0.3rem;
-  color: rgb(169, 169, 170);
+  color: rgb(123, 137, 180);
   z-index: 1;
   pointer-events: none; /* makes it non-blocking unless you want it to be clickable */
 }
@@ -166,12 +170,12 @@ html, body {
   left: 0;
   width: 180px;
   height: 100vh;
-  background-color: rgb(249, 250, 253);
-  border-right: 1px solid rgb(210, 213, 224);
+  background-color: rgb(33, 37, 43);
+  border-right: 1px solid rgb(123, 137, 180);
   z-index: 100;
   overflow: hidden;
   padding-top: 10px;
-  box-shadow: 0 0 10px rgb(169, 169, 170);
+  box-shadow: 0 0 10px rgb(100, 149, 238);
 }
 #sidebar-scroll {
   height: calc(100vh - 100px);
@@ -182,23 +186,23 @@ html, body {
 .index-entry {
   padding: 4px 8px;
   font-size: 0.95rem;
-  color: rgb(115, 115, 118);
+  color: rgb(176, 183, 195);
   cursor: pointer;
-  border-bottom: 1px solid rgb(226,228,235);
+  border-bottom: 1px solid rgb(123, 137, 180);
 }
 .index-entry .index-number {
   font-family: monospace !important;
   font-size: 0.85rem;
-  color: rgb(83, 160, 82) !important;
+  color: rgb(152, 195, 121) !important;
   margin-right: 2px;
 }
 .index-entry:hover {
-  background-color: rgb(184, 204, 249, 0.5);
-  color: rgb(66, 122, 237);
+  background-color: rgb(184, 204, 249);
+  color: rgb(33, 37, 43);
 }
 .index-entry.hover-sync {
-  background-color: rgb(184, 204, 249, 0.5);
-  color: rgb(66, 122, 237);
+  background-color: rgb(184, 204, 249);
+  color: rgb(33, 37, 43);
 }
 
 #sidebar-index-title {
@@ -214,7 +218,7 @@ html, body {
 /* header formatting at top  */
 #fixed-th {
   font-family: 'Gaisyr Book Italic', serif;
-  color: rgb(66, 122, 237);
+  color: rgb(100, 149, 238);
   position: fixed;
   top: 70px;
   left: 175px;
@@ -443,7 +447,7 @@ i {
   background-color: black; */
   font-size: 3rem;
   font-style: italic;
-  background-color: rgb(226,228,235);
+  background-color: rgb(50, 71, 110);
   color: rgb(255, 109, 17);
   border-radius: 2px;
 }
@@ -496,8 +500,8 @@ i {
   
 .entry-line:hover,
 .entry-line.active {
-  color: rgb(83, 160, 82) !important;
-  background-color: rgb(184, 204, 249, 0.5);
+  color: rgb(205, 255, 147) !important;
+  background-color: rgb(50, 71, 110);
   justify-content: flex-start !important;
   font-size: 2rem;
   letter-spacing: -0.05rem;
